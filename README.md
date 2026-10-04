@@ -109,7 +109,11 @@ quarto::quarto_render("report/index.qmd")
 ## Tools
 
 - **R** — data wrangling, spatial analysis, map production
-- **QGIS** — spatial data exploration and cartographic review
+- **QGIS 3.44 LTR** — spatial data exploration, layer styling, and cartographic
+  map export. The QGIS project file (`qgis/nyc_lastmile.qgz`) loads all four
+  analysis layers (borough boundaries, census tracts, warehouse buffer, warehouse
+  points) styled to match the R analysis. A map export is available at
+  `output/maps/qgis_map_export.png`.
 - **Quarto** — report authoring and GitHub Pages deployment
 - **tidycensus / tigris** — Census data access
 - **sf** — spatial data manipulation
