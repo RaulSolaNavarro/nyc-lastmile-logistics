@@ -1,0 +1,19 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "NYC Last-Mile Logistics Gap Analysis"
+  navbar:
+    left:
+      - href: report/index.qmd
+        text: Report
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-tools: true
+    embed-resources: false

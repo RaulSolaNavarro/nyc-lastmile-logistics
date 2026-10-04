@@ -1,0 +1,353 @@
+---
+title: "NYC Last-Mile Logistics Gap Analysis"
+author: "Raul Sola Navarro"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-tools: true
+    theme: cosmo
+    fig-width: 10
+    fig-height: 8
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## Introduction
+
+Last-mile delivery — the final leg of a shipment from a distribution facility
+to the end consumer — is the most expensive and operationally complex segment
+of any urban supply chain. In a city like New York, where traffic density,
+limited loading zones, and building access constraints compound the challenge,
+the proximity of warehouse infrastructure to residential population is a
+critical determinant of delivery cost and service reliability.
+
+This analysis asks a straightforward question: **which NYC neighborhoods lack
+adequate warehouse coverage, and how many people live in those gaps?**
+
+To answer it, I combine 2020 Census population data at the census tract level
+with NYC's own property tax lot database (PLUTO) to map industrial and
+warehouse facilities across the five boroughs. I then apply a 1-mile service
+radius — a conservative threshold chosen to reflect realistic urban delivery
+reach given NYC traffic and parking constraints — and identify tracts that
+fall entirely outside that coverage zone.
+
+The 1-mile threshold is intentionally conservative. A 5-mile radius, standard
+in suburban logistics models, eliminates virtually all gaps in NYC due to the
+city's industrial density. The tighter radius surfaces meaningful variation
+and reflects the operational reality that a warehouse 4 miles away in
+Manhattan traffic may be effectively unreachable for same-day delivery.
+
+---
+
+## Data Sources
+
+All data is pulled programmatically via public APIs. No manual file downloads
+are required to reproduce this analysis.
+
+| Dataset | Source | Year | Access Method |
+|---|---|---|---|
+| Census tract boundaries + population | U.S. Census Bureau (Decennial Census) | 2020 | `tidycensus` R package |
+| Borough boundaries | U.S. Census Bureau (TIGER/Line) | 2024 | `tigris` R package |
+| Industrial/warehouse tax lots | NYC Dept. of City Planning — PLUTO | Current | NYC Open Data Socrata API |
+
+**A note on the warehouse data:** PLUTO classifies every NYC tax lot by land
+use code. This analysis filters for code `06` (Industrial & Manufacturing),
+which includes warehouses, distribution centers, and freight terminals. This
+is a broader category than warehouses alone — some lots may be light
+manufacturing or workshops. It represents the best publicly available proxy
+for logistics infrastructure without purchasing commercial real estate data.
+
+---
+
+## Methodology
+
+The analysis follows four steps:
+
+**1. Data acquisition.** Census tract population and geometry are pulled from
+the 2020 Decennial Census via the `tidycensus` package. Borough boundaries
+come from the Census TIGER/Line files via `tigris`. Industrial lot locations
+are queried from the NYC PLUTO dataset via the Socrata JSON API, then
+converted to point geometry using the lot centroid coordinates.
+
+**2. Coordinate reference system.** All layers are projected to EPSG:2263
+(New York State Plane, Long Island), which uses feet as its unit of
+measurement. This CRS is optimized for accuracy in the New York metro area
+and is the standard used by NYC government GIS data.
+
+**3. Buffer analysis.** Each industrial lot centroid is buffered by 5,280
+feet (1 mile). The resulting circles are dissolved into a single merged
+coverage polygon using `st_union()`. This merged polygon represents the
+total area of NYC within 1 mile of at least one industrial facility.
+
+**4. Gap identification.** Each census tract is tested for intersection with
+the coverage polygon using `st_intersects()`. Tracts with no intersection
+are classified as underserved — they have no industrial or warehouse facility
+within 1 mile of their boundaries.
+
+---
+
+## Results
+
+```{r}
+#| label: load-results
+#| message: false
+
+# Load all required libraries for the report
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(here)
+library(knitr)
+
+# Load the analysis outputs produced by 02_spatial_analysis.R
+# These are saved as .rds files to avoid re-running the full spatial
+# analysis every time the report is rendered.
+nyc_tracts       <- readRDS(here("data/processed/nyc_tracts_analyzed.rds"))
+borough_summary  <- readRDS(here("data/processed/borough_summary.rds"))
+warehouses       <- readRDS(here("data/processed/warehouses.rds"))
+warehouse_buffer <- readRDS(here("data/processed/warehouse_buffer.rds"))
+```
+
+### City-Wide Summary
+
+```{r}
+#| label: citywide-summary
+
+# Calculate city-wide totals from the tract-level data
+total_tracts       <- nrow(nyc_tracts)
+underserved_tracts <- sum(!nyc_tracts$served)
+underserved_pop    <- sum(nyc_tracts$population[!nyc_tracts$served], na.rm = TRUE)
+total_pop          <- sum(nyc_tracts$population, na.rm = TRUE)
+pct_underserved    <- underserved_pop / total_pop
+
+# Print a clean summary
+cat(
+  "Total census tracts:        ", comma(total_tracts), "\n",
+  "Underserved tracts:         ", comma(underserved_tracts), "\n",
+  "Underserved population:     ", comma(underserved_pop), "\n",
+  "Share of total population:  ", percent(pct_underserved, accuracy = 0.1), "\n"
+)
+```
+
+Across NYC's 2,327 census tracts, **`r comma(underserved_tracts)` tracts
+containing `r comma(underserved_pop)` residents** fall outside a 1-mile
+radius of any industrial or warehouse facility. That represents
+`r percent(pct_underserved, accuracy = 0.1)` of the city's total population
+living in areas with limited last-mile logistics infrastructure.
+
+### Borough Breakdown
+
+```{r}
+#| label: borough-table
+
+# Reshape the borough summary for a clean display table.
+# We want one row per borough showing both served and underserved counts.
+borough_table <- borough_summary |>
+  select(borough, coverage, tracts, population) |>
+  filter(!is.na(borough)) |>
+  tidyr::pivot_wider(
+    names_from  = coverage,
+    values_from = c(tracts, population),
+    values_fill = 0
+  ) |>
+  mutate(
+    pct_underserved = population_Underserved /
+                      (population_Served + population_Underserved)
+  ) |>
+  arrange(desc(pct_underserved)) |>
+  select(
+    Borough             = borough,
+    `Underserved Tracts` = tracts_Underserved,
+    `Served Tracts`      = tracts_Served,
+    `Underserved Pop.`   = population_Underserved,
+    `% Underserved`      = pct_underserved
+  )
+
+# kable() renders a clean HTML table in the Quarto output
+kable(
+  borough_table,
+  format.args = list(big.mark = ","),
+  digits      = 3,
+  caption     = "Last-mile logistics coverage by borough (1-mile service radius)"
+)
+```
+
+### Map 1: Population Density
+
+The population density map establishes the baseline: where are people
+concentrated across the five boroughs? Manhattan's core shows the highest
+densities, exceeding 150,000 persons per square mile in some tracts. The
+outer boroughs show more moderate densities with significant variation
+between neighborhoods.
+
+```{r}
+#| label: map1
+#| fig-cap: "NYC population density by census tract, 2020 Decennial Census"
+
+# We embed the pre-rendered PNG rather than re-running the ggplot code.
+# This keeps report rendering fast and ensures the map matches exactly
+# what was produced and reviewed during the analysis phase.
+knitr::include_graphics(here("output/maps/map1_population_density.png"))
+```
+
+### Map 2: Last-Mile Logistics Gap Analysis
+
+The gap map overlays three layers of information: census tract coverage
+status (green = served, red = underserved), the merged 1-mile warehouse
+service radius (light blue halo), and individual industrial lot locations
+(blue points).
+
+```{r}
+#| label: map2
+#| fig-cap: "NYC last-mile logistics gaps — census tracts outside a 1-mile warehouse service radius"
+
+knitr::include_graphics(here("output/maps/map2_logistics_gaps.png"))
+```
+
+### Borough-Level Bar Chart
+
+```{r}
+#| label: bar-chart
+#| fig-cap: "Underserved population by borough"
+#| fig-height: 5
+
+# Build a simple bar chart of underserved population by borough.
+# This gives the reader a quick at-a-glance comparison that complements
+# the spatial maps with a direct numeric comparison.
+
+underserved_by_borough <- borough_summary |>
+  filter(coverage == "Underserved", !is.na(borough)) |>
+  arrange(desc(population))
+
+ggplot(underserved_by_borough,
+       aes(x = reorder(borough, population), y = population)) +
+  geom_col(fill = "#d6604d", alpha = 0.85) +
+  geom_text(
+    aes(label = comma(population)),
+    hjust  = -0.1,
+    size   = 3.5,
+    color  = "gray30"
+  ) +
+  coord_flip() +
+  scale_y_continuous(
+    labels = comma,
+    expand = expansion(mult = c(0, 0.15))  # Add space for labels
+  ) +
+  labs(
+    title   = "Underserved Population by Borough",
+    subtitle = "Residents living more than 1 mile from any industrial/warehouse facility",
+    x       = NULL,
+    y       = "Population",
+    caption = "Source: U.S. Census Bureau (2020) | NYC PLUTO via Socrata API"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title    = element_text(face = "bold"),
+    panel.grid.major.y = element_blank()
+  )
+```
+
+---
+
+## Discussion
+
+### Key Findings
+
+Manhattan accounts for the largest share of underserved population
+(`r comma(borough_summary$population[borough_summary$borough == "Manhattan" & borough_summary$coverage == "Underserved" & !is.na(borough_summary$borough)])` 
+residents), which is initially counterintuitive given the borough's density
+and its reputation as a logistics challenge. The explanation lies in land use:
+Manhattan has very few industrial-zoned lots, and the ones that exist are
+concentrated in specific corridors like the West Side railyards and the
+Meatpacking District. Large residential swaths in Upper Manhattan and
+Washington Heights sit far from any classified industrial facility.
+
+Queens and the Bronx show smaller absolute underserved populations, reflecting
+their larger industrial footprints along the waterfront and major freight
+corridors.
+
+### Limitations
+
+**Land use proxy.** PLUTO code `06` captures industrial lots broadly. A more
+precise analysis would use actual warehouse operating data from a commercial
+source (CoStar, CBRE) or cross-reference with business license data.
+
+**Service radius assumption.** The 1-mile radius is a simplification. Actual
+delivery reach depends on street network connectivity, traffic patterns, and
+facility operating hours — none of which are captured here. A network-based
+accessibility analysis using actual road travel times would produce more
+accurate results.
+
+**Population vs. demand.** Population density is a proxy for delivery demand.
+A more complete model would incorporate e-commerce order density, building
+type (residential vs. commercial), and existing carrier infrastructure.
+
+### Supply Chain Implications
+
+For a retailer or third-party logistics provider evaluating NYC market entry
+or expansion, this analysis suggests that **Manhattan above 96th Street and
+parts of eastern Queens** represent underserved markets where a micro-
+fulfillment center — a small urban warehouse format (10,000–30,000 sq ft)
+embedded in a mixed-use building — could capture delivery demand that larger
+facilities in the outer boroughs cannot efficiently serve within a 1-mile
+radius.
+
+---
+
+## Reproducibility
+
+All data is pulled from public APIs at runtime. To reproduce this analysis
+from scratch:
+
+```r
+# 1. Install packages and create folder structure
+source("setup.R")
+
+# 2. Pull all data from APIs
+source("analysis/01_data_pull.R")
+
+# 3. Run spatial analysis
+source("analysis/02_spatial_analysis.R")
+
+# 4. Export maps
+source("analysis/03_maps.R")
+
+# 5. Render this report
+quarto::quarto_render("report/index.qmd")
+```
+
+**R version:** `r R.version$version.string`  
+**Key packages:** tidycensus `r packageVersion("tidycensus")`,
+sf `r packageVersion("sf")`,
+ggplot2 `r packageVersion("ggplot2")`
+
+---
+
+## Data Citations
+
+U.S. Census Bureau. (2020). *2020 Decennial Census Redistricting Data
+(Public Law 94-171) Summary File*. Retrieved via the tidycensus R package.
+
+NYC Department of City Planning. (2024). *PLUTO: Primary Land Use Tax Lot
+Output*. NYC Open Data. https://data.cityofnewyork.us/resource/64uk-42ks.json
+
+U.S. Census Bureau. (2024). *TIGER/Line Shapefiles: Counties*. Retrieved
+via the tigris R package.
+
+---
+
+## AI Usage Disclosure
+
+This project was developed with assistance from Claude (Anthropic) as a
+collaborative coding and methodology tool. Claude helped structure the R
+scripts, debug API connectivity issues during data acquisition, and draft
+the prose in this report. All analytical decisions — including the choice
+of 1-mile service radius, the PLUTO land use classification, and the
+interpretation of results — were made and reviewed by the author. All code
+was tested and executed locally by the author prior to publication.
