@@ -210,6 +210,20 @@ service radius (light blue halo), and individual industrial lot locations
 knitr::include_graphics(here("output/maps/map2_logistics_gaps.png"))
 ```
 
+### Map 3: QGIS Cartographic Export
+
+The following map was produced directly in QGIS 3.44 LTR using the same
+analysis layers exported from R. It demonstrates the full geospatial workflow
+— data processed in R, layers loaded and styled in QGIS, and exported as a
+cartographic output.
+
+```{r}
+#| label: map3
+#| fig-cap: "QGIS styled map export — borough boundaries, census tract coverage, warehouse buffer, and warehouse locations"
+
+knitr::include_graphics(here("output/maps/qgis_map_export.png"))
+```
+
 ### Borough-Level Bar Chart
 
 ```{r}
