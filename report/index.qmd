@@ -42,6 +42,16 @@ city's industrial density. The tighter radius surfaces meaningful variation
 and reflects the operational reality that a warehouse 4 miles away in
 Manhattan traffic may be effectively unreachable for same-day delivery.
 
+> **Data note (updated October 7, 2026):** An earlier version of this report
+> (published October 4) showed 38 gap tracts and 169,223 residents, with 14
+> Manhattan gap tracts. Those numbers were wrong. The Socrata API returns
+> results in pages, and the initial pull hit the default 1,000-row limit,
+> returning an incomplete warehouse dataset. A corrected pull (no row limit)
+> retrieved the full PLUTO industrial lot set. With complete data, Manhattan
+> has near-complete industrial coverage (only 1 gap tract), and the city-wide
+> gap falls to 31 tracts and 61,426 residents. All numbers in this version
+> reflect the corrected pull.
+
 ---
 
 ## Data Sources
@@ -72,9 +82,9 @@ The analysis follows four steps:
 **1. Data acquisition.** Census tract population and geometry are pulled from
 the 2020 Decennial Census via the `tidycensus` package. Borough boundaries
 come from the Census TIGER/Line files via `tigris`. Industrial lot locations
-are queried from the NYC PLUTO dataset via the Socrata JSON API, then
-converted to point geometry using the lot centroid coordinates. Median
-household income is pulled from the 2020 ACS 5-year estimates.
+are queried from the NYC PLUTO dataset via the Socrata JSON API with no row
+limit, then converted to point geometry using the lot centroid coordinates.
+Median household income is pulled from the 2020 ACS 5-year estimates.
 
 **2. Coordinate reference system.** All layers are projected to EPSG:2263
 (New York State Plane, Long Island), which uses feet as its unit of
@@ -88,8 +98,10 @@ total area of NYC within 1 mile of at least one industrial facility.
 
 **4. Gap identification.** Each census tract is tested for intersection with
 the coverage polygon using `st_intersects()`. Tracts with no intersection
-are classified as "far from industrial land" — they have no industrial or
-warehouse facility within 1 mile of their boundaries.
+are classified as "far from industrial land." In addition, the straight-line
+distance from each tract centroid to its nearest industrial lot is computed
+using `st_distance()`, enabling continuous distance-band analysis beyond the
+binary classification.
 
 ---
 
@@ -125,10 +137,10 @@ total_pop          <- sum(nyc_tracts$population, na.rm = TRUE)
 pct_underserved    <- underserved_pop / total_pop
 
 cat(
-  "Total census tracts:        ", comma(total_tracts), "\n",
+  "Total census tracts:             ", comma(total_tracts), "\n",
   "Tracts far from industrial land: ", comma(underserved_tracts), "\n",
-  "Population in those tracts: ", comma(underserved_pop), "\n",
-  "Share of total population:  ", percent(pct_underserved, accuracy = 0.1), "\n"
+  "Population in those tracts:      ", comma(underserved_pop), "\n",
+  "Share of total population:       ", percent(pct_underserved, accuracy = 0.1), "\n"
 )
 ```
 
@@ -136,6 +148,95 @@ Across NYC's 2,327 census tracts, **`r comma(underserved_tracts)` tracts
 containing `r comma(underserved_pop)` residents** fall outside a 1-mile
 radius of any industrial or warehouse facility. That represents
 `r percent(pct_underserved, accuracy = 0.1)` of the city's total population.
+
+### Distance-Band Analysis
+
+The binary gap classification (served vs. not) masks variation in how far
+residents actually are from industrial land. This section reports the share
+of population within each distance band, by borough, and the median straight-line
+distance to the nearest industrial lot across all tracts.
+
+```{r}
+#| label: distance-bands
+
+# Requires dist_to_nearest_miles column added by 02_spatial_analysis.R
+bands <- c(0.5, 1, 2, 3)
+
+borough_bands <- nyc_tracts |>
+  st_drop_geometry() |>
+  mutate(
+    borough = case_when(
+      substr(GEOID, 3, 5) == "061" ~ "Manhattan",
+      substr(GEOID, 3, 5) == "047" ~ "Brooklyn",
+      substr(GEOID, 3, 5) == "081" ~ "Queens",
+      substr(GEOID, 3, 5) == "005" ~ "Bronx",
+      substr(GEOID, 3, 5) == "085" ~ "Staten Island",
+      TRUE ~ NA_character_
+    )
+  ) |>
+  filter(!is.na(population), !is.na(dist_to_nearest_miles), !is.na(borough)) |>
+  group_by(borough) |>
+  summarise(
+    total_pop      = sum(population),
+    within_0.5mi   = percent(sum(population[dist_to_nearest_miles <= 0.5]) / sum(population), accuracy = 0.1),
+    within_1mi     = percent(sum(population[dist_to_nearest_miles <= 1.0]) / sum(population), accuracy = 0.1),
+    within_2mi     = percent(sum(population[dist_to_nearest_miles <= 2.0]) / sum(population), accuracy = 0.1),
+    within_3mi     = percent(sum(population[dist_to_nearest_miles <= 3.0]) / sum(population), accuracy = 0.1),
+    median_dist_mi = round(median(dist_to_nearest_miles, na.rm = TRUE), 2),
+    .groups = "drop"
+  ) |>
+  arrange(desc(median_dist_mi))
+
+kable(
+  borough_bands |>
+    select(
+      Borough        = borough,
+      `Within 0.5mi` = within_0.5mi,
+      `Within 1mi`   = within_1mi,
+      `Within 2mi`   = within_2mi,
+      `Within 3mi`   = within_3mi,
+      `Median dist.` = median_dist_mi
+    ),
+  caption = "Population share within each distance band, by borough (straight-line distance to nearest industrial lot)"
+)
+```
+
+```{r}
+#| label: distance-chart
+#| fig-cap: "Distribution of tract-level distances to nearest industrial lot, by borough"
+#| fig-height: 5
+
+nyc_tracts |>
+  st_drop_geometry() |>
+  mutate(
+    borough = case_when(
+      substr(GEOID, 3, 5) == "061" ~ "Manhattan",
+      substr(GEOID, 3, 5) == "047" ~ "Brooklyn",
+      substr(GEOID, 3, 5) == "081" ~ "Queens",
+      substr(GEOID, 3, 5) == "005" ~ "Bronx",
+      substr(GEOID, 3, 5) == "085" ~ "Staten Island",
+      TRUE ~ NA_character_
+    )
+  ) |>
+  filter(!is.na(dist_to_nearest_miles), !is.na(borough)) |>
+  ggplot(aes(x = dist_to_nearest_miles, fill = borough)) +
+  geom_histogram(bins = 40, alpha = 0.8, color = "white", linewidth = 0.2) +
+  facet_wrap(~borough, nrow = 2) +
+  scale_x_continuous(limits = c(0, 5), labels = function(x) paste0(x, "mi")) +
+  scale_fill_brewer(palette = "Set2", guide = "none") +
+  labs(
+    title    = "Distance to Nearest Industrial Lot, by Borough",
+    subtitle = "Straight-line distance from census tract centroid; tracts weighted equally",
+    x        = "Distance to nearest industrial lot (miles)",
+    y        = "Number of tracts",
+    caption  = "Source: NYC PLUTO via Socrata API | U.S. Census Bureau (2020)"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title         = element_text(face = "bold"),
+    strip.text         = element_text(face = "bold")
+  )
+```
 
 ### Borough Breakdown
 
@@ -150,20 +251,20 @@ borough_table <- borough_summary |>
     values_from = c(tracts, population),
     values_fill = 0
   ) |>
-mutate(
-  `% in Gap` = scales::percent(
-    population_Underserved / (population_Served + population_Underserved),
-    accuracy = 0.1
+  mutate(
+    `% in Gap` = scales::percent(
+      population_Underserved / (population_Served + population_Underserved),
+      accuracy = 0.1
+    )
+  ) |>
+  arrange(desc(population_Underserved / (population_Served + population_Underserved))) |>
+  select(
+    Borough          = borough,
+    `Gap Tracts`     = tracts_Underserved,
+    `Served Tracts`  = tracts_Served,
+    `Pop. in Gap`    = population_Underserved,
+    `% in Gap`
   )
-) |>
-arrange(desc(population_Underserved / (population_Served + population_Underserved))) |>
-select(
-  Borough          = borough,
-  `Gap Tracts`     = tracts_Underserved,
-  `Served Tracts`  = tracts_Served,
-  `Pop. in Gap`    = population_Underserved,
-  `% in Gap`
-)
 
 kable(
   borough_table,
@@ -256,8 +357,9 @@ ggplot(underserved_by_borough,
 
 ### Income Analysis: Does Wealth Drive the Pattern?
 
-Manhattan dominates the gap results, which raises an obvious question: are
-wealthier neighborhoods driving warehouses out, or is something else going
+The gap tracts are concentrated in outer Queens and Brooklyn — neighborhoods
+like Bayside, Douglaston, and Marine Park. That raises an obvious question:
+are these wealthier areas driving warehouses out, or is something else going
 on? To test this, I pull 2020 ACS median household income by tract and
 compare the income distributions of gap tracts versus served tracts.
 
@@ -277,22 +379,20 @@ nyc_tracts_income <- nyc_tracts |>
 ```{r}
 #| label: income-summary
 
-# Summarize median income for served vs. gap tracts
 income_summary <- nyc_tracts_income |>
   group_by(served) |>
   summarise(
-    tracts          = n(),
-    median_income   = median(median_income, na.rm = TRUE),
-    mean_income     = mean(median_income, na.rm = TRUE),
+    tracts        = n(),
+    median_income = median(median_income, na.rm = TRUE),
     .groups = "drop"
   ) |>
   mutate(group = ifelse(served, "Within 1 mile of industrial land", "Outside 1 mile (gap)"))
 
 kable(
-  income_summary |> select(group, tracts, median_income, mean_income),
-  col.names = c("Group", "Tracts", "Median Income", "Mean Income"),
+  income_summary |> select(group, tracts, median_income),
+  col.names   = c("Group", "Tracts", "Median Household Income"),
   format.args = list(big.mark = ","),
-  caption = "Household income: gap tracts vs. served tracts"
+  caption     = "Median household income: gap tracts vs. served tracts (2020 ACS 5-year)"
 )
 ```
 
@@ -367,14 +467,16 @@ along the waterfront and freight routes closer to the urban core.
 Manhattan has only one gap tract, and it contains zero counted residents — a data
 artifact of differential privacy in the 2020 Census rather than a true zero population.
 The borough's near-complete coverage reflects the density of industrial lots in specific
-corridors (West Side railyards, Meatpacking District, Hudson Yards area), not that
-Manhattan is well-served for last-mile delivery. The edge effect limitation applies
-most strongly here: NJ distribution hubs 1 mile across the Hudson are excluded from
-this analysis.
+corridors (West Side railyards, Meatpacking District, Hudson Yards area).
 
-The income data shows gap tracts skew higher-income on average, but this reflects 
-Queens outer neighborhoods, not Manhattan. The Manhattan gap tract itself has no 
+The income data shows gap tracts skew higher-income on average, but this reflects
+Queens outer neighborhoods, not Manhattan. The Manhattan gap tract itself has no
 usable population count in this dataset.
+
+The distance-band analysis adds resolution to the binary picture: even among
+"served" tracts, a meaningful share of the population sits close to the 1-mile
+boundary. The distance distribution varies significantly by borough, with Staten
+Island and outer Queens showing longer median distances than Manhattan or the Bronx.
 
 ### Limitations
 
@@ -392,28 +494,31 @@ excluded. This inflates apparent gaps in western Manhattan, Staten Island,
 and eastern Queens.
 
 **The 1-mile cliff.** A tract 1.1 miles from a lot is counted as a gap; one
-at 0.9 miles is not. A continuous distance-to-nearest-facility measure would
-be more informative than a binary served/unserved classification.
+at 0.9 miles is not. The distance-band table above partially addresses this
+by reporting continuous bands, but the binary classification in the maps and
+borough table still uses the 1-mile threshold.
 
 **Proximity is not service.** Being within 1 mile of an industrial lot does
 not mean being well-served. Delivery reach depends on street network
 connectivity, curb access, building entry, and operating hours — none of
-which are in this dataset.
+which are in this dataset. Straight-line distance is not travel time.
 
 **No cost or feasibility.** Identifying a gap area does not mean a
 micro-fulfillment center belongs there. Rent levels, zoning restrictions,
-and curb access make Manhattan above 96th Street a difficult build
-regardless of demand.
+and curb access make many gap areas economically impractical regardless of
+demand.
 
 ### Supply Chain Implications
 
 As a first-pass screen of where NYC's industrial land is relative to its
 population, this analysis is useful. As a recommendation for where to site
-logistics infrastructure, it needs the additional context above. For a
-retailer or 3PL evaluating NYC market entry, the honest takeaway is:
-**Manhattan's last mile depends heavily on facilities outside the borough**,
-and any gap-filling strategy needs road-network accessibility and real
-operating data, not just proximity to a tax lot classification.
+logistics infrastructure, it needs the additional context above.
+
+The practical next step is converting straight-line distances to road-network
+travel times, which would replace the proximity proxy with a measure closer
+to actual service reach. A retailer or 3PL evaluating NYC market entry needs
+that layer — along with demand data and real operating constraints — before
+the gap locations in this analysis become actionable.
 
 ---
 
@@ -429,7 +534,7 @@ source("setup.R")
 # 2. Pull all data from APIs
 source("analysis/01_data_pull.R")
 
-# 3. Run spatial analysis
+# 3. Run spatial analysis (computes served/unserved and dist_to_nearest_miles)
 source("analysis/02_spatial_analysis.R")
 
 # 4. Export maps
