@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "NYC Industrial Land Proximity Analysis"
+  title: "Industrial Proximity & the Cost of Nearby"
   navbar:
     left:
       - href: report/index.qmd

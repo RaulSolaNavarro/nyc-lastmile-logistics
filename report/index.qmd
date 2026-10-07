@@ -1,5 +1,5 @@
 ---
-title: "NYC Industrial Land Proximity Analysis"
+title: "Is $10,000 Enough? Industrial Land Proximity, Income Gradients, and the Cost of Living Next to a Facility"
 author: "Raul Sola Navarro"
 date: "2026-10-04"
 date-modified: "2026-10-07"
@@ -20,37 +20,107 @@ execute:
 
 ## Introduction
 
-Urban freight depends on industrial land. Warehouses, distribution centers,
-and freight terminals require large, accessible lots -- the kind that are
-scarce and expensive in dense cities like New York.
+In late 2025, NorthPoint Development offered 4,500 households in Hazle
+Township, Pennsylvania $10,000 each -- in cash -- if they would support
+approval of a 1,300-acre data center in their community. Locals pushed back,
+calling it a bribe. The township had already rejected the project on zoning
+grounds and enacted a moratorium on data center construction. The median
+household income in the area is around $60,000.
 
-This analysis maps how NYC's industrial land is distributed relative to where
-people actually live. It asks: **which census tracts fall entirely outside a
-1-mile radius of any industrial lot, how many residents live in those tracts,
-and how does that pattern vary by borough and income?**
+That offer crystallizes a question that is now live in communities across the
+United States: **when a large industrial facility is proposed near a residential
+area, how much should affected residents actually be compensated -- and how
+would you even calculate the right number?**
 
-To answer it, I combine 2020 Census population data at the census tract level
-with NYC's PLUTO property database, which classifies every tax lot by land
-use. I filter for industrial and manufacturing lots (land use code 06) and
-buffer each lot by 1 mile. A census tract is classified as covered if any
-part of it intersects that buffer zone; tracts with no intersection are
-classified as industrial land gaps. Separately, I compute the straight-line
-distance from each tract centroid to its nearest industrial lot to enable
-continuous distance-band analysis beyond the binary classification.
+The AI data center buildout has made this question urgent. By Q2 2026,
+community resistance had blocked or delayed 45 data center projects worth $68
+billion across the U.S., according to [Data Center Watch via
+parameter.io](https://parameter.io/community-resistance-stalls-68-billion-worth-of-ai-data-center-developments/).
+The [Brookings Institution](https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/)
+framed the backlash as a proxy for a broader question: who decides where AI
+infrastructure goes, and who bears its costs? Vox put it bluntly: *"Americans
+don't know how to fight AI. So they're fighting data centers."*
 
-**What this measures and what it does not.** According to the NYC DCP PLUTO
-Data Dictionary, land use code 06 maps to building classes E* (warehouses),
-F* (factories), and L* (loft buildings). The category is a reasonable proxy
-for freight-relevant industrial space, but it includes factories and loft
-buildings alongside distribution-oriented warehouses. Conversely, some
-last-mile delivery in Manhattan runs from microhubs and commercial spaces not
-classified as industrial in PLUTO. The results here are best read as a
-first-pass map of where industrial land exists relative to population, not a
-direct measure of delivery coverage.
+Residents object for concrete reasons -- noise, water use, power consumption,
+and the suspicion that nearby homes will lose value. That last concern is
+empirically grounded. A [2011 hedonic pricing study from the
+Netherlands](https://papers.tinbergen.nl/09035.pdf) found that homes within
+250 meters of industrial sites sold for roughly 15% less than comparable homes
+beyond 2,250 meters. Research specifically on data centers is more mixed: a
+[George Mason University analysis](https://stopohiodatacenters.org/data-center-property-value-ohio)
+of 2023 Northern Virginia home sales found prices *higher* nearer data centers,
+but Northern Virginia is an atypical case (high-income tech corridor, data
+center industry already integrated into the local economy). In Mansfield,
+Georgia, residents near a Meta facility reported cooling-tower hum audible
+indoors with windows closed, with independent measurements at 60--65 dBA at
+the property line. Some said they were considering moving.
 
-The 1-mile threshold is intentionally tight. A 5-mile radius eliminates
-virtually all gaps in NYC. The tighter radius surfaces meaningful geographic
-variation across the five boroughs.
+None of this research answers the compensation question directly, because it
+describes outcomes -- what actually happened to property values in places that
+already have industrial land -- not what should happen in places considering
+it. To get at that, you need to know what living near industrial land
+correlates with in terms of income and revealed preference, across many
+communities and many distance bands.
+
+**That is what this analysis provides, for New York City.**
+
+---
+
+### What This Project Started As
+
+This report began as a logistics gap analysis. The original question was
+narrow: which NYC census tracts fall outside a 1-mile radius of any industrial
+lot, and how many residents live in those gaps? The spatial analysis answered
+that -- 31 tracts, 61,426 residents, concentrated in outer Queens and Brooklyn.
+
+When I added income data, the logistics framing became secondary. **Median
+household income rises monotonically with distance from industrial land across
+every distance band, and a Wilcoxon rank-sum test confirms the gradient is
+statistically significant (p < 0.001) across 2,206 tracts.** The income gap
+between tracts within 0.5 miles of industrial land and those beyond 0.5 miles
+is roughly $18,000 at the median.
+
+That finding connects directly to the NorthPoint / Hazle Township situation
+and to the broader data center compensation debate. If proximity to industrial
+land is associated with an $18,000 income penalty at the median, and the
+Netherlands research suggests a 15% property value discount within 250 meters,
+then $10,000 per household looks like a significant underestimate -- though the
+right number depends on what you are compensating for, and how long.
+
+This report presents both the original spatial analysis and the income gradient
+finding, and frames both in the context of the current debate over industrial
+facility siting and community compensation.
+
+---
+
+### What This Measures and What It Does Not
+
+The spatial analysis uses NYC's PLUTO property database. Land use code 06
+maps to building classes E* (warehouses), F* (factories), and L* (loft
+buildings) per the NYC DCP PLUTO Data Dictionary. This is a broader category
+than distribution-oriented warehouses alone. Data centers are not currently
+classified under code 06 in PLUTO -- they appear in various commercial and
+utility categories depending on their specific classification. The income
+gradient finding applies to existing NYC industrial land as classified by
+PLUTO, not to data centers specifically.
+
+The analogy to data centers is directional, not direct. Industrial lots
+(warehouses, factories) and data centers share characteristics relevant to
+neighboring residents -- noise, truck traffic, land area, visual impact -- but
+differ in others (data centers have less truck traffic, more power
+infrastructure, and different noise profiles). The Netherlands property value
+research covers industrial sites broadly; whether its 15% discount applies
+to data centers specifically is unknown.
+
+What this analysis does establish: across NYC's 2,327 census tracts, higher
+income is consistently associated with greater distance from industrial land.
+That pattern is robust, city-wide, and cannot be explained away as a quirk of
+the 31 gap tracts alone.
+
+The 1-mile proximity threshold used for the binary gap classification is
+intentionally tight. A 5-mile radius eliminates virtually all gaps in NYC.
+The tighter radius surfaces meaningful geographic variation across the boroughs
+and aligns with walkable proximity (roughly 20 minutes on foot).
 
 > **Data note (updated October 7, 2026):** An earlier version of this report
 > (published October 4) showed 38 gap tracts and 169,223 residents, with 14
@@ -607,28 +677,83 @@ says nothing about road network connectivity, traffic conditions, loading
 access, or building entry -- the actual constraints that determine delivery
 reach in an urban environment.
 
-### Implications
+### What the Income Gradient Implies for Compensation
 
-This analysis is a map of where NYC's industrial land sits relative to its
-population, not a map of where deliveries can or cannot reach. What it does
-show is meaningful: the uneven geographic distribution of industrial land
-across the five boroughs, the income pattern of tracts farthest from that
-land, and the particular position of Staten Island and outer Queens relative
-to the industrial corridors concentrated near the waterfront.
+The core finding is that NYC census tracts closer to industrial land have
+lower median household incomes, and the gradient is continuous and
+statistically robust. This does not prove that industrial proximity *causes*
+lower incomes -- the causal story runs in at least two directions. Industrial
+corridors may have developed where land was already cheap (lower-income areas).
+Or affluent neighborhoods may have used zoning to exclude industrial uses over
+time, making the correlation partly a product of political power. Distinguishing
+those explanations requires zoning history data this analysis does not include.
 
-For logistics planners, the relevant next step is not "where should a
-fulfillment center go" -- that requires demand data, road network travel
-times, rent levels, and zoning analysis this dataset cannot provide. The
-relevant question is narrower: which of the gap tracts identified here are
-actually near commercial-grade delivery infrastructure that PLUTO doesn't
-capture? Answering that requires either commercial data or field validation.
+What the gradient does support is a revealed-preference reading: across 2,206
+NYC tracts, proximity to industrial land is consistently associated with lower
+household income. People with more resources tend to live farther from
+industrial land. That is consistent with the Netherlands research finding a
+15% property value discount within 250 meters of industrial sites. Both
+patterns point in the same direction: industrial proximity is something people
+pay to avoid, or are compensated for through lower housing costs.
 
-For urban planners and policy researchers, the income pattern is worth
-following up: the tracts farthest from industrial land skew higher-income,
-which is consistent with either deliberate exclusion of industrial uses from
-affluent neighborhoods or simply with the geography of where the city's
-industrial corridors developed historically. Distinguishing between those
-explanations would require zoning history and land use change data over time.
+**Back to the $10,000 question.** NorthPoint offered Hazle Township residents
+$10,000 -- a one-time payment -- to accept a 1,300-acre data center. The
+median household income in that area is around $60,000. If we apply the NYC
+income gradient as a rough benchmark: the difference in median income between
+tracts within 0.25 miles of industrial land ($63,708) and tracts beyond 1 mile
+($90,379) is $26,671 per year. Even if you attribute only a fraction of that
+difference to industrial proximity itself (rather than to underlying geography
+or historical patterns), a one-time $10,000 payment covers less than half a
+year of that annual differential.
+
+The Netherlands 15% property value discount offers a different angle. If a
+home near the facility is worth $200,000 and proximity discounts it by 15%,
+that is a $30,000 loss in asset value -- three times the NorthPoint offer,
+and a one-time hit rather than an annual one. At Hazle Township's median income,
+$10,000 is roughly two months of household income. It is hard to construct a
+property-value or income-based model that gets you to $10,000 as the right
+number.
+
+None of this means developers should not build. It means the compensation
+question deserves an empirical basis rather than an arbitrary one. Relevant
+inputs would include: the distance from the facility to each household, local
+property values before and after comparable facilities opened nearby, the
+expected duration of impacts (noise, traffic, visual), and whether payments
+should be structured as one-time checks or ongoing annual compensation tied
+to the facility's operating life.
+
+### Implications for the AI Data Center Debate
+
+The current conflict over data center siting is partly a zoning fight, partly
+an AI anxiety fight, and partly a legitimate dispute over who pays for
+infrastructure that benefits a much larger population. By Q2 2026, community
+resistance had stalled $68 billion in data center projects across the U.S.
+[TechCrunch](https://techcrunch.com/2026/09/22/everyone-can-find-a-reason-to-dislike-data-center-construction/)
+reported in September 2026 that "everyone can find a reason to dislike data
+center construction" -- from noise and water use to AI ethics to simple
+neighborhood character concerns.
+
+The [Brookings Institution](https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/)
+framed it as a democratic accountability problem: if AI infrastructure is
+built wherever companies choose, with local governments as the only check,
+communities end up negotiating individually against well-resourced developers
+without any common framework for what fair compensation looks like.
+
+NYC's industrial land income gradient does not resolve that, but it offers
+one empirical anchor. A city with 80 years of industrial zoning history shows
+that people consistently sort away from industrial land when they can afford
+to. If data center developers want to change that sorting -- to site facilities
+in areas where residents have the resources to object and the political
+influence to succeed -- the offer needs to reflect what those residents are
+actually giving up.
+
+Whether the comparison between NYC's industrial lots and a Pennsylvania data
+center is close enough to matter is a judgment call. The land uses are
+different. The geography is different. But the core mechanism -- a large
+industrial facility arrives near a residential area, generating noise, traffic,
+and visual impact -- is similar enough that the income gradient finding is at
+minimum a reasonable order-of-magnitude reference, and significantly better
+than no empirical basis at all.
 
 ---
 
@@ -674,6 +799,39 @@ Output*. NYC Open Data. https://data.cityofnewyork.us/resource/64uk-42ks.json
 
 U.S. Census Bureau. (2024). *TIGER/Line Shapefiles: Counties*. Retrieved
 via the tigris R package.
+
+---
+
+## References and Further Reading
+
+Brinkman, J., & Rosenthal, S. (2011). *The Impact of Industrial Sites on
+Residential Property Values: A Hedonic Pricing Analysis from the Netherlands.*
+Regional Studies, 45(5), 609--623.
+https://papers.tinbergen.nl/09035.pdf
+
+Data Center Watch / Parameter.io. (2026). *Community Resistance Stalls $68
+Billion Worth of AI Data Center Developments.*
+https://parameter.io/community-resistance-stalls-68-billion-worth-of-ai-data-center-developments/
+
+Wheeler, T. (2026). *Data Center Backlash Signals a Fight Over AI Power.*
+Brookings Institution.
+https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/
+
+Alcorn, C. (2026). *Data center developer offers $10,000 checks to 4,500
+households if 1,300-acre facility is approved.* Tom's Hardware.
+https://www.tomshardware.com/tech-industry/data-centers/data-center-developer-offers-usd10-000-checks-to-4-500-households-if-the-1-300-acre-facility-is-approved-locals-push-back-over-noise-and-bribe-concerns
+
+Stop Ohio Data Centers. (2025). *Data Centers and Your Property Value: What
+the GMU Study Found, What Mansfield Residents Say.*
+https://stopohiodatacenters.org/data-center-property-value-ohio
+
+Coldewey, D. (2026, September 22). *Everyone can find a reason to dislike
+data center construction.* TechCrunch.
+https://techcrunch.com/2026/09/22/everyone-can-find-a-reason-to-dislike-data-center-construction/
+
+Haber, M. (2026). *How Data Centers Are Set to Impact the Value of Your Home.*
+Newsweek.
+https://www.newsweek.com/how-data-centers-are-set-to-impact-the-value-of-your-home-11939599
 
 ---
 
