@@ -528,14 +528,16 @@ measure, the second-highest share after Staten Island.
 
 ### Limitations
 
-**Broad land use category.** PLUTO code 06 includes warehouses, distribution
-centers, and freight terminals alongside utility facilities, rail maintenance
-yards, concrete plants, and workshops. This analysis measures proximity to
-industrial land as a class -- it does not distinguish a 500,000 sq ft
-fulfillment center from a 2,000 sq ft auto repair shop. A more operationally
-precise analysis would require commercial real estate data (CoStar, CBRE) or
-cross-referencing with business license records to isolate active logistics
-facilities.
+**Broad land use category.** According to the NYC DCP PLUTO Data Dictionary,
+land use code 06 maps to building classes E* (warehouses), F* (factories), and
+L* (loft buildings). Factories and lofts are included alongside
+distribution-oriented warehouses, and the category gives no indication of
+whether a lot hosts an active logistics operation. This analysis measures
+proximity to industrial land as a class -- it does not distinguish a 500,000 sq
+ft fulfillment center from a converted loft building or an inactive factory
+floor. A more operationally precise analysis would require commercial real
+estate data (CoStar, CBRE) or cross-referencing with business license records
+to isolate active logistics facilities.
 
 **Industrial land is not the only freight infrastructure.** Real last-mile
 delivery in dense neighborhoods often runs from microhubs, retail backrooms,
