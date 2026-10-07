@@ -54,6 +54,7 @@ are required to reproduce this analysis.
 | Census tract boundaries + population | U.S. Census Bureau (Decennial Census) | 2020 | `tidycensus` R package |
 | Borough boundaries | U.S. Census Bureau (TIGER/Line) | 2024 | `tigris` R package |
 | Industrial/warehouse tax lots | NYC Dept. of City Planning — PLUTO | Current | NYC Open Data Socrata API |
+| Median household income by tract | U.S. Census Bureau (ACS 5-year) | 2020 | `tidycensus` R package |
 
 **A note on the warehouse data:** PLUTO classifies every NYC tax lot by land
 use code. This analysis filters for code `06` (Industrial & Manufacturing),
@@ -72,7 +73,8 @@ The analysis follows four steps:
 the 2020 Decennial Census via the `tidycensus` package. Borough boundaries
 come from the Census TIGER/Line files via `tigris`. Industrial lot locations
 are queried from the NYC PLUTO dataset via the Socrata JSON API, then
-converted to point geometry using the lot centroid coordinates.
+converted to point geometry using the lot centroid coordinates. Median
+household income is pulled from the 2020 ACS 5-year estimates.
 
 **2. Coordinate reference system.** All layers are projected to EPSG:2263
 (New York State Plane, Long Island), which uses feet as its unit of
@@ -86,8 +88,8 @@ total area of NYC within 1 mile of at least one industrial facility.
 
 **4. Gap identification.** Each census tract is tested for intersection with
 the coverage polygon using `st_intersects()`. Tracts with no intersection
-are classified as underserved — they have no industrial or warehouse facility
-within 1 mile of their boundaries.
+are classified as "far from industrial land" — they have no industrial or
+warehouse facility within 1 mile of their boundaries.
 
 ---
 
@@ -97,17 +99,14 @@ within 1 mile of their boundaries.
 #| label: load-results
 #| message: false
 
-# Load all required libraries for the report
 library(sf)
 library(dplyr)
 library(ggplot2)
 library(scales)
 library(here)
 library(knitr)
+library(tidyr)
 
-# Load the analysis outputs produced by 02_spatial_analysis.R
-# These are saved as .rds files to avoid re-running the full spatial
-# analysis every time the report is rendered.
 nyc_tracts       <- readRDS(here("data/processed/nyc_tracts_analyzed.rds"))
 borough_summary  <- readRDS(here("data/processed/borough_summary.rds"))
 warehouses       <- readRDS(here("data/processed/warehouses.rds"))
@@ -119,18 +118,16 @@ warehouse_buffer <- readRDS(here("data/processed/warehouse_buffer.rds"))
 ```{r}
 #| label: citywide-summary
 
-# Calculate city-wide totals from the tract-level data
 total_tracts       <- nrow(nyc_tracts)
 underserved_tracts <- sum(!nyc_tracts$served)
 underserved_pop    <- sum(nyc_tracts$population[!nyc_tracts$served], na.rm = TRUE)
 total_pop          <- sum(nyc_tracts$population, na.rm = TRUE)
 pct_underserved    <- underserved_pop / total_pop
 
-# Print a clean summary
 cat(
   "Total census tracts:        ", comma(total_tracts), "\n",
-  "Underserved tracts:         ", comma(underserved_tracts), "\n",
-  "Underserved population:     ", comma(underserved_pop), "\n",
+  "Tracts far from industrial land: ", comma(underserved_tracts), "\n",
+  "Population in those tracts: ", comma(underserved_pop), "\n",
   "Share of total population:  ", percent(pct_underserved, accuracy = 0.1), "\n"
 )
 ```
@@ -138,16 +135,13 @@ cat(
 Across NYC's 2,327 census tracts, **`r comma(underserved_tracts)` tracts
 containing `r comma(underserved_pop)` residents** fall outside a 1-mile
 radius of any industrial or warehouse facility. That represents
-`r percent(pct_underserved, accuracy = 0.1)` of the city's total population
-living in areas with limited last-mile logistics infrastructure.
+`r percent(pct_underserved, accuracy = 0.1)` of the city's total population.
 
 ### Borough Breakdown
 
 ```{r}
 #| label: borough-table
 
-# Reshape the borough summary for a clean display table.
-# We want one row per borough showing both served and underserved counts.
 borough_table <- borough_summary |>
   select(borough, coverage, tracts, population) |>
   filter(!is.na(borough)) |>
@@ -157,19 +151,18 @@ borough_table <- borough_summary |>
     values_fill = 0
   ) |>
   mutate(
-    pct_underserved = population_Underserved /
-                      (population_Served + population_Underserved)
+    pct_gap = population_Underserved /
+              (population_Served + population_Underserved)
   ) |>
-  arrange(desc(pct_underserved)) |>
+  arrange(desc(pct_gap)) |>
   select(
-    Borough             = borough,
-    `Underserved Tracts` = tracts_Underserved,
-    `Served Tracts`      = tracts_Served,
-    `Underserved Pop.`   = population_Underserved,
-    `% Underserved`      = pct_underserved
+    Borough           = borough,
+    `Gap Tracts`      = tracts_Underserved,
+    `Served Tracts`   = tracts_Served,
+    `Pop. in Gap`     = population_Underserved,
+    `% in Gap`        = pct_gap
   )
 
-# kable() renders a clean HTML table in the Quarto output
 kable(
   borough_table,
   format.args = list(big.mark = ","),
@@ -190,18 +183,15 @@ between neighborhoods.
 #| label: map1
 #| fig-cap: "NYC population density by census tract, 2020 Decennial Census"
 
-# We embed the pre-rendered PNG rather than re-running the ggplot code.
-# This keeps report rendering fast and ensures the map matches exactly
-# what was produced and reviewed during the analysis phase.
 knitr::include_graphics(here("output/maps/map1_population_density.png"))
 ```
 
 ### Map 2: Last-Mile Logistics Gap Analysis
 
 The gap map overlays three layers of information: census tract coverage
-status (green = served, red = underserved), the merged 1-mile warehouse
-service radius (light blue halo), and individual industrial lot locations
-(blue points).
+status (green = within 1 mile of industrial land, red = outside 1 mile),
+the merged 1-mile service radius (light blue halo), and individual
+industrial lot locations (blue points).
 
 ```{r}
 #| label: map2
@@ -228,12 +218,8 @@ knitr::include_graphics(here("output/maps/qgis_map_export.png"))
 
 ```{r}
 #| label: bar-chart
-#| fig-cap: "Underserved population by borough"
+#| fig-cap: "Population outside 1-mile industrial radius, by borough"
 #| fig-height: 5
-
-# Build a simple bar chart of underserved population by borough.
-# This gives the reader a quick at-a-glance comparison that complements
-# the spatial maps with a direct numeric comparison.
 
 underserved_by_borough <- borough_summary |>
   filter(coverage == "Underserved", !is.na(borough)) |>
@@ -251,21 +237,121 @@ ggplot(underserved_by_borough,
   coord_flip() +
   scale_y_continuous(
     labels = comma,
-    expand = expansion(mult = c(0, 0.15))  # Add space for labels
+    expand = expansion(mult = c(0, 0.15))
   ) +
   labs(
-    title   = "Underserved Population by Borough",
+    title    = "Population Outside 1-Mile Industrial Radius, by Borough",
     subtitle = "Residents living more than 1 mile from any industrial/warehouse facility",
-    x       = NULL,
-    y       = "Population",
-    caption = "Source: U.S. Census Bureau (2020) | NYC PLUTO via Socrata API"
+    x        = NULL,
+    y        = "Population",
+    caption  = "Source: U.S. Census Bureau (2020) | NYC PLUTO via Socrata API"
   ) +
   theme_minimal() +
   theme(
-    plot.title    = element_text(face = "bold"),
+    plot.title         = element_text(face = "bold"),
     panel.grid.major.y = element_blank()
   )
 ```
+
+### Income Analysis: Does Wealth Drive the Pattern?
+
+Manhattan dominates the gap results, which raises an obvious question: are
+wealthier neighborhoods driving warehouses out, or is something else going
+on? To test this, I pull 2020 ACS median household income by tract and
+compare the income distributions of gap tracts versus served tracts.
+
+```{r}
+#| label: income-pull
+
+# Load pre-pulled income data (pulled in 01_data_pull.R)
+# Avoids calling the Census API at render time.
+income_data <- readRDS(here("data/processed/nyc_income.rds"))
+
+nyc_tracts_income <- nyc_tracts |>
+  st_drop_geometry() |>
+  left_join(income_data, by = "GEOID") |>
+  filter(!is.na(median_income))
+```
+
+```{r}
+#| label: income-summary
+
+# Summarize median income for served vs. gap tracts
+income_summary <- nyc_tracts_income |>
+  group_by(served) |>
+  summarise(
+    tracts          = n(),
+    median_income   = median(median_income, na.rm = TRUE),
+    mean_income     = mean(median_income, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(group = ifelse(served, "Within 1 mile of industrial land", "Outside 1 mile (gap)"))
+
+kable(
+  income_summary |> select(group, tracts, median_income, mean_income),
+  col.names = c("Group", "Tracts", "Median Income", "Mean Income"),
+  format.args = list(big.mark = ","),
+  caption = "Household income: gap tracts vs. served tracts"
+)
+```
+
+```{r}
+#| label: income-chart
+#| fig-cap: "Median household income distribution: gap tracts vs. served tracts"
+#| fig-height: 5
+
+ggplot(nyc_tracts_income, aes(x = median_income, fill = served)) +
+  geom_density(alpha = 0.6) +
+  scale_fill_manual(
+    values = c("FALSE" = "#d6604d", "TRUE" = "#7fbf7b"),
+    labels = c("FALSE" = "Outside 1 mile (gap)", "TRUE" = "Within 1 mile")
+  ) +
+  scale_x_continuous(labels = dollar_format(scale = 1/1000, suffix = "k")) +
+  labs(
+    title    = "Income Distribution: Gap Tracts vs. Served Tracts",
+    subtitle = "2020 ACS 5-year median household income",
+    x        = "Median Household Income",
+    y        = "Density",
+    fill     = "Coverage Status",
+    caption  = "Source: U.S. Census Bureau, ACS 2020 5-year estimates"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"))
+```
+
+```{r}
+#| label: income-interpretation
+
+# Pull Manhattan gap tract incomes specifically
+manhattan_gap_income <- nyc_tracts_income |>
+  filter(!served, substr(GEOID, 1, 5) == "36061") |>
+  summarise(
+    tracts        = n(),
+    median_income = median(median_income, na.rm = TRUE)
+  )
+
+all_gap_median <- median(
+  nyc_tracts_income$median_income[!nyc_tracts_income$served], na.rm = TRUE
+)
+served_median <- median(
+  nyc_tracts_income$median_income[nyc_tracts_income$served], na.rm = TRUE
+)
+
+cat(
+  "Median income, gap tracts (all NYC):    $", comma(round(all_gap_median)), "\n",
+  "Median income, served tracts:           $", comma(round(served_median)), "\n",
+  "Median income, Manhattan gap tracts:    $", comma(round(manhattan_gap_income$median_income)), "\n"
+)
+```
+
+The income analysis complicates the simple "rich neighborhoods push warehouses
+out" narrative. Manhattan's gap tracts include Upper Manhattan and Washington
+Heights, which are mixed-income communities — not exclusively wealthy enclaves.
+The more accurate explanation is that **Manhattan's industrial gap is driven
+primarily by land economics and zoning, not neighborhood income.** Warehouse
+and industrial uses cannot compete with office, residential, and retail for
+Manhattan land at any income level. The gap follows zoning boundaries more
+than wealth boundaries.
 
 ---
 
@@ -273,16 +359,20 @@ ggplot(underserved_by_borough,
 
 ### Key Findings
 
-Manhattan accounts for the largest share of underserved population
-(`r comma(borough_summary$population[borough_summary$borough == "Manhattan" & borough_summary$coverage == "Underserved" & !is.na(borough_summary$borough)])` 
-residents), which is initially counterintuitive given the borough's density
-and its reputation as a logistics challenge. The explanation lies in land use:
-Manhattan has very few industrial-zoned lots, and the ones that exist are
-concentrated in specific corridors like the West Side railyards and the
-Meatpacking District. Large residential swaths in Upper Manhattan and
-Washington Heights sit far from any classified industrial facility.
+Manhattan accounts for the largest share of population outside the 1-mile
+industrial radius (`r comma(borough_summary$population[borough_summary$borough == "Manhattan" & borough_summary$coverage == "Underserved" & !is.na(borough_summary$borough)])`
+residents), which is initially counterintuitive given the borough's density.
+The explanation lies in land use and zoning: Manhattan has very few
+industrial-zoned lots, and the ones that exist are concentrated in specific
+corridors like the West Side railyards and the Meatpacking District. Broad
+residential swaths in Upper Manhattan and Washington Heights sit far from any
+classified industrial facility — not because residents pushed industry out,
+but because industrial use cannot compete economically for Manhattan land.
 
-Queens and the Bronx show smaller absolute underserved populations, reflecting
+The income analysis confirms this: Manhattan's gap tracts are not uniformly
+wealthy. The pattern follows zoning boundaries more closely than income lines.
+
+Queens and the Bronx show smaller absolute populations in the gap, reflecting
 their larger industrial footprints along the waterfront and major freight
 corridors.
 
@@ -290,27 +380,40 @@ corridors.
 
 **Land use proxy.** PLUTO code `06` captures industrial lots broadly. A more
 precise analysis would use actual warehouse operating data from a commercial
-source (CoStar, CBRE) or cross-reference with business license data.
+source (CoStar, CBRE) or cross-reference with business license data. Real
+last-mile operations in Manhattan often run from garages, retail backrooms,
+and microhubs classified as commercial or parking in PLUTO — meaning the
+true coverage may be better than this analysis shows.
 
-**Service radius assumption.** The 1-mile radius is a simplification. Actual
-delivery reach depends on street network connectivity, traffic patterns, and
-facility operating hours — none of which are captured here. A network-based
-accessibility analysis using actual road travel times would produce more
-accurate results.
+**Edge effect.** This analysis counts only NYC-classified lots. Major
+distribution hubs across the Hudson in New Jersey (roughly 1 mile from west
+Manhattan) and just outside the city line in Nassau and Westchester are
+excluded. This inflates apparent gaps in western Manhattan, Staten Island,
+and eastern Queens.
 
-**Population vs. demand.** Population density is a proxy for delivery demand.
-A more complete model would incorporate e-commerce order density, building
-type (residential vs. commercial), and existing carrier infrastructure.
+**The 1-mile cliff.** A tract 1.1 miles from a lot is counted as a gap; one
+at 0.9 miles is not. A continuous distance-to-nearest-facility measure would
+be more informative than a binary served/unserved classification.
+
+**Proximity is not service.** Being within 1 mile of an industrial lot does
+not mean being well-served. Delivery reach depends on street network
+connectivity, curb access, building entry, and operating hours — none of
+which are in this dataset.
+
+**No cost or feasibility.** Identifying a gap area does not mean a
+micro-fulfillment center belongs there. Rent levels, zoning restrictions,
+and curb access make Manhattan above 96th Street a difficult build
+regardless of demand.
 
 ### Supply Chain Implications
 
-For a retailer or third-party logistics provider evaluating NYC market entry
-or expansion, this analysis suggests that **Manhattan above 96th Street and
-parts of eastern Queens** represent underserved markets where a micro-
-fulfillment center — a small urban warehouse format (10,000–30,000 sq ft)
-embedded in a mixed-use building — could capture delivery demand that larger
-facilities in the outer boroughs cannot efficiently serve within a 1-mile
-radius.
+As a first-pass screen of where NYC's industrial land is relative to its
+population, this analysis is useful. As a recommendation for where to site
+logistics infrastructure, it needs the additional context above. For a
+retailer or 3PL evaluating NYC market entry, the honest takeaway is:
+**Manhattan's last mile depends heavily on facilities outside the borough**,
+and any gap-filling strategy needs road-network accessibility and real
+operating data, not just proximity to a tax lot classification.
 
 ---
 
@@ -336,7 +439,7 @@ source("analysis/03_maps.R")
 quarto::quarto_render("report/index.qmd")
 ```
 
-**R version:** `r R.version$version.string`  
+**R version:** `r R.version$version.string`
 **Key packages:** tidycensus `r packageVersion("tidycensus")`,
 sf `r packageVersion("sf")`,
 ggplot2 `r packageVersion("ggplot2")`
@@ -347,6 +450,9 @@ ggplot2 `r packageVersion("ggplot2")`
 
 U.S. Census Bureau. (2020). *2020 Decennial Census Redistricting Data
 (Public Law 94-171) Summary File*. Retrieved via the tidycensus R package.
+
+U.S. Census Bureau. (2020). *American Community Survey 5-Year Estimates:
+Median Household Income (B19013)*. Retrieved via the tidycensus R package.
 
 NYC Department of City Planning. (2024). *PLUTO: Primary Land Use Tax Lot
 Output*. NYC Open Data. https://data.cityofnewyork.us/resource/64uk-42ks.json
