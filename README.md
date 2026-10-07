@@ -1,7 +1,8 @@
-# NYC Last-Mile Logistics Gap Analysis
+# NYC Industrial Land Proximity Analysis
 
-A geospatial analysis identifying which NYC neighborhoods lack adequate
-warehouse coverage, and how many residents live in those gaps.
+A geospatial analysis of how NYC's industrial land is distributed relative
+to where residents live, and which census tracts fall outside a 1-mile radius
+of any industrial lot.
 
 **Live report:** https://raulsolanavarro.github.io/nyc-lastmile-logistics/report/
 
@@ -9,15 +10,16 @@ warehouse coverage, and how many residents live in those gaps.
 
 ## Overview
 
-Last-mile delivery is the most expensive segment of any urban supply chain.
 This project combines 2020 Census population data with NYC's PLUTO property
-database to map industrial and warehouse facilities across the five boroughs,
-then applies a 1-mile service radius to identify underserved census tracts.
+database to identify census tracts that fall entirely outside a 1-mile radius
+of any industrial lot (land use code 06), and examines how that pattern varies
+by borough and income.
 
-**Key finding:** 31 census tracts containing 61,426 residents (0.7% of NYC's population) 
-fall outside a 1-mile radius of any industrial or warehouse facility. Manhattan 
-accounts for the largest share, with 111,489  residents far from classified industrial 
-land concentrated above 96th Street and in Washington Heights.
+**Key finding:** 31 census tracts containing 61,426 residents (0.7% of NYC's
+population) fall outside the 1-mile buffer. Queens has the largest gap
+population (32,622 residents across 13 tracts), followed by Brooklyn (19,809
+across 11 tracts). Gap tracts skew higher-income than covered tracts, consistent
+with their position at the outer edges of the city's industrial corridors.
 
 ---
 
