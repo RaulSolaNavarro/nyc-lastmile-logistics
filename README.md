@@ -14,10 +14,10 @@ This project combines 2020 Census population data with NYC's PLUTO property
 database to map industrial and warehouse facilities across the five boroughs,
 then applies a 1-mile service radius to identify underserved census tracts.
 
-**Key finding:** 38 census tracts containing 169,223 residents (1.9% of NYC's
-population) fall outside a 1-mile radius of any industrial or warehouse
-facility. Manhattan accounts for the largest share, with 111,489 underserved
-residents concentrated above 96th Street and in Washington Heights.
+**Key finding:** 31 census tracts containing 61,426 residents (0.7% of NYC's population) 
+fall outside a 1-mile radius of any industrial or warehouse facility. Manhattan 
+accounts for the largest share, with 111,489  residents far from classified industrial 
+land concentrated above 96th Street and in Washington Heights.
 
 ---
 
