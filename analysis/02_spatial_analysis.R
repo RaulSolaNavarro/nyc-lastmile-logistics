@@ -189,6 +189,13 @@ write.csv(borough_summary,
           here("output/tables/borough_summary.csv"),
           row.names = FALSE)
 
+message("Computing tract centroid distances to nearest warehouse...")
+tract_centroids <- nyc_tracts |> st_centroid()
+dist_matrix <- st_distance(tract_centroids, warehouses)
+nyc_tracts$dist_to_nearest_m <- apply(dist_matrix, 1, min)
+nyc_tracts$dist_to_nearest_miles <- nyc_tracts$dist_to_nearest_m / 5280
+saveRDS(nyc_tracts, here("data/processed/nyc_tracts_analyzed.rds"))
+
 message("
 ─────────────────────────────────────────────────────────
 02_spatial_analysis.R complete. Files saved:
