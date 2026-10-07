@@ -95,6 +95,25 @@ message("Census tracts pulled: ", nrow(nyc_tracts), " tracts across 5 boroughs."
 saveRDS(nyc_tracts, here("data/processed/nyc_tracts.rds"))
 message("Saved: data/processed/nyc_tracts.rds")
 
+# ── Pull median household income by tract (ACS 2020 5-year) ──────────────────
+# Variable B19013_001 = median household income in the past 12 months.
+# We pull without geometry to keep this lightweight — geometry comes from
+# nyc_tracts pulled above.
+
+message("Pulling ACS median household income...")
+
+nyc_income <- get_acs(
+  geography = "tract",
+  variables = "B19013_001",
+  state     = "NY",
+  county    = c("New York", "Kings", "Queens", "Bronx", "Richmond"),
+  year      = 2020,
+  geometry  = FALSE
+) |>
+  select(GEOID, median_income = estimate)
+
+saveRDS(nyc_income, here("data/processed/nyc_income.rds"))
+message("Saved: data/processed/nyc_income.rds (", nrow(nyc_income), " tracts)")
 
 # ── Section 2: NYC Borough Boundaries ─────────────────────────────────────────
 # Borough boundaries are used as the base layer for all maps — they give the
