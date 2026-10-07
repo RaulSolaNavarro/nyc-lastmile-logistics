@@ -154,7 +154,17 @@ radius of any industrial or warehouse facility. That represents
 The binary gap classification (served vs. not) masks variation in how far
 residents actually are from industrial land. This section reports the share
 of population within each distance band, by borough, and the median straight-line
-distance to the nearest industrial lot across all tracts.
+distance from tract centroid to the nearest industrial lot.
+
+Two distance measures are in use here and they give different numbers
+intentionally. The borough table (below) classifies a tract as "served" if
+any part of it intersects a 1-mile buffer -- the most generous possible
+reading. The distance table here uses the tract centroid, which is stricter:
+a large tract whose center sits 1.1 miles away counts as a gap by centroid
+even if its edge is technically within range. The 0.7% city-wide figure
+comes from the buffer method; the centroid method shows about 6% of Queens
+residents and 12% of Staten Island residents more than a mile from industrial
+land.
 
 ```{r}
 #| label: distance-bands
@@ -162,7 +172,7 @@ distance to the nearest industrial lot across all tracts.
 # Requires dist_to_nearest_miles column added by 02_spatial_analysis.R
 bands <- c(0.5, 1, 2, 3)
 
-borough_bands <- nyc_tracts |>
+tracts_with_borough <- nyc_tracts |>
   st_drop_geometry() |>
   mutate(
     borough = case_when(
@@ -174,10 +184,11 @@ borough_bands <- nyc_tracts |>
       TRUE ~ NA_character_
     )
   ) |>
-  filter(!is.na(population), !is.na(dist_to_nearest_miles), !is.na(borough)) |>
+  filter(!is.na(population), !is.na(dist_to_nearest_miles), !is.na(borough))
+
+borough_bands <- tracts_with_borough |>
   group_by(borough) |>
   summarise(
-    total_pop      = sum(population),
     within_0.5mi   = percent(sum(population[dist_to_nearest_miles <= 0.5]) / sum(population), accuracy = 0.1),
     within_1mi     = percent(sum(population[dist_to_nearest_miles <= 1.0]) / sum(population), accuracy = 0.1),
     within_2mi     = percent(sum(population[dist_to_nearest_miles <= 2.0]) / sum(population), accuracy = 0.1),
@@ -187,17 +198,30 @@ borough_bands <- nyc_tracts |>
   ) |>
   arrange(desc(median_dist_mi))
 
+# City-wide row
+citywide_band <- tracts_with_borough |>
+  summarise(
+    borough        = "NYC (all)",
+    within_0.5mi   = percent(sum(population[dist_to_nearest_miles <= 0.5]) / sum(population), accuracy = 0.1),
+    within_1mi     = percent(sum(population[dist_to_nearest_miles <= 1.0]) / sum(population), accuracy = 0.1),
+    within_2mi     = percent(sum(population[dist_to_nearest_miles <= 2.0]) / sum(population), accuracy = 0.1),
+    within_3mi     = percent(sum(population[dist_to_nearest_miles <= 3.0]) / sum(population), accuracy = 0.1),
+    median_dist_mi = round(median(dist_to_nearest_miles, na.rm = TRUE), 2)
+  )
+
+band_table <- bind_rows(borough_bands, citywide_band)
+
 kable(
-  borough_bands |>
+  band_table |>
     select(
-      Borough        = borough,
-      `Within 0.5mi` = within_0.5mi,
-      `Within 1mi`   = within_1mi,
-      `Within 2mi`   = within_2mi,
-      `Within 3mi`   = within_3mi,
-      `Median dist.` = median_dist_mi
+      Borough                    = borough,
+      `Within 0.5mi`             = within_0.5mi,
+      `Within 1mi`               = within_1mi,
+      `Within 2mi`               = within_2mi,
+      `Within 3mi`               = within_3mi,
+      `Median tract dist. (mi)`  = median_dist_mi
     ),
-  caption = "Population share within each distance band, by borough (straight-line distance to nearest industrial lot)"
+  caption = "Population share within each distance band, by borough (straight-line distance from tract centroid to nearest industrial lot)"
 )
 ```
 
@@ -464,10 +488,13 @@ tracts in both boroughs sit at the city's outer edges — neighborhoods like Bay
 Douglaston, and Marine Park that are far from the industrial corridors concentrated
 along the waterfront and freight routes closer to the urban core.
 
-Manhattan has only one gap tract, and it contains zero counted residents — a data
-artifact of differential privacy in the 2020 Census rather than a true zero population.
-The borough's near-complete coverage reflects the density of industrial lots in specific
-corridors (West Side railyards, Meatpacking District, Hudson Yards area).
+Manhattan has only one gap tract (GEOID 36061000100, Census Tract 1 -- the
+Battery Park/financial district waterfront), and it contains zero counted residents.
+Census Tract 1 is a dense commercial area, not a park or uninhabited land, so
+the zero count is almost certainly a differential privacy artifact from the 2020
+Census rather than a true zero population. The borough's near-complete coverage
+reflects the density of industrial lots in specific corridors (West Side railyards,
+Meatpacking District, Hudson Yards area).
 
 The income data shows gap tracts skew higher-income on average, but this reflects
 Queens outer neighborhoods, not Manhattan. The Manhattan gap tract itself has no
@@ -491,7 +518,10 @@ true coverage may be better than this analysis shows.
 distribution hubs across the Hudson in New Jersey (roughly 1 mile from west
 Manhattan) and just outside the city line in Nassau and Westchester are
 excluded. This inflates apparent gaps in western Manhattan, Staten Island,
-and eastern Queens.
+and eastern Queens. The effect is largest for Staten Island: the borough
+sits adjacent to major NJ logistics corridors in Elizabeth and Linden, and
+its distance numbers would look materially different if cross-Hudson lots
+were included.
 
 **The 1-mile cliff.** A tract 1.1 miles from a lot is counted as a gap; one
 at 0.9 miles is not. The distance-band table above partially addresses this
