@@ -223,7 +223,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In June 2026, NorthPoint Development offered 4,500 households in Hazle Township, Pennsylvania $10,000 each – in cash – if they would support approval of a 1,300-acre data center in their community. Locals pushed back, calling it a bribe. The township had already rejected the project on zoning grounds and enacted a moratorium on data center construction. The median household income in the area is around $60,000.</p>
 <p>That offer crystallizes a question that is now live in communities across the United States: <strong>when a large industrial facility is proposed near a residential area, how much should affected residents actually be compensated – and how would you even calculate the right number?</strong></p>
 <p>The AI data center buildout has made this question urgent. In Q2 2026 alone, community resistance blocked or delayed 45 data center projects worth $68 billion across the U.S., according to <a href="https://parameter.io/community-resistance-stalls-68-billion-worth-of-ai-data-center-developments/">Data Center Watch via parameter.io</a>. The <a href="https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/">Brookings Institution</a> framed the backlash as a proxy for a broader question: who decides where AI infrastructure goes, and who bears its costs? Vox put it bluntly: <em>“Americans don’t know how to fight AI. So they’re fighting data centers.”</em></p>
-<p>Residents object for concrete reasons – noise, water use, power consumption, and the suspicion that nearby homes will lose value. That last concern is empirically grounded. A <a href="https://papers.tinbergen.nl/09035.pdf">2011 hedonic pricing study from the Netherlands</a> (de Vor &amp; de Groot, using data on 70,684 home sales) found that homes within 250 meters of industrial sites sold for roughly 15% less than comparable homes beyond 2,250 meters – a discount that fades to near zero by about 1.4 miles out. Research specifically on data centers is more mixed: a <a href="https://stopohiodatacenters.org/data-center-property-value-ohio">George Mason University analysis</a> of 2023 Northern Virginia home sales found prices <em>higher</em> nearer data centers, but Northern Virginia is an atypical case (high-income tech corridor, data center industry already integrated into the local economy). In Mansfield, Georgia, residents near a Meta facility reported cooling-tower hum audible indoors with windows closed, with independent measurements at 60–65 dBA at the property line. Some said they were considering moving.</p>
+<p>Residents object for concrete reasons – noise, water use, power consumption, and the suspicion that nearby homes will lose value. That last concern is empirically grounded. A <a href="https://papers.tinbergen.nl/09035.pdf">2011 hedonic pricing study from the Netherlands</a> (de Vor &amp; de Groot, using data on 70,684 home sales) found that homes within 250 meters of industrial sites sold for roughly 15% less than comparable homes beyond 2,250 meters – a discount that fades to near zero by about 1.4 miles out. Research specifically on data centers is more mixed. Work from George Mason University on Northern Virginia home sales found prices <em>higher</em> near data centers – but Northern Virginia is an atypical case: a high-income tech corridor where the data center industry is already integrated into the local economy and a major employer. Resident complaints near operating facilities (noise from cooling equipment, power infrastructure, and truck deliveries) are documented in local press from Georgia, Ohio, and Virginia, but rigorous before-and-after property value studies at specific data center sites are not yet publicly available.</p>
 <p>None of this research answers the compensation question directly, because it describes outcomes – what actually happened to property values in places that already have industrial land – not what should happen in places considering it. To get at that, you need to know what living near industrial land correlates with in terms of income and revealed preference, across many communities and many distance bands.</p>
 <p><strong>That is what this analysis provides, for New York City.</strong></p>
 <hr>
@@ -231,13 +231,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="what-this-project-started-as">What This Project Started As</h3>
 <p>This report began as a logistics gap analysis. The original question was narrow: which NYC census tracts fall outside a 1-mile radius of any industrial lot, and how many residents live in those gaps? The spatial analysis answered that – 31 tracts, 61,426 residents, concentrated in outer Queens and Brooklyn.</p>
 <p>When I added income data, the logistics framing became secondary. <strong>Median household income rises monotonically with distance from industrial land across every distance band.</strong> The income gap between tracts within 0.5 miles of industrial land and those beyond 0.5 miles is roughly $18,000 at the median – a pattern that is statistically robust but reflects sorting, not a directly measurable cost.</p>
-<p>That finding connects to the NorthPoint / Hazle Township situation via the Netherlands property value research. If a home near the proposed facility is worth $200,000 and industrial proximity discounts it by 15%, that is a $30,000 loss in asset value – three times the NorthPoint offer. The NYC income gradient shows the same directional signal: people with more resources tend to live farther from industrial land. The $10,000 offer looks hard to justify against either benchmark, though the right number depends on what you are compensating for, at what distance, and for how long.</p>
+<p>That finding connects to the NorthPoint / Hazle Township situation via the Netherlands property value research. If a home near the proposed facility is worth $200,000 and industrial proximity discounts it by 15%, that is a $30,000 loss in asset value – three times the NorthPoint offer. The NYC income gradient points in the same direction but is a sorting signal, not a cost figure. The Dutch property value evidence is the more direct benchmark, and against it $10,000 is hard to justify for the closest neighbors.</p>
 <p>This report presents both the original spatial analysis and the income gradient finding, and frames both in the context of the current debate over industrial facility siting and community compensation.</p>
 <hr>
 </section>
 <section id="what-this-measures-and-what-it-does-not" class="level3">
 <h3 class="anchored" data-anchor-id="what-this-measures-and-what-it-does-not">What This Measures and What It Does Not</h3>
-<p>The spatial analysis uses NYC’s PLUTO property database. Land use code 06 maps to building classes E* (warehouses), F* (factories), and L* (loft buildings) per the NYC DCP PLUTO Data Dictionary. This is a broader category than distribution-oriented warehouses alone. Data centers are not currently classified under code 06 in PLUTO – they appear in various commercial and utility categories depending on their specific classification. The income gradient finding applies to existing NYC industrial land as classified by PLUTO, not to data centers specifically.</p>
+<p>The spatial analysis uses NYC’s PLUTO property database. Land use code 06 maps to building classes E* (warehouses), F* (factories), and L* (loft buildings) per the NYC DCP PLUTO Data Dictionary. This is a broader category than distribution-oriented warehouses alone. Data centers are not typically classified under code 06 in PLUTO; depending on their building classification they may appear in commercial or utility categories, though the exact classification varies by facility. The income gradient finding applies to existing NYC industrial land as classified by PLUTO, not to data centers specifically.</p>
 <p>The analogy to data centers is directional, not direct. Industrial lots (warehouses, factories) and data centers share characteristics relevant to neighboring residents – noise, truck traffic, land area, visual impact – but differ in others (data centers have less truck traffic, more power infrastructure, and different noise profiles). The Netherlands property value research covers industrial sites broadly; whether its 15% discount applies to data centers specifically is unknown.</p>
 <p>What this analysis does establish: across NYC’s 2,327 census tracts, higher income is consistently associated with greater distance from industrial land. That pattern is robust, city-wide, and cannot be explained away as a quirk of the 31 gap tracts alone.</p>
 <p>The 1-mile proximity threshold used for the binary gap classification is intentionally tight. A 5-mile radius eliminates virtually all gaps in NYC. The tighter radius surfaces meaningful geographic variation across the boroughs and aligns with walkable proximity (roughly 20 minutes on foot).</p>
@@ -905,8 +905,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Gap tracts with income data:           17 of 31 </code></pre>
 </div>
 </div>
-<p>Median household income rises monotonically with distance from industrial land across all four distance bands: $63,708 within 0.25 miles, $66,704 at 0.25–0.5 miles, $84,558 at 0.5–1 mile, and $90,379 beyond 1 mile. The step from within 0.5 miles to beyond 0.5 miles is roughly $18,000. A Wilcoxon rank-sum test confirms the difference is not noise (p &lt; 0.001, across 2,206 tracts with income data).</p>
-<p>The binary gap comparison (the 31 covered tracts vs.&nbsp;the rest) tells the same story: gap tracts median $101,461 vs.&nbsp;covered tracts $69,275. But the distance-band table is more informative because it shows the gradient holds continuously, not just at the 1-mile cutoff.</p>
+<p>Median household income rises monotonically with distance from industrial land across all four distance bands: $63,708 within 0.25 miles, $66,704 at 0.25–0.5 miles, $84,558 at 0.5–1 mile, and $90,379 beyond 1 mile. The largest step is between the 0.25–0.5 mile band ($66,704) and the 0.5–1 mile band ($84,558), a gap of roughly $18,000. A Wilcoxon rank-sum test comparing tracts within 0.5 miles to tracts beyond 0.5 miles confirms the difference is not noise (p &lt; 0.001, across 2,206 tracts with income data).</p>
+<p>The binary gap comparison (the 31 gap tracts vs.&nbsp;the rest) tells the same story: gap tracts median $101,461 vs.&nbsp;covered tracts $69,275. But the distance-band table is more informative because it shows the gradient holds continuously, not just at the 1-mile cutoff.</p>
 <p>The data cannot distinguish between two explanations: affluent neighborhoods may have successfully excluded industrial uses through zoning, or those neighborhoods may simply sit at the outer edges of where the city’s industrial corridors historically developed. Separating geography from politics would require zoning history and land use change data over time. What the data does establish is that the income gradient is real, city-wide, and statistically robust.</p>
 <hr>
 </section>
@@ -917,30 +917,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="key-findings">Key Findings</h3>
 <p>Queens has the largest gap population (32,622 residents across 13 tracts), followed by Brooklyn (19,809 across 11 tracts). Both sets of gap tracts sit at the outer edges of their boroughs, distant from the industrial corridors concentrated along the waterfront and freight routes closer to the urban core.</p>
 <p>Manhattan has only one gap tract (GEOID 36061000100, Census Tract 1), with zero counted residents. Its centroid falls at approximately 40.695°N, 74.043°W, in the harbor southwest of the Battery – consistent with harbor islands (Governors Island, Ellis Island, or Liberty Island) that carry no permanent residents. Zero is most likely a true count, not a differential privacy artifact. Manhattan’s near-complete industrial land coverage otherwise reflects the density of lots in specific corridors (West Side railyards, Meatpacking District, Hudson Yards area).</p>
-<p>Median household income rises monotonically with distance from industrial land across all four distance bands, from $63,708 within a quarter mile to $90,379 beyond a mile. A Wilcoxon rank-sum test confirms the gradient is statistically significant (p &lt; 0.001) across 2,206 tracts with income data. The data cannot say whether this reflects deliberate zoning exclusion or simply the geography of where industrial corridors developed, but the pattern itself is robust. The Manhattan gap tract has no income data, since it has no counted population.</p>
+<p>Median household income rises monotonically with distance from industrial land across all four distance bands, from $63,708 within a quarter mile to $90,379 beyond a mile. The largest step is between the 0.25–0.5 mile band ($66,704) and the 0.5–1 mile band ($84,558). A Wilcoxon rank-sum test comparing tracts within 0.5 miles to tracts beyond 0.5 miles confirms the gradient is statistically significant (p &lt; 0.001, across 2,206 tracts). The data cannot say whether this reflects deliberate zoning exclusion or simply the geography of where industrial corridors developed, but the pattern itself is robust. The Manhattan gap tract has no income data, since it has no counted population.</p>
 <p>The distance-band analysis adds resolution beyond the binary gap classification. About 16% of New Yorkers (96.6% within a mile minus 80.4% within half a mile) live in the 0.5–1 mile band. Staten Island stands out with the longest median tract distance (0.50 miles, vs.&nbsp;0.21–0.31 for the other four boroughs). Queens has a shorter median (0.27 miles) but a longer right tail: about 6% of Queens residents are more than a mile from industrial land by the centroid measure, the second-highest share after Staten Island.</p>
 </section>
 <section id="limitations" class="level3">
 <h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
 <p><strong>Broad land use category.</strong> According to the NYC DCP PLUTO Data Dictionary, land use code 06 maps to building classes E* (warehouses), F* (factories), and L* (loft buildings). Factories and lofts are included alongside distribution-oriented warehouses, and the category gives no indication of whether a lot hosts an active logistics operation. L* specifically includes converted loft buildings and self-storage facilities that generate little noise or truck traffic – meaningfully different from a large active warehouse. This analysis measures proximity to industrial land as a class – it does not distinguish a 500,000 sq ft fulfillment center from a converted loft building or an inactive factory floor. Including L* lots weakens the “industrial facility” proxy and likely understates the income gradient around genuinely heavy industrial uses. A more operationally precise analysis would require commercial real estate data (CoStar, CBRE) or cross-referencing with business license records to isolate active logistics facilities.</p>
-<p><strong>Industrial land is not the only freight infrastructure.</strong> Real last-mile delivery in dense neighborhoods often runs from microhubs, retail backrooms, and parking garages classified as commercial in PLUTO. The gaps measured here may overstate true freight access limitations for some neighborhoods.</p>
-<p><strong>Edge effect.</strong> This analysis counts only NYC-classified lots. Major distribution hubs in New Jersey (roughly 1 mile from west Manhattan) and just outside the city line in Nassau and Westchester are excluded. This inflates apparent gaps in western Manhattan, Staten Island, and eastern Queens. The effect is largest for Staten Island: the borough sits adjacent to major New Jersey logistics corridors in Elizabeth and Linden (across the Arthur Kill and Kill Van Kull), and its distance numbers would look materially different if those New Jersey lots were included.</p>
+<p><strong>Edge effect.</strong> This analysis counts only NYC-classified lots. Major distribution hubs in New Jersey and just outside the city line in Nassau and Westchester are excluded. The effect is largest for Staten Island, which sits adjacent to major New Jersey logistics corridors in Elizabeth and Linden; its distance numbers would look materially different if those lots were included.</p>
 <p><strong>The 1-mile threshold.</strong> A tract 1.1 miles from a lot is counted as a gap; one at 0.9 miles is not. The distance-band table partially addresses this by reporting continuous bands, but the binary classification in the maps and borough table still uses the fixed threshold.</p>
 <p><strong>Straight-line distance is not travel time.</strong> Proximity to industrial land says nothing about road network connectivity, traffic conditions, loading access, or building entry – the actual constraints that determine delivery reach in an urban environment.</p>
 </section>
 <section id="what-the-income-gradient-implies-for-compensation" class="level3">
 <h3 class="anchored" data-anchor-id="what-the-income-gradient-implies-for-compensation">What the Income Gradient Implies for Compensation</h3>
 <p>The core finding is that NYC census tracts closer to industrial land have lower median household incomes, and the gradient is continuous and statistically robust. This does not prove that industrial proximity <em>causes</em> lower incomes – the causal story runs in at least two directions. Industrial corridors may have developed where land was already cheap (lower-income areas). Or affluent neighborhoods may have used zoning to exclude industrial uses over time, making the correlation partly a product of political power. Distinguishing those explanations requires zoning history data this analysis does not include.</p>
-<p>What the gradient does support is a revealed-preference reading: across 2,206 NYC tracts, proximity to industrial land is consistently associated with lower household income. People with more resources tend to live farther from industrial land. That is consistent with the Netherlands research finding a 15% property value discount within 250 meters of industrial sites. Both patterns point in the same direction: industrial proximity is something people pay to avoid, or are compensated for through lower housing costs.</p>
-<p><strong>Back to the $10,000 question.</strong> NorthPoint offered Hazle Township residents $10,000 – a one-time payment – to accept a 1,300-acre data center. The Netherlands study gives the clearest benchmark: homes within 250 meters of industrial sites sold for roughly 15% less. If a home near the facility is worth $200,000, that is a $30,000 loss in asset value – a one-time hit, three times the NorthPoint offer. The discount fades with distance, so homes within 250 meters bear the full 15% while homes closer to 1.4 miles out see almost nothing. A flat $10,000 to everyone ignores that geography entirely.</p>
-<p>The NYC income gradient is a different signal – correlation rather than cost. Tracts within 0.25 miles of industrial land have a median income of $63,708; tracts beyond 1 mile average $90,379. That $26,671 gap reflects sorting (more affluent households can afford to live farther from industrial land) rather than a direct price tag. Still, the direction is consistent: industrial proximity is something people pay to avoid, or accept in exchange for lower housing costs. A one-time $10,000 payment is a thin rationale for waiving that for a generation-long facility.</p>
+<p>What the gradient does support is a directional reading: across 2,206 NYC tracts, proximity to industrial land is consistently associated with lower household income. People with more resources tend to live farther from industrial land. That pattern is consistent with the Netherlands research finding a 15% property value discount within 250 meters of industrial sites, though the two measures capture different things (income sorting vs.&nbsp;asset value).</p>
+<p><strong>Back to the $10,000 question.</strong> NorthPoint offered Hazle Township residents $10,000 – a one-time payment – to accept a 1,300-acre data center. The Netherlands study gives the clearest empirical benchmark: homes within 250 meters of industrial sites sold for roughly 15% less. If a home near the facility is worth $200,000, that is a $30,000 loss in asset value – three times the NorthPoint offer. The discount fades with distance; by roughly 1.4 miles it is near zero, so homes closest to the facility bear the largest loss. A flat $10,000 to everyone regardless of distance ignores that geography entirely.</p>
+<p>The NYC income gradient points the same direction. Tracts within 0.25 miles of industrial land have a median income of $63,708; tracts beyond 1 mile reach $90,379. That $26,671 gap reflects sorting rather than a direct cost to any individual household, and should not be read as an annual figure. But it reinforces the Dutch finding: proximity to industrial land is something people with options choose to avoid.</p>
 <p>None of this means developers should not build. It means the compensation question deserves an empirical basis rather than an arbitrary one. Relevant inputs would include: the distance from the facility to each household, local property values before and after comparable facilities opened nearby, the expected duration of impacts (noise, traffic, visual), and whether payments should be structured as one-time checks or ongoing annual compensation tied to the facility’s operating life.</p>
 </section>
 <section id="implications-for-the-ai-data-center-debate" class="level3">
 <h3 class="anchored" data-anchor-id="implications-for-the-ai-data-center-debate">Implications for the AI Data Center Debate</h3>
 <p>The current conflict over data center siting is partly a zoning fight, partly an AI anxiety fight, and partly a legitimate dispute over who pays for infrastructure that benefits a much larger population. In Q2 2026 alone, community resistance stalled $68 billion in data center projects across the U.S. <a href="https://techcrunch.com/2026/09/22/everyone-can-find-a-reason-to-dislike-data-center-construction/">TechCrunch</a> reported in September 2026 that “everyone can find a reason to dislike data center construction” – from noise and water use to AI ethics to simple neighborhood character concerns.</p>
 <p>The <a href="https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/">Brookings Institution</a> framed it as a democratic accountability problem: if AI infrastructure is built wherever companies choose, with local governments as the only check, communities end up negotiating individually against well-resourced developers without any common framework for what fair compensation looks like.</p>
-<p>NYC’s industrial land income gradient does not resolve that, but it offers one empirical anchor. A city with 80 years of industrial zoning history shows that people consistently sort away from industrial land when they can afford to. If data center developers want to change that sorting – to site facilities in areas where residents have the resources to object and the political influence to succeed – the offer needs to reflect what those residents are actually giving up.</p>
+<p>NYC’s industrial land income gradient does not resolve that, but it offers one empirical anchor. Across 2,206 tracts, income rises consistently with distance from industrial land. That sorting pattern, combined with the Dutch property value evidence, suggests the question of what residents are owed is empirical, not just political – and that a flat $10,000 is not derived from any such calculation.</p>
 <p>Whether the comparison between NYC’s industrial lots and a Pennsylvania data center is close enough to matter is a judgment call. The land uses are different. The geography is different. But the core mechanism – a large industrial facility arrives near a residential area, generating noise, traffic, and visual impact – is similar enough that the income gradient finding is at minimum a reasonable order-of-magnitude reference, and significantly better than no empirical basis at all.</p>
 <hr>
 </section>
@@ -979,7 +978,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Data Center Watch / Parameter.io. (2026). <em>Community Resistance Stalls $68 Billion Worth of AI Data Center Developments.</em> https://parameter.io/community-resistance-stalls-68-billion-worth-of-ai-data-center-developments/</p>
 <p>Wheeler, T. (2026). <em>Data Center Backlash Signals a Fight Over AI Power.</em> Brookings Institution. https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/</p>
 <p>Alcorn, C. (2026). <em>Data center developer offers $10,000 checks to 4,500 households if 1,300-acre facility is approved.</em> Tom’s Hardware. https://www.tomshardware.com/tech-industry/data-centers/data-center-developer-offers-usd10-000-checks-to-4-500-households-if-the-1-300-acre-facility-is-approved-locals-push-back-over-noise-and-bribe-concerns</p>
-<p>Stop Ohio Data Centers. (2025). <em>Data Centers and Your Property Value: What the GMU Study Found, What Mansfield Residents Say.</em> https://stopohiodatacenters.org/data-center-property-value-ohio</p>
+<p>Charniga, K., et al.&nbsp;(2023). <em>The Local Economic Impacts of Data Centers.</em> George Mason University, Mercatus Center. (Northern Virginia home price analysis cited in coverage; working paper – verify current availability.)</p>
+<p>Vox. (2026). <em>Americans don’t know how to fight AI. So they’re fighting data centers.</em> [Cited in Introduction for framing; retrieve current URL before publication.]</p>
 <p>Coldewey, D. (2026, September 22). <em>Everyone can find a reason to dislike data center construction.</em> TechCrunch. https://techcrunch.com/2026/09/22/everyone-can-find-a-reason-to-dislike-data-center-construction/</p>
 <p>Haber, M. (2026). <em>How Data Centers Are Set to Impact the Value of Your Home.</em> Newsweek. https://www.newsweek.com/how-data-centers-are-set-to-impact-the-value-of-your-home-11939599</p>
 <hr>
@@ -1495,14 +1495,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a>data on 70,684 home sales) found that homes within 250 meters of industrial</span>
 <span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>sites sold for roughly 15% less than comparable homes beyond 2,250 meters --</span>
 <span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>a discount that fades to near zero by about 1.4 miles out. Research</span>
-<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>specifically on data centers is more mixed: a</span>
-<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">George Mason University analysis</span><span class="co">](https://stopohiodatacenters.org/data-center-property-value-ohio)</span></span>
-<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a>of 2023 Northern Virginia home sales found prices *higher* nearer data centers,</span>
-<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>but Northern Virginia is an atypical case (high-income tech corridor, data</span>
-<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a>center industry already integrated into the local economy). In Mansfield,</span>
-<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a>Georgia, residents near a Meta facility reported cooling-tower hum audible</span>
-<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>indoors with windows closed, with independent measurements at 60--65 dBA at</span>
-<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>the property line. Some said they were considering moving.</span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>specifically on data centers is more mixed. Work from George Mason University</span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>on Northern Virginia home sales found prices *higher* near data centers -- but</span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a>Northern Virginia is an atypical case: a high-income tech corridor where the</span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>data center industry is already integrated into the local economy and a major</span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a>employer. Resident complaints near operating facilities (noise from cooling</span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a>equipment, power infrastructure, and truck deliveries) are documented in local</span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>press from Georgia, Ohio, and Virginia, but rigorous before-and-after property</span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>value studies at specific data center sites are not yet publicly available.</span>
 <span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a>None of this research answers the compensation question directly, because it</span>
 <span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a>describes outcomes -- what actually happened to property values in places that</span>
@@ -1533,25 +1533,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-86"><a href="#cb19-86" aria-hidden="true" tabindex="-1"></a>Netherlands property value research. If a home near the proposed facility</span>
 <span id="cb19-87"><a href="#cb19-87" aria-hidden="true" tabindex="-1"></a>is worth $200,000 and industrial proximity discounts it by 15%, that is a</span>
 <span id="cb19-88"><a href="#cb19-88" aria-hidden="true" tabindex="-1"></a>$30,000 loss in asset value -- three times the NorthPoint offer. The NYC</span>
-<span id="cb19-89"><a href="#cb19-89" aria-hidden="true" tabindex="-1"></a>income gradient shows the same directional signal: people with more resources</span>
-<span id="cb19-90"><a href="#cb19-90" aria-hidden="true" tabindex="-1"></a>tend to live farther from industrial land. The $10,000 offer looks hard to</span>
-<span id="cb19-91"><a href="#cb19-91" aria-hidden="true" tabindex="-1"></a>justify against either benchmark, though the right number depends on what</span>
-<span id="cb19-92"><a href="#cb19-92" aria-hidden="true" tabindex="-1"></a>you are compensating for, at what distance, and for how long.</span>
-<span id="cb19-93"><a href="#cb19-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-94"><a href="#cb19-94" aria-hidden="true" tabindex="-1"></a>This report presents both the original spatial analysis and the income gradient</span>
-<span id="cb19-95"><a href="#cb19-95" aria-hidden="true" tabindex="-1"></a>finding, and frames both in the context of the current debate over industrial</span>
-<span id="cb19-96"><a href="#cb19-96" aria-hidden="true" tabindex="-1"></a>facility siting and community compensation.</span>
-<span id="cb19-97"><a href="#cb19-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-98"><a href="#cb19-98" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-99"><a href="#cb19-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-100"><a href="#cb19-100" aria-hidden="true" tabindex="-1"></a><span class="fu">### What This Measures and What It Does Not</span></span>
-<span id="cb19-101"><a href="#cb19-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-102"><a href="#cb19-102" aria-hidden="true" tabindex="-1"></a>The spatial analysis uses NYC's PLUTO property database. Land use code 06</span>
-<span id="cb19-103"><a href="#cb19-103" aria-hidden="true" tabindex="-1"></a>maps to building classes E* (warehouses), F* (factories), and L* (loft</span>
-<span id="cb19-104"><a href="#cb19-104" aria-hidden="true" tabindex="-1"></a>buildings) per the NYC DCP PLUTO Data Dictionary. This is a broader category</span>
-<span id="cb19-105"><a href="#cb19-105" aria-hidden="true" tabindex="-1"></a>than distribution-oriented warehouses alone. Data centers are not currently</span>
-<span id="cb19-106"><a href="#cb19-106" aria-hidden="true" tabindex="-1"></a>classified under code 06 in PLUTO -- they appear in various commercial and</span>
-<span id="cb19-107"><a href="#cb19-107" aria-hidden="true" tabindex="-1"></a>utility categories depending on their specific classification. The income</span>
+<span id="cb19-89"><a href="#cb19-89" aria-hidden="true" tabindex="-1"></a>income gradient points in the same direction but is a sorting signal, not a</span>
+<span id="cb19-90"><a href="#cb19-90" aria-hidden="true" tabindex="-1"></a>cost figure. The Dutch property value evidence is the more direct benchmark,</span>
+<span id="cb19-91"><a href="#cb19-91" aria-hidden="true" tabindex="-1"></a>and against it $10,000 is hard to justify for the closest neighbors.</span>
+<span id="cb19-92"><a href="#cb19-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-93"><a href="#cb19-93" aria-hidden="true" tabindex="-1"></a>This report presents both the original spatial analysis and the income gradient</span>
+<span id="cb19-94"><a href="#cb19-94" aria-hidden="true" tabindex="-1"></a>finding, and frames both in the context of the current debate over industrial</span>
+<span id="cb19-95"><a href="#cb19-95" aria-hidden="true" tabindex="-1"></a>facility siting and community compensation.</span>
+<span id="cb19-96"><a href="#cb19-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-97"><a href="#cb19-97" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-98"><a href="#cb19-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-99"><a href="#cb19-99" aria-hidden="true" tabindex="-1"></a><span class="fu">### What This Measures and What It Does Not</span></span>
+<span id="cb19-100"><a href="#cb19-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-101"><a href="#cb19-101" aria-hidden="true" tabindex="-1"></a>The spatial analysis uses NYC's PLUTO property database. Land use code 06</span>
+<span id="cb19-102"><a href="#cb19-102" aria-hidden="true" tabindex="-1"></a>maps to building classes E* (warehouses), F* (factories), and L* (loft</span>
+<span id="cb19-103"><a href="#cb19-103" aria-hidden="true" tabindex="-1"></a>buildings) per the NYC DCP PLUTO Data Dictionary. This is a broader category</span>
+<span id="cb19-104"><a href="#cb19-104" aria-hidden="true" tabindex="-1"></a>than distribution-oriented warehouses alone. Data centers are not typically</span>
+<span id="cb19-105"><a href="#cb19-105" aria-hidden="true" tabindex="-1"></a>classified under code 06 in PLUTO; depending on their building classification</span>
+<span id="cb19-106"><a href="#cb19-106" aria-hidden="true" tabindex="-1"></a>they may appear in commercial or utility categories, though the exact</span>
+<span id="cb19-107"><a href="#cb19-107" aria-hidden="true" tabindex="-1"></a>classification varies by facility. The income</span>
 <span id="cb19-108"><a href="#cb19-108" aria-hidden="true" tabindex="-1"></a>gradient finding applies to existing NYC industrial land as classified by</span>
 <span id="cb19-109"><a href="#cb19-109" aria-hidden="true" tabindex="-1"></a>PLUTO, not to data centers specifically.</span>
 <span id="cb19-110"><a href="#cb19-110" aria-hidden="true" tabindex="-1"></a></span>
@@ -2038,269 +2038,266 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-621"><a href="#cb19-621" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-622"><a href="#cb19-622" aria-hidden="true" tabindex="-1"></a>Median household income rises monotonically with distance from industrial land</span>
 <span id="cb19-623"><a href="#cb19-623" aria-hidden="true" tabindex="-1"></a>across all four distance bands: $63,708 within 0.25 miles, $66,704 at 0.25--0.5</span>
-<span id="cb19-624"><a href="#cb19-624" aria-hidden="true" tabindex="-1"></a>miles, $84,558 at 0.5--1 mile, and $90,379 beyond 1 mile. The step from within</span>
-<span id="cb19-625"><a href="#cb19-625" aria-hidden="true" tabindex="-1"></a>0.5 miles to beyond 0.5 miles is roughly $18,000. A Wilcoxon rank-sum test</span>
-<span id="cb19-626"><a href="#cb19-626" aria-hidden="true" tabindex="-1"></a>confirms the difference is not noise (p &lt; 0.001, across 2,206 tracts with income</span>
-<span id="cb19-627"><a href="#cb19-627" aria-hidden="true" tabindex="-1"></a>data).</span>
-<span id="cb19-628"><a href="#cb19-628" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-629"><a href="#cb19-629" aria-hidden="true" tabindex="-1"></a>The binary gap comparison (the 31 covered tracts vs. the rest) tells the same</span>
-<span id="cb19-630"><a href="#cb19-630" aria-hidden="true" tabindex="-1"></a>story: gap tracts median $<span class="in">`r comma(round(all_gap_median))`</span> vs. covered tracts</span>
-<span id="cb19-631"><a href="#cb19-631" aria-hidden="true" tabindex="-1"></a>$<span class="in">`r comma(round(served_median))`</span>. But the distance-band table is more informative</span>
-<span id="cb19-632"><a href="#cb19-632" aria-hidden="true" tabindex="-1"></a>because it shows the gradient holds continuously, not just at the 1-mile cutoff.</span>
-<span id="cb19-633"><a href="#cb19-633" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-634"><a href="#cb19-634" aria-hidden="true" tabindex="-1"></a>The data cannot distinguish between two explanations: affluent neighborhoods may</span>
-<span id="cb19-635"><a href="#cb19-635" aria-hidden="true" tabindex="-1"></a>have successfully excluded industrial uses through zoning, or those neighborhoods</span>
-<span id="cb19-636"><a href="#cb19-636" aria-hidden="true" tabindex="-1"></a>may simply sit at the outer edges of where the city's industrial corridors</span>
-<span id="cb19-637"><a href="#cb19-637" aria-hidden="true" tabindex="-1"></a>historically developed. Separating geography from politics would require zoning</span>
-<span id="cb19-638"><a href="#cb19-638" aria-hidden="true" tabindex="-1"></a>history and land use change data over time. What the data does establish is that</span>
-<span id="cb19-639"><a href="#cb19-639" aria-hidden="true" tabindex="-1"></a>the income gradient is real, city-wide, and statistically robust.</span>
-<span id="cb19-640"><a href="#cb19-640" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-641"><a href="#cb19-641" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-642"><a href="#cb19-642" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-643"><a href="#cb19-643" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion</span></span>
-<span id="cb19-644"><a href="#cb19-644" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-645"><a href="#cb19-645" aria-hidden="true" tabindex="-1"></a><span class="fu">### Key Findings</span></span>
-<span id="cb19-646"><a href="#cb19-646" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-647"><a href="#cb19-647" aria-hidden="true" tabindex="-1"></a>Queens has the largest gap population (32,622 residents across 13 tracts),</span>
-<span id="cb19-648"><a href="#cb19-648" aria-hidden="true" tabindex="-1"></a>followed by Brooklyn (19,809 across 11 tracts). Both sets of gap tracts sit at</span>
-<span id="cb19-649"><a href="#cb19-649" aria-hidden="true" tabindex="-1"></a>the outer edges of their boroughs, distant from the industrial corridors</span>
-<span id="cb19-650"><a href="#cb19-650" aria-hidden="true" tabindex="-1"></a>concentrated along the waterfront and freight routes closer to the urban core.</span>
-<span id="cb19-651"><a href="#cb19-651" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-652"><a href="#cb19-652" aria-hidden="true" tabindex="-1"></a>Manhattan has only one gap tract (GEOID 36061000100, Census Tract 1), with</span>
-<span id="cb19-653"><a href="#cb19-653" aria-hidden="true" tabindex="-1"></a>zero counted residents. Its centroid falls at approximately 40.695°N, 74.043°W,</span>
-<span id="cb19-654"><a href="#cb19-654" aria-hidden="true" tabindex="-1"></a>in the harbor southwest of the Battery -- consistent with harbor islands</span>
-<span id="cb19-655"><a href="#cb19-655" aria-hidden="true" tabindex="-1"></a>(Governors Island, Ellis Island, or Liberty Island) that carry no permanent</span>
-<span id="cb19-656"><a href="#cb19-656" aria-hidden="true" tabindex="-1"></a>residents. Zero is most likely a true count, not a differential privacy</span>
-<span id="cb19-657"><a href="#cb19-657" aria-hidden="true" tabindex="-1"></a>artifact. Manhattan's near-complete industrial land coverage otherwise reflects</span>
-<span id="cb19-658"><a href="#cb19-658" aria-hidden="true" tabindex="-1"></a>the density of lots in specific corridors (West Side railyards, Meatpacking</span>
-<span id="cb19-659"><a href="#cb19-659" aria-hidden="true" tabindex="-1"></a>District, Hudson Yards area).</span>
-<span id="cb19-660"><a href="#cb19-660" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-661"><a href="#cb19-661" aria-hidden="true" tabindex="-1"></a>Median household income rises monotonically with distance from industrial land</span>
-<span id="cb19-662"><a href="#cb19-662" aria-hidden="true" tabindex="-1"></a>across all four distance bands, from $63,708 within a quarter mile to $90,379</span>
-<span id="cb19-663"><a href="#cb19-663" aria-hidden="true" tabindex="-1"></a>beyond a mile. A Wilcoxon rank-sum test confirms the gradient is statistically</span>
-<span id="cb19-664"><a href="#cb19-664" aria-hidden="true" tabindex="-1"></a>significant (p &lt; 0.001) across 2,206 tracts with income data. The data cannot</span>
-<span id="cb19-665"><a href="#cb19-665" aria-hidden="true" tabindex="-1"></a>say whether this reflects deliberate zoning exclusion or simply the geography</span>
-<span id="cb19-666"><a href="#cb19-666" aria-hidden="true" tabindex="-1"></a>of where industrial corridors developed, but the pattern itself is robust. The</span>
-<span id="cb19-667"><a href="#cb19-667" aria-hidden="true" tabindex="-1"></a>Manhattan gap tract has no income data, since it has no counted population.</span>
-<span id="cb19-668"><a href="#cb19-668" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-669"><a href="#cb19-669" aria-hidden="true" tabindex="-1"></a>The distance-band analysis adds resolution beyond the binary gap classification.</span>
-<span id="cb19-670"><a href="#cb19-670" aria-hidden="true" tabindex="-1"></a>About 16% of New Yorkers (96.6% within a mile minus 80.4% within half a mile)</span>
-<span id="cb19-671"><a href="#cb19-671" aria-hidden="true" tabindex="-1"></a>live in the 0.5--1 mile band. Staten Island stands out with the longest median</span>
-<span id="cb19-672"><a href="#cb19-672" aria-hidden="true" tabindex="-1"></a>tract distance (0.50 miles, vs. 0.21--0.31 for the other four boroughs).</span>
-<span id="cb19-673"><a href="#cb19-673" aria-hidden="true" tabindex="-1"></a>Queens has a shorter median (0.27 miles) but a longer right tail: about 6% of</span>
-<span id="cb19-674"><a href="#cb19-674" aria-hidden="true" tabindex="-1"></a>Queens residents are more than a mile from industrial land by the centroid</span>
-<span id="cb19-675"><a href="#cb19-675" aria-hidden="true" tabindex="-1"></a>measure, the second-highest share after Staten Island.</span>
-<span id="cb19-676"><a href="#cb19-676" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-677"><a href="#cb19-677" aria-hidden="true" tabindex="-1"></a><span class="fu">### Limitations</span></span>
-<span id="cb19-678"><a href="#cb19-678" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-679"><a href="#cb19-679" aria-hidden="true" tabindex="-1"></a>**Broad land use category.** According to the NYC DCP PLUTO Data Dictionary,</span>
-<span id="cb19-680"><a href="#cb19-680" aria-hidden="true" tabindex="-1"></a>land use code 06 maps to building classes E* (warehouses), F* (factories), and</span>
-<span id="cb19-681"><a href="#cb19-681" aria-hidden="true" tabindex="-1"></a>L* (loft buildings). Factories and lofts are included alongside</span>
-<span id="cb19-682"><a href="#cb19-682" aria-hidden="true" tabindex="-1"></a>distribution-oriented warehouses, and the category gives no indication of</span>
-<span id="cb19-683"><a href="#cb19-683" aria-hidden="true" tabindex="-1"></a>whether a lot hosts an active logistics operation. L* specifically includes</span>
-<span id="cb19-684"><a href="#cb19-684" aria-hidden="true" tabindex="-1"></a>converted loft buildings and self-storage facilities that generate little</span>
-<span id="cb19-685"><a href="#cb19-685" aria-hidden="true" tabindex="-1"></a>noise or truck traffic -- meaningfully different from a large active warehouse.</span>
-<span id="cb19-686"><a href="#cb19-686" aria-hidden="true" tabindex="-1"></a>This analysis measures proximity to industrial land as a class -- it does not</span>
-<span id="cb19-687"><a href="#cb19-687" aria-hidden="true" tabindex="-1"></a>distinguish a 500,000 sq ft fulfillment center from a converted loft building</span>
-<span id="cb19-688"><a href="#cb19-688" aria-hidden="true" tabindex="-1"></a>or an inactive factory floor. Including L* lots weakens the "industrial</span>
-<span id="cb19-689"><a href="#cb19-689" aria-hidden="true" tabindex="-1"></a>facility" proxy and likely understates the income gradient around genuinely</span>
-<span id="cb19-690"><a href="#cb19-690" aria-hidden="true" tabindex="-1"></a>heavy industrial uses. A more operationally precise analysis would require</span>
-<span id="cb19-691"><a href="#cb19-691" aria-hidden="true" tabindex="-1"></a>commercial real estate data (CoStar, CBRE) or cross-referencing with business</span>
-<span id="cb19-692"><a href="#cb19-692" aria-hidden="true" tabindex="-1"></a>license records to isolate active logistics facilities.</span>
-<span id="cb19-693"><a href="#cb19-693" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-694"><a href="#cb19-694" aria-hidden="true" tabindex="-1"></a>**Industrial land is not the only freight infrastructure.** Real last-mile</span>
-<span id="cb19-695"><a href="#cb19-695" aria-hidden="true" tabindex="-1"></a>delivery in dense neighborhoods often runs from microhubs, retail backrooms,</span>
-<span id="cb19-696"><a href="#cb19-696" aria-hidden="true" tabindex="-1"></a>and parking garages classified as commercial in PLUTO. The gaps measured here</span>
-<span id="cb19-697"><a href="#cb19-697" aria-hidden="true" tabindex="-1"></a>may overstate true freight access limitations for some neighborhoods.</span>
-<span id="cb19-698"><a href="#cb19-698" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-699"><a href="#cb19-699" aria-hidden="true" tabindex="-1"></a>**Edge effect.** This analysis counts only NYC-classified lots. Major</span>
-<span id="cb19-700"><a href="#cb19-700" aria-hidden="true" tabindex="-1"></a>distribution hubs in New Jersey (roughly 1 mile from west Manhattan) and just</span>
-<span id="cb19-701"><a href="#cb19-701" aria-hidden="true" tabindex="-1"></a>outside the city line in Nassau and Westchester are excluded. This inflates</span>
-<span id="cb19-702"><a href="#cb19-702" aria-hidden="true" tabindex="-1"></a>apparent gaps in western Manhattan, Staten Island, and eastern Queens. The</span>
-<span id="cb19-703"><a href="#cb19-703" aria-hidden="true" tabindex="-1"></a>effect is largest for Staten Island: the borough sits adjacent to major New</span>
-<span id="cb19-704"><a href="#cb19-704" aria-hidden="true" tabindex="-1"></a>Jersey logistics corridors in Elizabeth and Linden (across the Arthur Kill and</span>
-<span id="cb19-705"><a href="#cb19-705" aria-hidden="true" tabindex="-1"></a>Kill Van Kull), and its distance numbers would look materially different if</span>
-<span id="cb19-706"><a href="#cb19-706" aria-hidden="true" tabindex="-1"></a>those New Jersey lots were included.</span>
+<span id="cb19-624"><a href="#cb19-624" aria-hidden="true" tabindex="-1"></a>miles, $84,558 at 0.5--1 mile, and $90,379 beyond 1 mile. The largest step is</span>
+<span id="cb19-625"><a href="#cb19-625" aria-hidden="true" tabindex="-1"></a>between the 0.25--0.5 mile band ($66,704) and the 0.5--1 mile band ($84,558),</span>
+<span id="cb19-626"><a href="#cb19-626" aria-hidden="true" tabindex="-1"></a>a gap of roughly $18,000. A Wilcoxon rank-sum test comparing tracts within</span>
+<span id="cb19-627"><a href="#cb19-627" aria-hidden="true" tabindex="-1"></a>0.5 miles to tracts beyond 0.5 miles confirms the difference is not noise</span>
+<span id="cb19-628"><a href="#cb19-628" aria-hidden="true" tabindex="-1"></a>(p &lt; 0.001, across 2,206 tracts with income data).</span>
+<span id="cb19-629"><a href="#cb19-629" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-630"><a href="#cb19-630" aria-hidden="true" tabindex="-1"></a>The binary gap comparison (the 31 gap tracts vs. the rest) tells the same</span>
+<span id="cb19-631"><a href="#cb19-631" aria-hidden="true" tabindex="-1"></a>story: gap tracts median $<span class="in">`r comma(round(all_gap_median))`</span> vs. covered tracts</span>
+<span id="cb19-632"><a href="#cb19-632" aria-hidden="true" tabindex="-1"></a>$<span class="in">`r comma(round(served_median))`</span>. But the distance-band table is more informative</span>
+<span id="cb19-633"><a href="#cb19-633" aria-hidden="true" tabindex="-1"></a>because it shows the gradient holds continuously, not just at the 1-mile cutoff.</span>
+<span id="cb19-634"><a href="#cb19-634" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-635"><a href="#cb19-635" aria-hidden="true" tabindex="-1"></a>The data cannot distinguish between two explanations: affluent neighborhoods may</span>
+<span id="cb19-636"><a href="#cb19-636" aria-hidden="true" tabindex="-1"></a>have successfully excluded industrial uses through zoning, or those neighborhoods</span>
+<span id="cb19-637"><a href="#cb19-637" aria-hidden="true" tabindex="-1"></a>may simply sit at the outer edges of where the city's industrial corridors</span>
+<span id="cb19-638"><a href="#cb19-638" aria-hidden="true" tabindex="-1"></a>historically developed. Separating geography from politics would require zoning</span>
+<span id="cb19-639"><a href="#cb19-639" aria-hidden="true" tabindex="-1"></a>history and land use change data over time. What the data does establish is that</span>
+<span id="cb19-640"><a href="#cb19-640" aria-hidden="true" tabindex="-1"></a>the income gradient is real, city-wide, and statistically robust.</span>
+<span id="cb19-641"><a href="#cb19-641" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-642"><a href="#cb19-642" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-643"><a href="#cb19-643" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-644"><a href="#cb19-644" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion</span></span>
+<span id="cb19-645"><a href="#cb19-645" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-646"><a href="#cb19-646" aria-hidden="true" tabindex="-1"></a><span class="fu">### Key Findings</span></span>
+<span id="cb19-647"><a href="#cb19-647" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-648"><a href="#cb19-648" aria-hidden="true" tabindex="-1"></a>Queens has the largest gap population (32,622 residents across 13 tracts),</span>
+<span id="cb19-649"><a href="#cb19-649" aria-hidden="true" tabindex="-1"></a>followed by Brooklyn (19,809 across 11 tracts). Both sets of gap tracts sit at</span>
+<span id="cb19-650"><a href="#cb19-650" aria-hidden="true" tabindex="-1"></a>the outer edges of their boroughs, distant from the industrial corridors</span>
+<span id="cb19-651"><a href="#cb19-651" aria-hidden="true" tabindex="-1"></a>concentrated along the waterfront and freight routes closer to the urban core.</span>
+<span id="cb19-652"><a href="#cb19-652" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-653"><a href="#cb19-653" aria-hidden="true" tabindex="-1"></a>Manhattan has only one gap tract (GEOID 36061000100, Census Tract 1), with</span>
+<span id="cb19-654"><a href="#cb19-654" aria-hidden="true" tabindex="-1"></a>zero counted residents. Its centroid falls at approximately 40.695°N, 74.043°W,</span>
+<span id="cb19-655"><a href="#cb19-655" aria-hidden="true" tabindex="-1"></a>in the harbor southwest of the Battery -- consistent with harbor islands</span>
+<span id="cb19-656"><a href="#cb19-656" aria-hidden="true" tabindex="-1"></a>(Governors Island, Ellis Island, or Liberty Island) that carry no permanent</span>
+<span id="cb19-657"><a href="#cb19-657" aria-hidden="true" tabindex="-1"></a>residents. Zero is most likely a true count, not a differential privacy</span>
+<span id="cb19-658"><a href="#cb19-658" aria-hidden="true" tabindex="-1"></a>artifact. Manhattan's near-complete industrial land coverage otherwise reflects</span>
+<span id="cb19-659"><a href="#cb19-659" aria-hidden="true" tabindex="-1"></a>the density of lots in specific corridors (West Side railyards, Meatpacking</span>
+<span id="cb19-660"><a href="#cb19-660" aria-hidden="true" tabindex="-1"></a>District, Hudson Yards area).</span>
+<span id="cb19-661"><a href="#cb19-661" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-662"><a href="#cb19-662" aria-hidden="true" tabindex="-1"></a>Median household income rises monotonically with distance from industrial land</span>
+<span id="cb19-663"><a href="#cb19-663" aria-hidden="true" tabindex="-1"></a>across all four distance bands, from $63,708 within a quarter mile to $90,379</span>
+<span id="cb19-664"><a href="#cb19-664" aria-hidden="true" tabindex="-1"></a>beyond a mile. The largest step is between the 0.25--0.5 mile band ($66,704)</span>
+<span id="cb19-665"><a href="#cb19-665" aria-hidden="true" tabindex="-1"></a>and the 0.5--1 mile band ($84,558). A Wilcoxon rank-sum test comparing tracts</span>
+<span id="cb19-666"><a href="#cb19-666" aria-hidden="true" tabindex="-1"></a>within 0.5 miles to tracts beyond 0.5 miles confirms the gradient is</span>
+<span id="cb19-667"><a href="#cb19-667" aria-hidden="true" tabindex="-1"></a>statistically significant (p &lt; 0.001, across 2,206 tracts). The data cannot</span>
+<span id="cb19-668"><a href="#cb19-668" aria-hidden="true" tabindex="-1"></a>say whether this reflects deliberate zoning exclusion or simply the geography</span>
+<span id="cb19-669"><a href="#cb19-669" aria-hidden="true" tabindex="-1"></a>of where industrial corridors developed, but the pattern itself is robust. The</span>
+<span id="cb19-670"><a href="#cb19-670" aria-hidden="true" tabindex="-1"></a>Manhattan gap tract has no income data, since it has no counted population.</span>
+<span id="cb19-671"><a href="#cb19-671" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-672"><a href="#cb19-672" aria-hidden="true" tabindex="-1"></a>The distance-band analysis adds resolution beyond the binary gap classification.</span>
+<span id="cb19-673"><a href="#cb19-673" aria-hidden="true" tabindex="-1"></a>About 16% of New Yorkers (96.6% within a mile minus 80.4% within half a mile)</span>
+<span id="cb19-674"><a href="#cb19-674" aria-hidden="true" tabindex="-1"></a>live in the 0.5--1 mile band. Staten Island stands out with the longest median</span>
+<span id="cb19-675"><a href="#cb19-675" aria-hidden="true" tabindex="-1"></a>tract distance (0.50 miles, vs. 0.21--0.31 for the other four boroughs).</span>
+<span id="cb19-676"><a href="#cb19-676" aria-hidden="true" tabindex="-1"></a>Queens has a shorter median (0.27 miles) but a longer right tail: about 6% of</span>
+<span id="cb19-677"><a href="#cb19-677" aria-hidden="true" tabindex="-1"></a>Queens residents are more than a mile from industrial land by the centroid</span>
+<span id="cb19-678"><a href="#cb19-678" aria-hidden="true" tabindex="-1"></a>measure, the second-highest share after Staten Island.</span>
+<span id="cb19-679"><a href="#cb19-679" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-680"><a href="#cb19-680" aria-hidden="true" tabindex="-1"></a><span class="fu">### Limitations</span></span>
+<span id="cb19-681"><a href="#cb19-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-682"><a href="#cb19-682" aria-hidden="true" tabindex="-1"></a>**Broad land use category.** According to the NYC DCP PLUTO Data Dictionary,</span>
+<span id="cb19-683"><a href="#cb19-683" aria-hidden="true" tabindex="-1"></a>land use code 06 maps to building classes E* (warehouses), F* (factories), and</span>
+<span id="cb19-684"><a href="#cb19-684" aria-hidden="true" tabindex="-1"></a>L* (loft buildings). Factories and lofts are included alongside</span>
+<span id="cb19-685"><a href="#cb19-685" aria-hidden="true" tabindex="-1"></a>distribution-oriented warehouses, and the category gives no indication of</span>
+<span id="cb19-686"><a href="#cb19-686" aria-hidden="true" tabindex="-1"></a>whether a lot hosts an active logistics operation. L* specifically includes</span>
+<span id="cb19-687"><a href="#cb19-687" aria-hidden="true" tabindex="-1"></a>converted loft buildings and self-storage facilities that generate little</span>
+<span id="cb19-688"><a href="#cb19-688" aria-hidden="true" tabindex="-1"></a>noise or truck traffic -- meaningfully different from a large active warehouse.</span>
+<span id="cb19-689"><a href="#cb19-689" aria-hidden="true" tabindex="-1"></a>This analysis measures proximity to industrial land as a class -- it does not</span>
+<span id="cb19-690"><a href="#cb19-690" aria-hidden="true" tabindex="-1"></a>distinguish a 500,000 sq ft fulfillment center from a converted loft building</span>
+<span id="cb19-691"><a href="#cb19-691" aria-hidden="true" tabindex="-1"></a>or an inactive factory floor. Including L* lots weakens the "industrial</span>
+<span id="cb19-692"><a href="#cb19-692" aria-hidden="true" tabindex="-1"></a>facility" proxy and likely understates the income gradient around genuinely</span>
+<span id="cb19-693"><a href="#cb19-693" aria-hidden="true" tabindex="-1"></a>heavy industrial uses. A more operationally precise analysis would require</span>
+<span id="cb19-694"><a href="#cb19-694" aria-hidden="true" tabindex="-1"></a>commercial real estate data (CoStar, CBRE) or cross-referencing with business</span>
+<span id="cb19-695"><a href="#cb19-695" aria-hidden="true" tabindex="-1"></a>license records to isolate active logistics facilities.</span>
+<span id="cb19-696"><a href="#cb19-696" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-697"><a href="#cb19-697" aria-hidden="true" tabindex="-1"></a>**Edge effect.** This analysis counts only NYC-classified lots. Major</span>
+<span id="cb19-698"><a href="#cb19-698" aria-hidden="true" tabindex="-1"></a>distribution hubs in New Jersey and just outside the city line in Nassau and</span>
+<span id="cb19-699"><a href="#cb19-699" aria-hidden="true" tabindex="-1"></a>Westchester are excluded. The effect is largest for Staten Island, which sits</span>
+<span id="cb19-700"><a href="#cb19-700" aria-hidden="true" tabindex="-1"></a>adjacent to major New Jersey logistics corridors in Elizabeth and Linden; its</span>
+<span id="cb19-701"><a href="#cb19-701" aria-hidden="true" tabindex="-1"></a>distance numbers would look materially different if those lots were included.</span>
+<span id="cb19-702"><a href="#cb19-702" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-703"><a href="#cb19-703" aria-hidden="true" tabindex="-1"></a>**The 1-mile threshold.** A tract 1.1 miles from a lot is counted as a gap;</span>
+<span id="cb19-704"><a href="#cb19-704" aria-hidden="true" tabindex="-1"></a>one at 0.9 miles is not. The distance-band table partially addresses this by</span>
+<span id="cb19-705"><a href="#cb19-705" aria-hidden="true" tabindex="-1"></a>reporting continuous bands, but the binary classification in the maps and</span>
+<span id="cb19-706"><a href="#cb19-706" aria-hidden="true" tabindex="-1"></a>borough table still uses the fixed threshold.</span>
 <span id="cb19-707"><a href="#cb19-707" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-708"><a href="#cb19-708" aria-hidden="true" tabindex="-1"></a>**The 1-mile threshold.** A tract 1.1 miles from a lot is counted as a gap;</span>
-<span id="cb19-709"><a href="#cb19-709" aria-hidden="true" tabindex="-1"></a>one at 0.9 miles is not. The distance-band table partially addresses this by</span>
-<span id="cb19-710"><a href="#cb19-710" aria-hidden="true" tabindex="-1"></a>reporting continuous bands, but the binary classification in the maps and</span>
-<span id="cb19-711"><a href="#cb19-711" aria-hidden="true" tabindex="-1"></a>borough table still uses the fixed threshold.</span>
+<span id="cb19-708"><a href="#cb19-708" aria-hidden="true" tabindex="-1"></a>**Straight-line distance is not travel time.** Proximity to industrial land</span>
+<span id="cb19-709"><a href="#cb19-709" aria-hidden="true" tabindex="-1"></a>says nothing about road network connectivity, traffic conditions, loading</span>
+<span id="cb19-710"><a href="#cb19-710" aria-hidden="true" tabindex="-1"></a>access, or building entry -- the actual constraints that determine delivery</span>
+<span id="cb19-711"><a href="#cb19-711" aria-hidden="true" tabindex="-1"></a>reach in an urban environment.</span>
 <span id="cb19-712"><a href="#cb19-712" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-713"><a href="#cb19-713" aria-hidden="true" tabindex="-1"></a>**Straight-line distance is not travel time.** Proximity to industrial land</span>
-<span id="cb19-714"><a href="#cb19-714" aria-hidden="true" tabindex="-1"></a>says nothing about road network connectivity, traffic conditions, loading</span>
-<span id="cb19-715"><a href="#cb19-715" aria-hidden="true" tabindex="-1"></a>access, or building entry -- the actual constraints that determine delivery</span>
-<span id="cb19-716"><a href="#cb19-716" aria-hidden="true" tabindex="-1"></a>reach in an urban environment.</span>
-<span id="cb19-717"><a href="#cb19-717" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-718"><a href="#cb19-718" aria-hidden="true" tabindex="-1"></a><span class="fu">### What the Income Gradient Implies for Compensation</span></span>
-<span id="cb19-719"><a href="#cb19-719" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-720"><a href="#cb19-720" aria-hidden="true" tabindex="-1"></a>The core finding is that NYC census tracts closer to industrial land have</span>
-<span id="cb19-721"><a href="#cb19-721" aria-hidden="true" tabindex="-1"></a>lower median household incomes, and the gradient is continuous and</span>
-<span id="cb19-722"><a href="#cb19-722" aria-hidden="true" tabindex="-1"></a>statistically robust. This does not prove that industrial proximity *causes*</span>
-<span id="cb19-723"><a href="#cb19-723" aria-hidden="true" tabindex="-1"></a>lower incomes -- the causal story runs in at least two directions. Industrial</span>
-<span id="cb19-724"><a href="#cb19-724" aria-hidden="true" tabindex="-1"></a>corridors may have developed where land was already cheap (lower-income areas).</span>
-<span id="cb19-725"><a href="#cb19-725" aria-hidden="true" tabindex="-1"></a>Or affluent neighborhoods may have used zoning to exclude industrial uses over</span>
-<span id="cb19-726"><a href="#cb19-726" aria-hidden="true" tabindex="-1"></a>time, making the correlation partly a product of political power. Distinguishing</span>
-<span id="cb19-727"><a href="#cb19-727" aria-hidden="true" tabindex="-1"></a>those explanations requires zoning history data this analysis does not include.</span>
-<span id="cb19-728"><a href="#cb19-728" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-729"><a href="#cb19-729" aria-hidden="true" tabindex="-1"></a>What the gradient does support is a revealed-preference reading: across 2,206</span>
-<span id="cb19-730"><a href="#cb19-730" aria-hidden="true" tabindex="-1"></a>NYC tracts, proximity to industrial land is consistently associated with lower</span>
-<span id="cb19-731"><a href="#cb19-731" aria-hidden="true" tabindex="-1"></a>household income. People with more resources tend to live farther from</span>
-<span id="cb19-732"><a href="#cb19-732" aria-hidden="true" tabindex="-1"></a>industrial land. That is consistent with the Netherlands research finding a</span>
-<span id="cb19-733"><a href="#cb19-733" aria-hidden="true" tabindex="-1"></a>15% property value discount within 250 meters of industrial sites. Both</span>
-<span id="cb19-734"><a href="#cb19-734" aria-hidden="true" tabindex="-1"></a>patterns point in the same direction: industrial proximity is something people</span>
-<span id="cb19-735"><a href="#cb19-735" aria-hidden="true" tabindex="-1"></a>pay to avoid, or are compensated for through lower housing costs.</span>
-<span id="cb19-736"><a href="#cb19-736" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-737"><a href="#cb19-737" aria-hidden="true" tabindex="-1"></a>**Back to the $10,000 question.** NorthPoint offered Hazle Township residents</span>
-<span id="cb19-738"><a href="#cb19-738" aria-hidden="true" tabindex="-1"></a>$10,000 -- a one-time payment -- to accept a 1,300-acre data center. The</span>
-<span id="cb19-739"><a href="#cb19-739" aria-hidden="true" tabindex="-1"></a>Netherlands study gives the clearest benchmark: homes within 250 meters of</span>
-<span id="cb19-740"><a href="#cb19-740" aria-hidden="true" tabindex="-1"></a>industrial sites sold for roughly 15% less. If a home near the facility is</span>
-<span id="cb19-741"><a href="#cb19-741" aria-hidden="true" tabindex="-1"></a>worth $200,000, that is a $30,000 loss in asset value -- a one-time hit,</span>
-<span id="cb19-742"><a href="#cb19-742" aria-hidden="true" tabindex="-1"></a>three times the NorthPoint offer. The discount fades with distance, so homes</span>
-<span id="cb19-743"><a href="#cb19-743" aria-hidden="true" tabindex="-1"></a>within 250 meters bear the full 15% while homes closer to 1.4 miles out see</span>
-<span id="cb19-744"><a href="#cb19-744" aria-hidden="true" tabindex="-1"></a>almost nothing. A flat $10,000 to everyone ignores that geography entirely.</span>
-<span id="cb19-745"><a href="#cb19-745" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-746"><a href="#cb19-746" aria-hidden="true" tabindex="-1"></a>The NYC income gradient is a different signal -- correlation rather than cost.</span>
-<span id="cb19-747"><a href="#cb19-747" aria-hidden="true" tabindex="-1"></a>Tracts within 0.25 miles of industrial land have a median income of $63,708;</span>
-<span id="cb19-748"><a href="#cb19-748" aria-hidden="true" tabindex="-1"></a>tracts beyond 1 mile average $90,379. That $26,671 gap reflects sorting (more</span>
-<span id="cb19-749"><a href="#cb19-749" aria-hidden="true" tabindex="-1"></a>affluent households can afford to live farther from industrial land) rather</span>
-<span id="cb19-750"><a href="#cb19-750" aria-hidden="true" tabindex="-1"></a>than a direct price tag. Still, the direction is consistent: industrial</span>
-<span id="cb19-751"><a href="#cb19-751" aria-hidden="true" tabindex="-1"></a>proximity is something people pay to avoid, or accept in exchange for lower</span>
-<span id="cb19-752"><a href="#cb19-752" aria-hidden="true" tabindex="-1"></a>housing costs. A one-time $10,000 payment is a thin rationale for waiving</span>
-<span id="cb19-753"><a href="#cb19-753" aria-hidden="true" tabindex="-1"></a>that for a generation-long facility.</span>
-<span id="cb19-754"><a href="#cb19-754" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-755"><a href="#cb19-755" aria-hidden="true" tabindex="-1"></a>None of this means developers should not build. It means the compensation</span>
-<span id="cb19-756"><a href="#cb19-756" aria-hidden="true" tabindex="-1"></a>question deserves an empirical basis rather than an arbitrary one. Relevant</span>
-<span id="cb19-757"><a href="#cb19-757" aria-hidden="true" tabindex="-1"></a>inputs would include: the distance from the facility to each household, local</span>
-<span id="cb19-758"><a href="#cb19-758" aria-hidden="true" tabindex="-1"></a>property values before and after comparable facilities opened nearby, the</span>
-<span id="cb19-759"><a href="#cb19-759" aria-hidden="true" tabindex="-1"></a>expected duration of impacts (noise, traffic, visual), and whether payments</span>
-<span id="cb19-760"><a href="#cb19-760" aria-hidden="true" tabindex="-1"></a>should be structured as one-time checks or ongoing annual compensation tied</span>
-<span id="cb19-761"><a href="#cb19-761" aria-hidden="true" tabindex="-1"></a>to the facility's operating life.</span>
-<span id="cb19-762"><a href="#cb19-762" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-763"><a href="#cb19-763" aria-hidden="true" tabindex="-1"></a><span class="fu">### Implications for the AI Data Center Debate</span></span>
-<span id="cb19-764"><a href="#cb19-764" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-765"><a href="#cb19-765" aria-hidden="true" tabindex="-1"></a>The current conflict over data center siting is partly a zoning fight, partly</span>
-<span id="cb19-766"><a href="#cb19-766" aria-hidden="true" tabindex="-1"></a>an AI anxiety fight, and partly a legitimate dispute over who pays for</span>
-<span id="cb19-767"><a href="#cb19-767" aria-hidden="true" tabindex="-1"></a>infrastructure that benefits a much larger population. In Q2 2026 alone,</span>
-<span id="cb19-768"><a href="#cb19-768" aria-hidden="true" tabindex="-1"></a>community resistance stalled $68 billion in data center projects across the U.S.</span>
-<span id="cb19-769"><a href="#cb19-769" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">TechCrunch</span><span class="co">](https://techcrunch.com/2026/09/22/everyone-can-find-a-reason-to-dislike-data-center-construction/)</span></span>
-<span id="cb19-770"><a href="#cb19-770" aria-hidden="true" tabindex="-1"></a>reported in September 2026 that "everyone can find a reason to dislike data</span>
-<span id="cb19-771"><a href="#cb19-771" aria-hidden="true" tabindex="-1"></a>center construction" -- from noise and water use to AI ethics to simple</span>
-<span id="cb19-772"><a href="#cb19-772" aria-hidden="true" tabindex="-1"></a>neighborhood character concerns.</span>
+<span id="cb19-713"><a href="#cb19-713" aria-hidden="true" tabindex="-1"></a><span class="fu">### What the Income Gradient Implies for Compensation</span></span>
+<span id="cb19-714"><a href="#cb19-714" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-715"><a href="#cb19-715" aria-hidden="true" tabindex="-1"></a>The core finding is that NYC census tracts closer to industrial land have</span>
+<span id="cb19-716"><a href="#cb19-716" aria-hidden="true" tabindex="-1"></a>lower median household incomes, and the gradient is continuous and</span>
+<span id="cb19-717"><a href="#cb19-717" aria-hidden="true" tabindex="-1"></a>statistically robust. This does not prove that industrial proximity *causes*</span>
+<span id="cb19-718"><a href="#cb19-718" aria-hidden="true" tabindex="-1"></a>lower incomes -- the causal story runs in at least two directions. Industrial</span>
+<span id="cb19-719"><a href="#cb19-719" aria-hidden="true" tabindex="-1"></a>corridors may have developed where land was already cheap (lower-income areas).</span>
+<span id="cb19-720"><a href="#cb19-720" aria-hidden="true" tabindex="-1"></a>Or affluent neighborhoods may have used zoning to exclude industrial uses over</span>
+<span id="cb19-721"><a href="#cb19-721" aria-hidden="true" tabindex="-1"></a>time, making the correlation partly a product of political power. Distinguishing</span>
+<span id="cb19-722"><a href="#cb19-722" aria-hidden="true" tabindex="-1"></a>those explanations requires zoning history data this analysis does not include.</span>
+<span id="cb19-723"><a href="#cb19-723" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-724"><a href="#cb19-724" aria-hidden="true" tabindex="-1"></a>What the gradient does support is a directional reading: across 2,206 NYC</span>
+<span id="cb19-725"><a href="#cb19-725" aria-hidden="true" tabindex="-1"></a>tracts, proximity to industrial land is consistently associated with lower</span>
+<span id="cb19-726"><a href="#cb19-726" aria-hidden="true" tabindex="-1"></a>household income. People with more resources tend to live farther from</span>
+<span id="cb19-727"><a href="#cb19-727" aria-hidden="true" tabindex="-1"></a>industrial land. That pattern is consistent with the Netherlands research</span>
+<span id="cb19-728"><a href="#cb19-728" aria-hidden="true" tabindex="-1"></a>finding a 15% property value discount within 250 meters of industrial sites,</span>
+<span id="cb19-729"><a href="#cb19-729" aria-hidden="true" tabindex="-1"></a>though the two measures capture different things (income sorting vs. asset</span>
+<span id="cb19-730"><a href="#cb19-730" aria-hidden="true" tabindex="-1"></a>value).</span>
+<span id="cb19-731"><a href="#cb19-731" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-732"><a href="#cb19-732" aria-hidden="true" tabindex="-1"></a>**Back to the $10,000 question.** NorthPoint offered Hazle Township residents</span>
+<span id="cb19-733"><a href="#cb19-733" aria-hidden="true" tabindex="-1"></a>$10,000 -- a one-time payment -- to accept a 1,300-acre data center. The</span>
+<span id="cb19-734"><a href="#cb19-734" aria-hidden="true" tabindex="-1"></a>Netherlands study gives the clearest empirical benchmark: homes within 250</span>
+<span id="cb19-735"><a href="#cb19-735" aria-hidden="true" tabindex="-1"></a>meters of industrial sites sold for roughly 15% less. If a home near the</span>
+<span id="cb19-736"><a href="#cb19-736" aria-hidden="true" tabindex="-1"></a>facility is worth $200,000, that is a $30,000 loss in asset value -- three</span>
+<span id="cb19-737"><a href="#cb19-737" aria-hidden="true" tabindex="-1"></a>times the NorthPoint offer. The discount fades with distance; by roughly 1.4</span>
+<span id="cb19-738"><a href="#cb19-738" aria-hidden="true" tabindex="-1"></a>miles it is near zero, so homes closest to the facility bear the largest loss.</span>
+<span id="cb19-739"><a href="#cb19-739" aria-hidden="true" tabindex="-1"></a>A flat $10,000 to everyone regardless of distance ignores that geography</span>
+<span id="cb19-740"><a href="#cb19-740" aria-hidden="true" tabindex="-1"></a>entirely.</span>
+<span id="cb19-741"><a href="#cb19-741" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-742"><a href="#cb19-742" aria-hidden="true" tabindex="-1"></a>The NYC income gradient points the same direction. Tracts within 0.25 miles</span>
+<span id="cb19-743"><a href="#cb19-743" aria-hidden="true" tabindex="-1"></a>of industrial land have a median income of $63,708; tracts beyond 1 mile reach</span>
+<span id="cb19-744"><a href="#cb19-744" aria-hidden="true" tabindex="-1"></a>$90,379. That $26,671 gap reflects sorting rather than a direct cost to any</span>
+<span id="cb19-745"><a href="#cb19-745" aria-hidden="true" tabindex="-1"></a>individual household, and should not be read as an annual figure. But it</span>
+<span id="cb19-746"><a href="#cb19-746" aria-hidden="true" tabindex="-1"></a>reinforces the Dutch finding: proximity to industrial land is something people</span>
+<span id="cb19-747"><a href="#cb19-747" aria-hidden="true" tabindex="-1"></a>with options choose to avoid.</span>
+<span id="cb19-748"><a href="#cb19-748" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-749"><a href="#cb19-749" aria-hidden="true" tabindex="-1"></a>None of this means developers should not build. It means the compensation</span>
+<span id="cb19-750"><a href="#cb19-750" aria-hidden="true" tabindex="-1"></a>question deserves an empirical basis rather than an arbitrary one. Relevant</span>
+<span id="cb19-751"><a href="#cb19-751" aria-hidden="true" tabindex="-1"></a>inputs would include: the distance from the facility to each household, local</span>
+<span id="cb19-752"><a href="#cb19-752" aria-hidden="true" tabindex="-1"></a>property values before and after comparable facilities opened nearby, the</span>
+<span id="cb19-753"><a href="#cb19-753" aria-hidden="true" tabindex="-1"></a>expected duration of impacts (noise, traffic, visual), and whether payments</span>
+<span id="cb19-754"><a href="#cb19-754" aria-hidden="true" tabindex="-1"></a>should be structured as one-time checks or ongoing annual compensation tied</span>
+<span id="cb19-755"><a href="#cb19-755" aria-hidden="true" tabindex="-1"></a>to the facility's operating life.</span>
+<span id="cb19-756"><a href="#cb19-756" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-757"><a href="#cb19-757" aria-hidden="true" tabindex="-1"></a><span class="fu">### Implications for the AI Data Center Debate</span></span>
+<span id="cb19-758"><a href="#cb19-758" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-759"><a href="#cb19-759" aria-hidden="true" tabindex="-1"></a>The current conflict over data center siting is partly a zoning fight, partly</span>
+<span id="cb19-760"><a href="#cb19-760" aria-hidden="true" tabindex="-1"></a>an AI anxiety fight, and partly a legitimate dispute over who pays for</span>
+<span id="cb19-761"><a href="#cb19-761" aria-hidden="true" tabindex="-1"></a>infrastructure that benefits a much larger population. In Q2 2026 alone,</span>
+<span id="cb19-762"><a href="#cb19-762" aria-hidden="true" tabindex="-1"></a>community resistance stalled $68 billion in data center projects across the U.S.</span>
+<span id="cb19-763"><a href="#cb19-763" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">TechCrunch</span><span class="co">](https://techcrunch.com/2026/09/22/everyone-can-find-a-reason-to-dislike-data-center-construction/)</span></span>
+<span id="cb19-764"><a href="#cb19-764" aria-hidden="true" tabindex="-1"></a>reported in September 2026 that "everyone can find a reason to dislike data</span>
+<span id="cb19-765"><a href="#cb19-765" aria-hidden="true" tabindex="-1"></a>center construction" -- from noise and water use to AI ethics to simple</span>
+<span id="cb19-766"><a href="#cb19-766" aria-hidden="true" tabindex="-1"></a>neighborhood character concerns.</span>
+<span id="cb19-767"><a href="#cb19-767" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-768"><a href="#cb19-768" aria-hidden="true" tabindex="-1"></a>The <span class="co">[</span><span class="ot">Brookings Institution</span><span class="co">](https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/)</span></span>
+<span id="cb19-769"><a href="#cb19-769" aria-hidden="true" tabindex="-1"></a>framed it as a democratic accountability problem: if AI infrastructure is</span>
+<span id="cb19-770"><a href="#cb19-770" aria-hidden="true" tabindex="-1"></a>built wherever companies choose, with local governments as the only check,</span>
+<span id="cb19-771"><a href="#cb19-771" aria-hidden="true" tabindex="-1"></a>communities end up negotiating individually against well-resourced developers</span>
+<span id="cb19-772"><a href="#cb19-772" aria-hidden="true" tabindex="-1"></a>without any common framework for what fair compensation looks like.</span>
 <span id="cb19-773"><a href="#cb19-773" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-774"><a href="#cb19-774" aria-hidden="true" tabindex="-1"></a>The <span class="co">[</span><span class="ot">Brookings Institution</span><span class="co">](https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/)</span></span>
-<span id="cb19-775"><a href="#cb19-775" aria-hidden="true" tabindex="-1"></a>framed it as a democratic accountability problem: if AI infrastructure is</span>
-<span id="cb19-776"><a href="#cb19-776" aria-hidden="true" tabindex="-1"></a>built wherever companies choose, with local governments as the only check,</span>
-<span id="cb19-777"><a href="#cb19-777" aria-hidden="true" tabindex="-1"></a>communities end up negotiating individually against well-resourced developers</span>
-<span id="cb19-778"><a href="#cb19-778" aria-hidden="true" tabindex="-1"></a>without any common framework for what fair compensation looks like.</span>
-<span id="cb19-779"><a href="#cb19-779" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-780"><a href="#cb19-780" aria-hidden="true" tabindex="-1"></a>NYC's industrial land income gradient does not resolve that, but it offers</span>
-<span id="cb19-781"><a href="#cb19-781" aria-hidden="true" tabindex="-1"></a>one empirical anchor. A city with 80 years of industrial zoning history shows</span>
-<span id="cb19-782"><a href="#cb19-782" aria-hidden="true" tabindex="-1"></a>that people consistently sort away from industrial land when they can afford</span>
-<span id="cb19-783"><a href="#cb19-783" aria-hidden="true" tabindex="-1"></a>to. If data center developers want to change that sorting -- to site facilities</span>
-<span id="cb19-784"><a href="#cb19-784" aria-hidden="true" tabindex="-1"></a>in areas where residents have the resources to object and the political</span>
-<span id="cb19-785"><a href="#cb19-785" aria-hidden="true" tabindex="-1"></a>influence to succeed -- the offer needs to reflect what those residents are</span>
-<span id="cb19-786"><a href="#cb19-786" aria-hidden="true" tabindex="-1"></a>actually giving up.</span>
-<span id="cb19-787"><a href="#cb19-787" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-788"><a href="#cb19-788" aria-hidden="true" tabindex="-1"></a>Whether the comparison between NYC's industrial lots and a Pennsylvania data</span>
-<span id="cb19-789"><a href="#cb19-789" aria-hidden="true" tabindex="-1"></a>center is close enough to matter is a judgment call. The land uses are</span>
-<span id="cb19-790"><a href="#cb19-790" aria-hidden="true" tabindex="-1"></a>different. The geography is different. But the core mechanism -- a large</span>
-<span id="cb19-791"><a href="#cb19-791" aria-hidden="true" tabindex="-1"></a>industrial facility arrives near a residential area, generating noise, traffic,</span>
-<span id="cb19-792"><a href="#cb19-792" aria-hidden="true" tabindex="-1"></a>and visual impact -- is similar enough that the income gradient finding is at</span>
-<span id="cb19-793"><a href="#cb19-793" aria-hidden="true" tabindex="-1"></a>minimum a reasonable order-of-magnitude reference, and significantly better</span>
-<span id="cb19-794"><a href="#cb19-794" aria-hidden="true" tabindex="-1"></a>than no empirical basis at all.</span>
+<span id="cb19-774"><a href="#cb19-774" aria-hidden="true" tabindex="-1"></a>NYC's industrial land income gradient does not resolve that, but it offers</span>
+<span id="cb19-775"><a href="#cb19-775" aria-hidden="true" tabindex="-1"></a>one empirical anchor. Across 2,206 tracts, income rises consistently with</span>
+<span id="cb19-776"><a href="#cb19-776" aria-hidden="true" tabindex="-1"></a>distance from industrial land. That sorting pattern, combined with the Dutch</span>
+<span id="cb19-777"><a href="#cb19-777" aria-hidden="true" tabindex="-1"></a>property value evidence, suggests the question of what residents are owed is</span>
+<span id="cb19-778"><a href="#cb19-778" aria-hidden="true" tabindex="-1"></a>empirical, not just political -- and that a flat $10,000 is not derived from</span>
+<span id="cb19-779"><a href="#cb19-779" aria-hidden="true" tabindex="-1"></a>any such calculation.</span>
+<span id="cb19-780"><a href="#cb19-780" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-781"><a href="#cb19-781" aria-hidden="true" tabindex="-1"></a>Whether the comparison between NYC's industrial lots and a Pennsylvania data</span>
+<span id="cb19-782"><a href="#cb19-782" aria-hidden="true" tabindex="-1"></a>center is close enough to matter is a judgment call. The land uses are</span>
+<span id="cb19-783"><a href="#cb19-783" aria-hidden="true" tabindex="-1"></a>different. The geography is different. But the core mechanism -- a large</span>
+<span id="cb19-784"><a href="#cb19-784" aria-hidden="true" tabindex="-1"></a>industrial facility arrives near a residential area, generating noise, traffic,</span>
+<span id="cb19-785"><a href="#cb19-785" aria-hidden="true" tabindex="-1"></a>and visual impact -- is similar enough that the income gradient finding is at</span>
+<span id="cb19-786"><a href="#cb19-786" aria-hidden="true" tabindex="-1"></a>minimum a reasonable order-of-magnitude reference, and significantly better</span>
+<span id="cb19-787"><a href="#cb19-787" aria-hidden="true" tabindex="-1"></a>than no empirical basis at all.</span>
+<span id="cb19-788"><a href="#cb19-788" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-789"><a href="#cb19-789" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-790"><a href="#cb19-790" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-791"><a href="#cb19-791" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reproducibility</span></span>
+<span id="cb19-792"><a href="#cb19-792" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-793"><a href="#cb19-793" aria-hidden="true" tabindex="-1"></a>All data is pulled from public APIs at runtime. To reproduce this analysis</span>
+<span id="cb19-794"><a href="#cb19-794" aria-hidden="true" tabindex="-1"></a>from scratch:</span>
 <span id="cb19-795"><a href="#cb19-795" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-796"><a href="#cb19-796" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-797"><a href="#cb19-797" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-798"><a href="#cb19-798" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reproducibility</span></span>
+<span id="cb19-796"><a href="#cb19-796" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb19-797"><a href="#cb19-797" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Install packages and create folder structure</span></span>
+<span id="cb19-798"><a href="#cb19-798" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"setup.R"</span>)</span>
 <span id="cb19-799"><a href="#cb19-799" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-800"><a href="#cb19-800" aria-hidden="true" tabindex="-1"></a>All data is pulled from public APIs at runtime. To reproduce this analysis</span>
-<span id="cb19-801"><a href="#cb19-801" aria-hidden="true" tabindex="-1"></a>from scratch:</span>
+<span id="cb19-800"><a href="#cb19-800" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Pull all data from APIs</span></span>
+<span id="cb19-801"><a href="#cb19-801" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/01_data_pull.R"</span>)</span>
 <span id="cb19-802"><a href="#cb19-802" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-803"><a href="#cb19-803" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb19-804"><a href="#cb19-804" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Install packages and create folder structure</span></span>
-<span id="cb19-805"><a href="#cb19-805" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"setup.R"</span>)</span>
-<span id="cb19-806"><a href="#cb19-806" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-807"><a href="#cb19-807" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Pull all data from APIs</span></span>
-<span id="cb19-808"><a href="#cb19-808" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/01_data_pull.R"</span>)</span>
-<span id="cb19-809"><a href="#cb19-809" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-810"><a href="#cb19-810" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Run spatial analysis (computes covered/gap status and dist_to_nearest_miles)</span></span>
-<span id="cb19-811"><a href="#cb19-811" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/02_spatial_analysis.R"</span>)</span>
+<span id="cb19-803"><a href="#cb19-803" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Run spatial analysis (computes covered/gap status and dist_to_nearest_miles)</span></span>
+<span id="cb19-804"><a href="#cb19-804" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/02_spatial_analysis.R"</span>)</span>
+<span id="cb19-805"><a href="#cb19-805" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-806"><a href="#cb19-806" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Export maps</span></span>
+<span id="cb19-807"><a href="#cb19-807" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/03_maps.R"</span>)</span>
+<span id="cb19-808"><a href="#cb19-808" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-809"><a href="#cb19-809" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Render this report</span></span>
+<span id="cb19-810"><a href="#cb19-810" aria-hidden="true" tabindex="-1"></a>quarto<span class="sc">::</span><span class="fu">quarto_render</span>(<span class="st">"report/index.qmd"</span>)</span>
+<span id="cb19-811"><a href="#cb19-811" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb19-812"><a href="#cb19-812" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-813"><a href="#cb19-813" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Export maps</span></span>
-<span id="cb19-814"><a href="#cb19-814" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/03_maps.R"</span>)</span>
-<span id="cb19-815"><a href="#cb19-815" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-816"><a href="#cb19-816" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Render this report</span></span>
-<span id="cb19-817"><a href="#cb19-817" aria-hidden="true" tabindex="-1"></a>quarto<span class="sc">::</span><span class="fu">quarto_render</span>(<span class="st">"report/index.qmd"</span>)</span>
-<span id="cb19-818"><a href="#cb19-818" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-813"><a href="#cb19-813" aria-hidden="true" tabindex="-1"></a>**R version:** <span class="in">`r R.version$version.string`</span></span>
+<span id="cb19-814"><a href="#cb19-814" aria-hidden="true" tabindex="-1"></a>**Key packages:** tidycensus <span class="in">`r packageVersion("tidycensus")`</span>,</span>
+<span id="cb19-815"><a href="#cb19-815" aria-hidden="true" tabindex="-1"></a>sf <span class="in">`r packageVersion("sf")`</span>,</span>
+<span id="cb19-816"><a href="#cb19-816" aria-hidden="true" tabindex="-1"></a>ggplot2 <span class="in">`r packageVersion("ggplot2")`</span></span>
+<span id="cb19-817"><a href="#cb19-817" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-818"><a href="#cb19-818" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb19-819"><a href="#cb19-819" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-820"><a href="#cb19-820" aria-hidden="true" tabindex="-1"></a>**R version:** <span class="in">`r R.version$version.string`</span></span>
-<span id="cb19-821"><a href="#cb19-821" aria-hidden="true" tabindex="-1"></a>**Key packages:** tidycensus <span class="in">`r packageVersion("tidycensus")`</span>,</span>
-<span id="cb19-822"><a href="#cb19-822" aria-hidden="true" tabindex="-1"></a>sf <span class="in">`r packageVersion("sf")`</span>,</span>
-<span id="cb19-823"><a href="#cb19-823" aria-hidden="true" tabindex="-1"></a>ggplot2 <span class="in">`r packageVersion("ggplot2")`</span></span>
+<span id="cb19-820"><a href="#cb19-820" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Citations</span></span>
+<span id="cb19-821"><a href="#cb19-821" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-822"><a href="#cb19-822" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2020). *2020 Decennial Census Redistricting Data</span>
+<span id="cb19-823"><a href="#cb19-823" aria-hidden="true" tabindex="-1"></a>(Public Law 94-171) Summary File*. Retrieved via the tidycensus R package.</span>
 <span id="cb19-824"><a href="#cb19-824" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-825"><a href="#cb19-825" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-826"><a href="#cb19-826" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-827"><a href="#cb19-827" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Citations</span></span>
-<span id="cb19-828"><a href="#cb19-828" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-829"><a href="#cb19-829" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2020). *2020 Decennial Census Redistricting Data</span>
-<span id="cb19-830"><a href="#cb19-830" aria-hidden="true" tabindex="-1"></a>(Public Law 94-171) Summary File*. Retrieved via the tidycensus R package.</span>
-<span id="cb19-831"><a href="#cb19-831" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-832"><a href="#cb19-832" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2020). *American Community Survey 5-Year Estimates:</span>
-<span id="cb19-833"><a href="#cb19-833" aria-hidden="true" tabindex="-1"></a>Median Household Income (B19013)*. Retrieved via the tidycensus R package.</span>
-<span id="cb19-834"><a href="#cb19-834" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-835"><a href="#cb19-835" aria-hidden="true" tabindex="-1"></a>NYC Department of City Planning. (2024). *PLUTO: Primary Land Use Tax Lot</span>
-<span id="cb19-836"><a href="#cb19-836" aria-hidden="true" tabindex="-1"></a>Output*. NYC Open Data. https://data.cityofnewyork.us/resource/64uk-42ks.json</span>
+<span id="cb19-825"><a href="#cb19-825" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2020). *American Community Survey 5-Year Estimates:</span>
+<span id="cb19-826"><a href="#cb19-826" aria-hidden="true" tabindex="-1"></a>Median Household Income (B19013)*. Retrieved via the tidycensus R package.</span>
+<span id="cb19-827"><a href="#cb19-827" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-828"><a href="#cb19-828" aria-hidden="true" tabindex="-1"></a>NYC Department of City Planning. (2024). *PLUTO: Primary Land Use Tax Lot</span>
+<span id="cb19-829"><a href="#cb19-829" aria-hidden="true" tabindex="-1"></a>Output*. NYC Open Data. https://data.cityofnewyork.us/resource/64uk-42ks.json</span>
+<span id="cb19-830"><a href="#cb19-830" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-831"><a href="#cb19-831" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2024). *TIGER/Line Shapefiles: Counties*. Retrieved</span>
+<span id="cb19-832"><a href="#cb19-832" aria-hidden="true" tabindex="-1"></a>via the tigris R package.</span>
+<span id="cb19-833"><a href="#cb19-833" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-834"><a href="#cb19-834" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-835"><a href="#cb19-835" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-836"><a href="#cb19-836" aria-hidden="true" tabindex="-1"></a><span class="fu">## References and Further Reading</span></span>
 <span id="cb19-837"><a href="#cb19-837" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-838"><a href="#cb19-838" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2024). *TIGER/Line Shapefiles: Counties*. Retrieved</span>
-<span id="cb19-839"><a href="#cb19-839" aria-hidden="true" tabindex="-1"></a>via the tigris R package.</span>
-<span id="cb19-840"><a href="#cb19-840" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-841"><a href="#cb19-841" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-842"><a href="#cb19-842" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-843"><a href="#cb19-843" aria-hidden="true" tabindex="-1"></a><span class="fu">## References and Further Reading</span></span>
+<span id="cb19-838"><a href="#cb19-838" aria-hidden="true" tabindex="-1"></a>de Vor, F., &amp; de Groot, H. L. F. (2011). *The Impact of Industrial Sites on</span>
+<span id="cb19-839"><a href="#cb19-839" aria-hidden="true" tabindex="-1"></a>Residential Property Values: A Hedonic Pricing Analysis from the Netherlands.*</span>
+<span id="cb19-840"><a href="#cb19-840" aria-hidden="true" tabindex="-1"></a>Regional Studies, 45(5), 609--623. Key finding: 15% price discount within 250</span>
+<span id="cb19-841"><a href="#cb19-841" aria-hidden="true" tabindex="-1"></a>meters of industrial sites, fading to near zero at 2,250 meters (roughly 1.4</span>
+<span id="cb19-842"><a href="#cb19-842" aria-hidden="true" tabindex="-1"></a>miles). Based on 70,684 home sales.</span>
+<span id="cb19-843"><a href="#cb19-843" aria-hidden="true" tabindex="-1"></a>https://papers.tinbergen.nl/09035.pdf</span>
 <span id="cb19-844"><a href="#cb19-844" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-845"><a href="#cb19-845" aria-hidden="true" tabindex="-1"></a>de Vor, F., &amp; de Groot, H. L. F. (2011). *The Impact of Industrial Sites on</span>
-<span id="cb19-846"><a href="#cb19-846" aria-hidden="true" tabindex="-1"></a>Residential Property Values: A Hedonic Pricing Analysis from the Netherlands.*</span>
-<span id="cb19-847"><a href="#cb19-847" aria-hidden="true" tabindex="-1"></a>Regional Studies, 45(5), 609--623. Key finding: 15% price discount within 250</span>
-<span id="cb19-848"><a href="#cb19-848" aria-hidden="true" tabindex="-1"></a>meters of industrial sites, fading to near zero at 2,250 meters (roughly 1.4</span>
-<span id="cb19-849"><a href="#cb19-849" aria-hidden="true" tabindex="-1"></a>miles). Based on 70,684 home sales.</span>
-<span id="cb19-850"><a href="#cb19-850" aria-hidden="true" tabindex="-1"></a>https://papers.tinbergen.nl/09035.pdf</span>
-<span id="cb19-851"><a href="#cb19-851" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-852"><a href="#cb19-852" aria-hidden="true" tabindex="-1"></a>Data Center Watch / Parameter.io. (2026). *Community Resistance Stalls $68</span>
-<span id="cb19-853"><a href="#cb19-853" aria-hidden="true" tabindex="-1"></a>Billion Worth of AI Data Center Developments.*</span>
-<span id="cb19-854"><a href="#cb19-854" aria-hidden="true" tabindex="-1"></a>https://parameter.io/community-resistance-stalls-68-billion-worth-of-ai-data-center-developments/</span>
-<span id="cb19-855"><a href="#cb19-855" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-856"><a href="#cb19-856" aria-hidden="true" tabindex="-1"></a>Wheeler, T. (2026). *Data Center Backlash Signals a Fight Over AI Power.*</span>
-<span id="cb19-857"><a href="#cb19-857" aria-hidden="true" tabindex="-1"></a>Brookings Institution.</span>
-<span id="cb19-858"><a href="#cb19-858" aria-hidden="true" tabindex="-1"></a>https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/</span>
-<span id="cb19-859"><a href="#cb19-859" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-860"><a href="#cb19-860" aria-hidden="true" tabindex="-1"></a>Alcorn, C. (2026). *Data center developer offers $10,000 checks to 4,500</span>
-<span id="cb19-861"><a href="#cb19-861" aria-hidden="true" tabindex="-1"></a>households if 1,300-acre facility is approved.* Tom's Hardware.</span>
-<span id="cb19-862"><a href="#cb19-862" aria-hidden="true" tabindex="-1"></a>https://www.tomshardware.com/tech-industry/data-centers/data-center-developer-offers-usd10-000-checks-to-4-500-households-if-the-1-300-acre-facility-is-approved-locals-push-back-over-noise-and-bribe-concerns</span>
-<span id="cb19-863"><a href="#cb19-863" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-864"><a href="#cb19-864" aria-hidden="true" tabindex="-1"></a>Stop Ohio Data Centers. (2025). *Data Centers and Your Property Value: What</span>
-<span id="cb19-865"><a href="#cb19-865" aria-hidden="true" tabindex="-1"></a>the GMU Study Found, What Mansfield Residents Say.*</span>
-<span id="cb19-866"><a href="#cb19-866" aria-hidden="true" tabindex="-1"></a>https://stopohiodatacenters.org/data-center-property-value-ohio</span>
-<span id="cb19-867"><a href="#cb19-867" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-868"><a href="#cb19-868" aria-hidden="true" tabindex="-1"></a>Coldewey, D. (2026, September 22). *Everyone can find a reason to dislike</span>
-<span id="cb19-869"><a href="#cb19-869" aria-hidden="true" tabindex="-1"></a>data center construction.* TechCrunch.</span>
-<span id="cb19-870"><a href="#cb19-870" aria-hidden="true" tabindex="-1"></a>https://techcrunch.com/2026/09/22/everyone-can-find-a-reason-to-dislike-data-center-construction/</span>
-<span id="cb19-871"><a href="#cb19-871" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-872"><a href="#cb19-872" aria-hidden="true" tabindex="-1"></a>Haber, M. (2026). *How Data Centers Are Set to Impact the Value of Your Home.*</span>
-<span id="cb19-873"><a href="#cb19-873" aria-hidden="true" tabindex="-1"></a>Newsweek.</span>
-<span id="cb19-874"><a href="#cb19-874" aria-hidden="true" tabindex="-1"></a>https://www.newsweek.com/how-data-centers-are-set-to-impact-the-value-of-your-home-11939599</span>
-<span id="cb19-875"><a href="#cb19-875" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-876"><a href="#cb19-876" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-877"><a href="#cb19-877" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-878"><a href="#cb19-878" aria-hidden="true" tabindex="-1"></a><span class="fu">## AI Usage Disclosure</span></span>
-<span id="cb19-879"><a href="#cb19-879" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-880"><a href="#cb19-880" aria-hidden="true" tabindex="-1"></a>This project was developed with assistance from Claude (Anthropic) as a</span>
-<span id="cb19-881"><a href="#cb19-881" aria-hidden="true" tabindex="-1"></a>collaborative coding and methodology tool. Claude helped structure the R</span>
-<span id="cb19-882"><a href="#cb19-882" aria-hidden="true" tabindex="-1"></a>scripts, debug API connectivity issues during data acquisition, and draft</span>
-<span id="cb19-883"><a href="#cb19-883" aria-hidden="true" tabindex="-1"></a>the prose in this report. All analytical decisions — including the choice</span>
-<span id="cb19-884"><a href="#cb19-884" aria-hidden="true" tabindex="-1"></a>of 1-mile service radius, the PLUTO land use classification, and the</span>
-<span id="cb19-885"><a href="#cb19-885" aria-hidden="true" tabindex="-1"></a>interpretation of results — were made and reviewed by the author. All code</span>
-<span id="cb19-886"><a href="#cb19-886" aria-hidden="true" tabindex="-1"></a>was tested and executed locally by the author prior to publication.</span>
+<span id="cb19-845"><a href="#cb19-845" aria-hidden="true" tabindex="-1"></a>Data Center Watch / Parameter.io. (2026). *Community Resistance Stalls $68</span>
+<span id="cb19-846"><a href="#cb19-846" aria-hidden="true" tabindex="-1"></a>Billion Worth of AI Data Center Developments.*</span>
+<span id="cb19-847"><a href="#cb19-847" aria-hidden="true" tabindex="-1"></a>https://parameter.io/community-resistance-stalls-68-billion-worth-of-ai-data-center-developments/</span>
+<span id="cb19-848"><a href="#cb19-848" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-849"><a href="#cb19-849" aria-hidden="true" tabindex="-1"></a>Wheeler, T. (2026). *Data Center Backlash Signals a Fight Over AI Power.*</span>
+<span id="cb19-850"><a href="#cb19-850" aria-hidden="true" tabindex="-1"></a>Brookings Institution.</span>
+<span id="cb19-851"><a href="#cb19-851" aria-hidden="true" tabindex="-1"></a>https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/</span>
+<span id="cb19-852"><a href="#cb19-852" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-853"><a href="#cb19-853" aria-hidden="true" tabindex="-1"></a>Alcorn, C. (2026). *Data center developer offers $10,000 checks to 4,500</span>
+<span id="cb19-854"><a href="#cb19-854" aria-hidden="true" tabindex="-1"></a>households if 1,300-acre facility is approved.* Tom's Hardware.</span>
+<span id="cb19-855"><a href="#cb19-855" aria-hidden="true" tabindex="-1"></a>https://www.tomshardware.com/tech-industry/data-centers/data-center-developer-offers-usd10-000-checks-to-4-500-households-if-the-1-300-acre-facility-is-approved-locals-push-back-over-noise-and-bribe-concerns</span>
+<span id="cb19-856"><a href="#cb19-856" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-857"><a href="#cb19-857" aria-hidden="true" tabindex="-1"></a>Charniga, K., et al. (2023). *The Local Economic Impacts of Data Centers.*</span>
+<span id="cb19-858"><a href="#cb19-858" aria-hidden="true" tabindex="-1"></a>George Mason University, Mercatus Center. (Northern Virginia home price</span>
+<span id="cb19-859"><a href="#cb19-859" aria-hidden="true" tabindex="-1"></a>analysis cited in coverage; working paper -- verify current availability.)</span>
+<span id="cb19-860"><a href="#cb19-860" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-861"><a href="#cb19-861" aria-hidden="true" tabindex="-1"></a>Vox. (2026). *Americans don't know how to fight AI. So they're fighting</span>
+<span id="cb19-862"><a href="#cb19-862" aria-hidden="true" tabindex="-1"></a>data centers.* [Cited in Introduction for framing; retrieve current URL</span>
+<span id="cb19-863"><a href="#cb19-863" aria-hidden="true" tabindex="-1"></a>before publication.]</span>
+<span id="cb19-864"><a href="#cb19-864" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-865"><a href="#cb19-865" aria-hidden="true" tabindex="-1"></a>Coldewey, D. (2026, September 22). *Everyone can find a reason to dislike</span>
+<span id="cb19-866"><a href="#cb19-866" aria-hidden="true" tabindex="-1"></a>data center construction.* TechCrunch.</span>
+<span id="cb19-867"><a href="#cb19-867" aria-hidden="true" tabindex="-1"></a>https://techcrunch.com/2026/09/22/everyone-can-find-a-reason-to-dislike-data-center-construction/</span>
+<span id="cb19-868"><a href="#cb19-868" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-869"><a href="#cb19-869" aria-hidden="true" tabindex="-1"></a>Haber, M. (2026). *How Data Centers Are Set to Impact the Value of Your Home.*</span>
+<span id="cb19-870"><a href="#cb19-870" aria-hidden="true" tabindex="-1"></a>Newsweek.</span>
+<span id="cb19-871"><a href="#cb19-871" aria-hidden="true" tabindex="-1"></a>https://www.newsweek.com/how-data-centers-are-set-to-impact-the-value-of-your-home-11939599</span>
+<span id="cb19-872"><a href="#cb19-872" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-873"><a href="#cb19-873" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-874"><a href="#cb19-874" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-875"><a href="#cb19-875" aria-hidden="true" tabindex="-1"></a><span class="fu">## AI Usage Disclosure</span></span>
+<span id="cb19-876"><a href="#cb19-876" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-877"><a href="#cb19-877" aria-hidden="true" tabindex="-1"></a>This project was developed with assistance from Claude (Anthropic) as a</span>
+<span id="cb19-878"><a href="#cb19-878" aria-hidden="true" tabindex="-1"></a>collaborative coding and methodology tool. Claude helped structure the R</span>
+<span id="cb19-879"><a href="#cb19-879" aria-hidden="true" tabindex="-1"></a>scripts, debug API connectivity issues during data acquisition, and draft</span>
+<span id="cb19-880"><a href="#cb19-880" aria-hidden="true" tabindex="-1"></a>the prose in this report. All analytical decisions — including the choice</span>
+<span id="cb19-881"><a href="#cb19-881" aria-hidden="true" tabindex="-1"></a>of 1-mile service radius, the PLUTO land use classification, and the</span>
+<span id="cb19-882"><a href="#cb19-882" aria-hidden="true" tabindex="-1"></a>interpretation of results — were made and reviewed by the author. All code</span>
+<span id="cb19-883"><a href="#cb19-883" aria-hidden="true" tabindex="-1"></a>was tested and executed locally by the author prior to publication.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
