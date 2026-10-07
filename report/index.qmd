@@ -402,8 +402,7 @@ The gap tracts are concentrated in outer Queens and Brooklyn. That raises an
 obvious question: are these areas systematically wealthier, and if so, does
 income explain why industrial land is absent -- through zoning exclusion, land
 costs, or political influence? To examine this, I pull 2020 ACS median
-household income by tract and compare the distributions of gap tracts versus
-covered tracts.
+household income by tract and compare distributions across distance bands.
 
 ```{r}
 #| label: income-pull
@@ -416,6 +415,42 @@ nyc_tracts_income <- nyc_tracts |>
   st_drop_geometry() |>
   left_join(income_data, by = "GEOID") |>
   filter(!is.na(median_income))
+```
+
+```{r}
+#| label: income-by-band
+
+band_table <- nyc_tracts_income |>
+  mutate(band = cut(
+    dist_to_nearest_miles,
+    breaks = c(0, 0.25, 0.5, 1, Inf),
+    labels = c("0-0.25 mi", "0.25-0.5 mi", "0.5-1 mi", ">1 mi"),
+    include.lowest = TRUE
+  )) |>
+  group_by(band) |>
+  summarise(
+    tracts        = n(),
+    residents     = sum(population, na.rm = TRUE),
+    median_income = median(median_income, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+kable(
+  band_table,
+  col.names   = c("Distance Band", "Tracts", "Residents", "Median Household Income"),
+  format.args = list(big.mark = ","),
+  digits      = 0,
+  caption     = "Median household income by distance to nearest industrial lot (2020 ACS 5-year)"
+)
+```
+
+```{r}
+#| label: income-wilcox
+
+wt <- wilcox.test(
+  median_income ~ I(dist_to_nearest_miles > 0.5),
+  data = nyc_tracts_income
+)
 ```
 
 ```{r}
@@ -480,21 +515,24 @@ cat(
 )
 ```
 
-Gap tracts skew higher-income than covered tracts ($`r comma(round(all_gap_median))` gap vs.
-$`r comma(round(served_median))` covered, median household income). That result holds but needs
-context: only `r sum(!nyc_tracts_income$served)` of the `r sum(!nyc_tracts$served)` gap
-tracts matched to income data, and Queens accounts for most of the gap population
-(32,622 residents across 13 tracts). Queens gap tracts sit at the outer edges of
-the borough, far from the industrial corridors concentrated near the waterfront and
-freight routes.
+Median household income rises monotonically with distance from industrial land
+across all four distance bands: $63,708 within 0.25 miles, $66,704 at 0.25--0.5
+miles, $84,558 at 0.5--1 mile, and $90,379 beyond 1 mile. The step from within
+0.5 miles to beyond 0.5 miles is roughly $18,000. A Wilcoxon rank-sum test
+confirms the difference is not noise (p < 0.001, across 2,206 tracts with income
+data).
 
-The income gap is real, but the data here cannot distinguish between a geographic
-explanation (outer-borough tracts are simply far from where industrial corridors
-developed) and a political one (affluent neighborhoods successfully excluded
-industrial uses through zoning). **The gap follows the outer edges of the city's
-industrial footprint**, and those edges happen to overlap with more affluent
-outer-borough tracts. Separating geography from politics would require zoning
-history and land use change data over time.
+The binary gap comparison (the 31 covered tracts vs. the rest) tells the same
+story: gap tracts median $`r comma(round(all_gap_median))` vs. covered tracts
+$`r comma(round(served_median))`. But the distance-band table is more informative
+because it shows the gradient holds continuously, not just at the 1-mile cutoff.
+
+The data cannot distinguish between two explanations: affluent neighborhoods may
+have successfully excluded industrial uses through zoning, or those neighborhoods
+may simply sit at the outer edges of where the city's industrial corridors
+historically developed. Separating geography from politics would require zoning
+history and land use change data over time. What the data does establish is that
+the income gradient is real, city-wide, and statistically robust.
 
 ---
 
@@ -516,10 +554,13 @@ artifact. Manhattan's near-complete industrial land coverage otherwise reflects
 the density of lots in specific corridors (West Side railyards, Meatpacking
 District, Hudson Yards area).
 
-Income data shows gap tracts skew higher-income than the rest of the city. This
-is consistent with the outer-borough position of those tracts, but the data
-cannot rule out zoning exclusion. The Manhattan gap tract has no income data,
-since it has no counted population.
+Median household income rises monotonically with distance from industrial land
+across all four distance bands, from $63,708 within a quarter mile to $90,379
+beyond a mile. A Wilcoxon rank-sum test confirms the gradient is statistically
+significant (p < 0.001) across 2,206 tracts with income data. The data cannot
+say whether this reflects deliberate zoning exclusion or simply the geography
+of where industrial corridors developed, but the pattern itself is robust. The
+Manhattan gap tract has no income data, since it has no counted population.
 
 The distance-band analysis adds resolution beyond the binary gap classification.
 About 16% of New Yorkers (96.6% within a mile minus 80.4% within half a mile)
