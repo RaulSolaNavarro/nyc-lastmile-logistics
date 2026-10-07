@@ -22,40 +22,35 @@ execute:
 
 Urban freight depends on industrial land. Warehouses, distribution centers,
 and freight terminals require large, accessible lots -- the kind that are
-scarce, expensive, and under sustained conversion pressure in dense cities
-like New York. As industrial land disappears to residential and commercial
-development, the geography of where goods can be stored and dispatched shifts,
-with consequences for delivery costs, truck miles traveled, and service reach.
+scarce and expensive in dense cities like New York.
 
 This analysis maps how NYC's industrial land is distributed relative to where
-people actually live. It asks: **which census tracts fall outside a 1-mile
-radius of any industrial lot, how many residents live in those tracts, and how
-does that pattern vary by borough and income?**
+people actually live. It asks: **which census tracts fall entirely outside a
+1-mile radius of any industrial lot, how many residents live in those tracts,
+and how does that pattern vary by borough and income?**
 
 To answer it, I combine 2020 Census population data at the census tract level
 with NYC's PLUTO property database, which classifies every tax lot by land
-use. I filter for industrial and manufacturing lots (land use code 06) --
-warehouses, distribution centers, freight terminals, and some light
-manufacturing -- then measure straight-line distance from each tract centroid
-to the nearest lot. Tracts with no lot within 1 mile are classified as
-industrial land gaps.
+use. I filter for industrial and manufacturing lots (land use code 06) and
+buffer each lot by 1 mile. A census tract is classified as covered if any
+part of it intersects that buffer zone; tracts with no intersection are
+classified as industrial land gaps. Separately, I compute the straight-line
+distance from each tract centroid to its nearest industrial lot to enable
+continuous distance-band analysis beyond the binary classification.
 
-**What this measures and what it does not.** PLUTO code 06 is a broad
-category. It includes genuine logistics infrastructure alongside utility yards,
-rail maintenance facilities, concrete plants, and workshops with no delivery
-function. This analysis measures proximity to industrial land as a class, not
-proximity to operating last-mile delivery facilities specifically. A tract
-classified as "served" may be adjacent to a sanitation garage rather than a
-fulfillment center. Conversely, some last-mile delivery in Manhattan runs from
-microhubs and commercial spaces not classified as industrial in PLUTO at all.
-The results here are best read as a first-pass map of where industrial land
-exists relative to population -- a necessary input to logistics infrastructure
-planning, not a direct measure of delivery coverage.
+**What this measures and what it does not.** According to the NYC DCP PLUTO
+Data Dictionary, land use code 06 maps to building classes E* (warehouses),
+F* (factories), and L* (loft buildings). The category is a reasonable proxy
+for freight-relevant industrial space, but it includes factories and loft
+buildings alongside distribution-oriented warehouses. Conversely, some
+last-mile delivery in Manhattan runs from microhubs and commercial spaces not
+classified as industrial in PLUTO. The results here are best read as a
+first-pass map of where industrial land exists relative to population, not a
+direct measure of delivery coverage.
 
 The 1-mile threshold is intentionally tight. A 5-mile radius eliminates
 virtually all gaps in NYC. The tighter radius surfaces meaningful geographic
-variation and reflects the scale at which industrial land loss tends to affect
-urban neighborhoods.
+variation across the five boroughs.
 
 > **Data note (updated October 7, 2026):** An earlier version of this report
 > (published October 4) showed 38 gap tracts and 169,223 residents, with 14
@@ -533,14 +528,16 @@ measure, the second-highest share after Staten Island.
 
 ### Limitations
 
-**Broad land use category.** PLUTO code 06 includes warehouses, distribution
-centers, and freight terminals alongside utility facilities, rail maintenance
-yards, concrete plants, and workshops. This analysis measures proximity to
-industrial land as a class -- it does not distinguish a 500,000 sq ft
-fulfillment center from a 2,000 sq ft auto repair shop. A more operationally
-precise analysis would require commercial real estate data (CoStar, CBRE) or
-cross-referencing with business license records to isolate active logistics
-facilities.
+**Broad land use category.** According to the NYC DCP PLUTO Data Dictionary,
+land use code 06 maps to building classes E* (warehouses), F* (factories), and
+L* (loft buildings). Factories and lofts are included alongside
+distribution-oriented warehouses, and the category gives no indication of
+whether a lot hosts an active logistics operation. This analysis measures
+proximity to industrial land as a class -- it does not distinguish a 500,000 sq
+ft fulfillment center from a converted loft building or an inactive factory
+floor. A more operationally precise analysis would require commercial real
+estate data (CoStar, CBRE) or cross-referencing with business license records
+to isolate active logistics facilities.
 
 **Industrial land is not the only freight infrastructure.** Real last-mile
 delivery in dense neighborhoods often runs from microhubs, retail backrooms,
