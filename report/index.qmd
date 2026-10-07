@@ -49,9 +49,8 @@ sites sold for roughly 15% less than comparable homes beyond 2,250 meters --
 a discount that fades to near zero by about 1.4 miles out. Research
 specifically on data centers is more mixed. A [November 2025 George Mason University study](https://schar.gmu.edu/news/2025-11/study-home-prices-are-higher-when-house-near-data-center)
 on Northern Virginia home sales found prices *higher* near data centers -- but
-Northern Virginia is an atypical case: a high-income tech corridor where the
-data center industry is already integrated into the local economy and a major
-employer. Resident complaints near operating facilities (noise from cooling
+Northern Virginia is an atypical case: a high-income tech corridor where data
+centers are already part of the local economy. Resident complaints near operating facilities (noise from cooling
 equipment, power infrastructure, and truck deliveries) are documented in local
 press from Georgia, Ohio, and Virginia, but rigorous before-and-after property
 value studies at specific data center sites are not yet publicly available.
@@ -674,10 +673,10 @@ one at 0.9 miles is not. The distance-band table partially addresses this by
 reporting continuous bands, but the binary classification in the maps and
 borough table still uses the fixed threshold.
 
-**Straight-line distance is not travel time.** Proximity to industrial land
-says nothing about road network connectivity, traffic conditions, loading
-access, or building entry -- the actual constraints that determine delivery
-reach in an urban environment.
+**Straight-line distance does not capture impact.** Proximity to industrial
+land says nothing about noise exposure, truck route patterns, or sight lines
+from nearby homes -- the factors most relevant to residents living close to
+a facility.
 
 ### What the Income Gradient Implies for Compensation
 
