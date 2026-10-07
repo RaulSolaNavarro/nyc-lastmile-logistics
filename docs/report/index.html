@@ -214,11 +214,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Urban freight depends on industrial land. Warehouses, distribution centers, and freight terminals require large, accessible lots – the kind that are scarce, expensive, and under sustained conversion pressure in dense cities like New York. As industrial land disappears to residential and commercial development, the geography of where goods can be stored and dispatched shifts, with consequences for delivery costs, truck miles traveled, and service reach.</p>
-<p>This analysis maps how NYC’s industrial land is distributed relative to where people actually live. It asks: <strong>which census tracts fall outside a 1-mile radius of any industrial lot, how many residents live in those tracts, and how does that pattern vary by borough and income?</strong></p>
-<p>To answer it, I combine 2020 Census population data at the census tract level with NYC’s PLUTO property database, which classifies every tax lot by land use. I filter for industrial and manufacturing lots (land use code 06) – warehouses, distribution centers, freight terminals, and some light manufacturing – then measure straight-line distance from each tract centroid to the nearest lot. Tracts with no lot within 1 mile are classified as industrial land gaps.</p>
-<p><strong>What this measures and what it does not.</strong> PLUTO code 06 is a broad category. It includes genuine logistics infrastructure alongside utility yards, rail maintenance facilities, concrete plants, and workshops with no delivery function. This analysis measures proximity to industrial land as a class, not proximity to operating last-mile delivery facilities specifically. A tract classified as “served” may be adjacent to a sanitation garage rather than a fulfillment center. Conversely, some last-mile delivery in Manhattan runs from microhubs and commercial spaces not classified as industrial in PLUTO at all. The results here are best read as a first-pass map of where industrial land exists relative to population – a necessary input to logistics infrastructure planning, not a direct measure of delivery coverage.</p>
-<p>The 1-mile threshold is intentionally tight. A 5-mile radius eliminates virtually all gaps in NYC. The tighter radius surfaces meaningful geographic variation and reflects the scale at which industrial land loss tends to affect urban neighborhoods.</p>
+<p>Urban freight depends on industrial land. Warehouses, distribution centers, and freight terminals require large, accessible lots – the kind that are scarce and expensive in dense cities like New York.</p>
+<p>This analysis maps how NYC’s industrial land is distributed relative to where people actually live. It asks: <strong>which census tracts fall entirely outside a 1-mile radius of any industrial lot, how many residents live in those tracts, and how does that pattern vary by borough and income?</strong></p>
+<p>To answer it, I combine 2020 Census population data at the census tract level with NYC’s PLUTO property database, which classifies every tax lot by land use. I filter for industrial and manufacturing lots (land use code 06) and buffer each lot by 1 mile. A census tract is classified as covered if any part of it intersects that buffer zone; tracts with no intersection are classified as industrial land gaps. Separately, I compute the straight-line distance from each tract centroid to its nearest industrial lot to enable continuous distance-band analysis beyond the binary classification.</p>
+<p><strong>What this measures and what it does not.</strong> According to the NYC DCP PLUTO Data Dictionary, land use code 06 maps to building classes E* (warehouses), F* (factories), and L* (loft buildings). The category is a reasonable proxy for freight-relevant industrial space, but it includes factories and loft buildings alongside distribution-oriented warehouses. Conversely, some last-mile delivery in Manhattan runs from microhubs and commercial spaces not classified as industrial in PLUTO. The results here are best read as a first-pass map of where industrial land exists relative to population, not a direct measure of delivery coverage.</p>
+<p>The 1-mile threshold is intentionally tight. A 5-mile radius eliminates virtually all gaps in NYC. The tighter radius surfaces meaningful geographic variation across the five boroughs.</p>
 <blockquote class="blockquote">
 <p><strong>Data note (updated October 7, 2026):</strong> An earlier version of this report (published October 4) showed 38 gap tracts and 169,223 residents, with 14 Manhattan gap tracts. Those numbers were wrong. The Socrata API returns results in pages, and the initial pull hit the default 1,000-row limit, returning an incomplete PLUTO industrial lot dataset. A corrected pull (no row limit) retrieved the full set. With complete data, Manhattan has near-complete industrial land coverage (only 1 gap tract), and the city-wide gap falls to 31 tracts and 61,426 residents. All numbers in this version reflect the corrected pull.</p>
 </blockquote>
@@ -823,7 +823,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="limitations" class="level3">
 <h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
-<p><strong>Broad land use category.</strong> PLUTO code 06 includes warehouses, distribution centers, and freight terminals alongside utility facilities, rail maintenance yards, concrete plants, and workshops. This analysis measures proximity to industrial land as a class – it does not distinguish a 500,000 sq ft fulfillment center from a 2,000 sq ft auto repair shop. A more operationally precise analysis would require commercial real estate data (CoStar, CBRE) or cross-referencing with business license records to isolate active logistics facilities.</p>
+<p><strong>Broad land use category.</strong> According to the NYC DCP PLUTO Data Dictionary, land use code 06 maps to building classes E* (warehouses), F* (factories), and L* (loft buildings). Factories and lofts are included alongside distribution-oriented warehouses, and the category gives no indication of whether a lot hosts an active logistics operation. This analysis measures proximity to industrial land as a class – it does not distinguish a 500,000 sq ft fulfillment center from a converted loft building or an inactive factory floor. A more operationally precise analysis would require commercial real estate data (CoStar, CBRE) or cross-referencing with business license records to isolate active logistics facilities.</p>
 <p><strong>Industrial land is not the only freight infrastructure.</strong> Real last-mile delivery in dense neighborhoods often runs from microhubs, retail backrooms, and parking garages classified as commercial in PLUTO. The gaps measured here may overstate true freight access limitations for some neighborhoods.</p>
 <p><strong>Edge effect.</strong> This analysis counts only NYC-classified lots. Major distribution hubs in New Jersey (roughly 1 mile from west Manhattan) and just outside the city line in Nassau and Westchester are excluded. This inflates apparent gaps in western Manhattan, Staten Island, and eastern Queens. The effect is largest for Staten Island: the borough sits adjacent to major New Jersey logistics corridors in Elizabeth and Linden (across the Arthur Kill and Kill Van Kull), and its distance numbers would look materially different if those New Jersey lots were included.</p>
 <p><strong>The 1-mile threshold.</strong> A tract 1.1 miles from a lot is counted as a gap; one at 0.9 miles is not. The distance-band table partially addresses this by reporting continuous bands, but the binary classification in the maps and borough table still uses the fixed threshold.</p>
@@ -1856,119 +1856,121 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-554"><a href="#cb17-554" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-555"><a href="#cb17-555" aria-hidden="true" tabindex="-1"></a><span class="fu">### Limitations</span></span>
 <span id="cb17-556"><a href="#cb17-556" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-557"><a href="#cb17-557" aria-hidden="true" tabindex="-1"></a>**Broad land use category.** PLUTO code 06 includes warehouses, distribution</span>
-<span id="cb17-558"><a href="#cb17-558" aria-hidden="true" tabindex="-1"></a>centers, and freight terminals alongside utility facilities, rail maintenance</span>
-<span id="cb17-559"><a href="#cb17-559" aria-hidden="true" tabindex="-1"></a>yards, concrete plants, and workshops. This analysis measures proximity to</span>
-<span id="cb17-560"><a href="#cb17-560" aria-hidden="true" tabindex="-1"></a>industrial land as a class -- it does not distinguish a 500,000 sq ft</span>
-<span id="cb17-561"><a href="#cb17-561" aria-hidden="true" tabindex="-1"></a>fulfillment center from a 2,000 sq ft auto repair shop. A more operationally</span>
-<span id="cb17-562"><a href="#cb17-562" aria-hidden="true" tabindex="-1"></a>precise analysis would require commercial real estate data (CoStar, CBRE) or</span>
-<span id="cb17-563"><a href="#cb17-563" aria-hidden="true" tabindex="-1"></a>cross-referencing with business license records to isolate active logistics</span>
-<span id="cb17-564"><a href="#cb17-564" aria-hidden="true" tabindex="-1"></a>facilities.</span>
-<span id="cb17-565"><a href="#cb17-565" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-566"><a href="#cb17-566" aria-hidden="true" tabindex="-1"></a>**Industrial land is not the only freight infrastructure.** Real last-mile</span>
-<span id="cb17-567"><a href="#cb17-567" aria-hidden="true" tabindex="-1"></a>delivery in dense neighborhoods often runs from microhubs, retail backrooms,</span>
-<span id="cb17-568"><a href="#cb17-568" aria-hidden="true" tabindex="-1"></a>and parking garages classified as commercial in PLUTO. The gaps measured here</span>
-<span id="cb17-569"><a href="#cb17-569" aria-hidden="true" tabindex="-1"></a>may overstate true freight access limitations for some neighborhoods.</span>
-<span id="cb17-570"><a href="#cb17-570" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-571"><a href="#cb17-571" aria-hidden="true" tabindex="-1"></a>**Edge effect.** This analysis counts only NYC-classified lots. Major</span>
-<span id="cb17-572"><a href="#cb17-572" aria-hidden="true" tabindex="-1"></a>distribution hubs in New Jersey (roughly 1 mile from west Manhattan) and just</span>
-<span id="cb17-573"><a href="#cb17-573" aria-hidden="true" tabindex="-1"></a>outside the city line in Nassau and Westchester are excluded. This inflates</span>
-<span id="cb17-574"><a href="#cb17-574" aria-hidden="true" tabindex="-1"></a>apparent gaps in western Manhattan, Staten Island, and eastern Queens. The</span>
-<span id="cb17-575"><a href="#cb17-575" aria-hidden="true" tabindex="-1"></a>effect is largest for Staten Island: the borough sits adjacent to major New</span>
-<span id="cb17-576"><a href="#cb17-576" aria-hidden="true" tabindex="-1"></a>Jersey logistics corridors in Elizabeth and Linden (across the Arthur Kill and</span>
-<span id="cb17-577"><a href="#cb17-577" aria-hidden="true" tabindex="-1"></a>Kill Van Kull), and its distance numbers would look materially different if</span>
-<span id="cb17-578"><a href="#cb17-578" aria-hidden="true" tabindex="-1"></a>those New Jersey lots were included.</span>
-<span id="cb17-579"><a href="#cb17-579" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-580"><a href="#cb17-580" aria-hidden="true" tabindex="-1"></a>**The 1-mile threshold.** A tract 1.1 miles from a lot is counted as a gap;</span>
-<span id="cb17-581"><a href="#cb17-581" aria-hidden="true" tabindex="-1"></a>one at 0.9 miles is not. The distance-band table partially addresses this by</span>
-<span id="cb17-582"><a href="#cb17-582" aria-hidden="true" tabindex="-1"></a>reporting continuous bands, but the binary classification in the maps and</span>
-<span id="cb17-583"><a href="#cb17-583" aria-hidden="true" tabindex="-1"></a>borough table still uses the fixed threshold.</span>
-<span id="cb17-584"><a href="#cb17-584" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-585"><a href="#cb17-585" aria-hidden="true" tabindex="-1"></a>**Straight-line distance is not travel time.** Proximity to industrial land</span>
-<span id="cb17-586"><a href="#cb17-586" aria-hidden="true" tabindex="-1"></a>says nothing about road network connectivity, traffic conditions, loading</span>
-<span id="cb17-587"><a href="#cb17-587" aria-hidden="true" tabindex="-1"></a>access, or building entry -- the actual constraints that determine delivery</span>
-<span id="cb17-588"><a href="#cb17-588" aria-hidden="true" tabindex="-1"></a>reach in an urban environment.</span>
-<span id="cb17-589"><a href="#cb17-589" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-590"><a href="#cb17-590" aria-hidden="true" tabindex="-1"></a><span class="fu">### Implications</span></span>
+<span id="cb17-557"><a href="#cb17-557" aria-hidden="true" tabindex="-1"></a>**Broad land use category.** According to the NYC DCP PLUTO Data Dictionary,</span>
+<span id="cb17-558"><a href="#cb17-558" aria-hidden="true" tabindex="-1"></a>land use code 06 maps to building classes E* (warehouses), F* (factories), and</span>
+<span id="cb17-559"><a href="#cb17-559" aria-hidden="true" tabindex="-1"></a>L* (loft buildings). Factories and lofts are included alongside</span>
+<span id="cb17-560"><a href="#cb17-560" aria-hidden="true" tabindex="-1"></a>distribution-oriented warehouses, and the category gives no indication of</span>
+<span id="cb17-561"><a href="#cb17-561" aria-hidden="true" tabindex="-1"></a>whether a lot hosts an active logistics operation. This analysis measures</span>
+<span id="cb17-562"><a href="#cb17-562" aria-hidden="true" tabindex="-1"></a>proximity to industrial land as a class -- it does not distinguish a 500,000 sq</span>
+<span id="cb17-563"><a href="#cb17-563" aria-hidden="true" tabindex="-1"></a>ft fulfillment center from a converted loft building or an inactive factory</span>
+<span id="cb17-564"><a href="#cb17-564" aria-hidden="true" tabindex="-1"></a>floor. A more operationally precise analysis would require commercial real</span>
+<span id="cb17-565"><a href="#cb17-565" aria-hidden="true" tabindex="-1"></a>estate data (CoStar, CBRE) or cross-referencing with business license records</span>
+<span id="cb17-566"><a href="#cb17-566" aria-hidden="true" tabindex="-1"></a>to isolate active logistics facilities.</span>
+<span id="cb17-567"><a href="#cb17-567" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-568"><a href="#cb17-568" aria-hidden="true" tabindex="-1"></a>**Industrial land is not the only freight infrastructure.** Real last-mile</span>
+<span id="cb17-569"><a href="#cb17-569" aria-hidden="true" tabindex="-1"></a>delivery in dense neighborhoods often runs from microhubs, retail backrooms,</span>
+<span id="cb17-570"><a href="#cb17-570" aria-hidden="true" tabindex="-1"></a>and parking garages classified as commercial in PLUTO. The gaps measured here</span>
+<span id="cb17-571"><a href="#cb17-571" aria-hidden="true" tabindex="-1"></a>may overstate true freight access limitations for some neighborhoods.</span>
+<span id="cb17-572"><a href="#cb17-572" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-573"><a href="#cb17-573" aria-hidden="true" tabindex="-1"></a>**Edge effect.** This analysis counts only NYC-classified lots. Major</span>
+<span id="cb17-574"><a href="#cb17-574" aria-hidden="true" tabindex="-1"></a>distribution hubs in New Jersey (roughly 1 mile from west Manhattan) and just</span>
+<span id="cb17-575"><a href="#cb17-575" aria-hidden="true" tabindex="-1"></a>outside the city line in Nassau and Westchester are excluded. This inflates</span>
+<span id="cb17-576"><a href="#cb17-576" aria-hidden="true" tabindex="-1"></a>apparent gaps in western Manhattan, Staten Island, and eastern Queens. The</span>
+<span id="cb17-577"><a href="#cb17-577" aria-hidden="true" tabindex="-1"></a>effect is largest for Staten Island: the borough sits adjacent to major New</span>
+<span id="cb17-578"><a href="#cb17-578" aria-hidden="true" tabindex="-1"></a>Jersey logistics corridors in Elizabeth and Linden (across the Arthur Kill and</span>
+<span id="cb17-579"><a href="#cb17-579" aria-hidden="true" tabindex="-1"></a>Kill Van Kull), and its distance numbers would look materially different if</span>
+<span id="cb17-580"><a href="#cb17-580" aria-hidden="true" tabindex="-1"></a>those New Jersey lots were included.</span>
+<span id="cb17-581"><a href="#cb17-581" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-582"><a href="#cb17-582" aria-hidden="true" tabindex="-1"></a>**The 1-mile threshold.** A tract 1.1 miles from a lot is counted as a gap;</span>
+<span id="cb17-583"><a href="#cb17-583" aria-hidden="true" tabindex="-1"></a>one at 0.9 miles is not. The distance-band table partially addresses this by</span>
+<span id="cb17-584"><a href="#cb17-584" aria-hidden="true" tabindex="-1"></a>reporting continuous bands, but the binary classification in the maps and</span>
+<span id="cb17-585"><a href="#cb17-585" aria-hidden="true" tabindex="-1"></a>borough table still uses the fixed threshold.</span>
+<span id="cb17-586"><a href="#cb17-586" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-587"><a href="#cb17-587" aria-hidden="true" tabindex="-1"></a>**Straight-line distance is not travel time.** Proximity to industrial land</span>
+<span id="cb17-588"><a href="#cb17-588" aria-hidden="true" tabindex="-1"></a>says nothing about road network connectivity, traffic conditions, loading</span>
+<span id="cb17-589"><a href="#cb17-589" aria-hidden="true" tabindex="-1"></a>access, or building entry -- the actual constraints that determine delivery</span>
+<span id="cb17-590"><a href="#cb17-590" aria-hidden="true" tabindex="-1"></a>reach in an urban environment.</span>
 <span id="cb17-591"><a href="#cb17-591" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-592"><a href="#cb17-592" aria-hidden="true" tabindex="-1"></a>This analysis is a map of where NYC's industrial land sits relative to its</span>
-<span id="cb17-593"><a href="#cb17-593" aria-hidden="true" tabindex="-1"></a>population, not a map of where deliveries can or cannot reach. What it does</span>
-<span id="cb17-594"><a href="#cb17-594" aria-hidden="true" tabindex="-1"></a>show is meaningful: the uneven geographic distribution of industrial land</span>
-<span id="cb17-595"><a href="#cb17-595" aria-hidden="true" tabindex="-1"></a>across the five boroughs, the income pattern of tracts farthest from that</span>
-<span id="cb17-596"><a href="#cb17-596" aria-hidden="true" tabindex="-1"></a>land, and the particular position of Staten Island and outer Queens relative</span>
-<span id="cb17-597"><a href="#cb17-597" aria-hidden="true" tabindex="-1"></a>to the industrial corridors concentrated near the waterfront.</span>
-<span id="cb17-598"><a href="#cb17-598" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-599"><a href="#cb17-599" aria-hidden="true" tabindex="-1"></a>For logistics planners, the relevant next step is not "where should a</span>
-<span id="cb17-600"><a href="#cb17-600" aria-hidden="true" tabindex="-1"></a>fulfillment center go" -- that requires demand data, road network travel</span>
-<span id="cb17-601"><a href="#cb17-601" aria-hidden="true" tabindex="-1"></a>times, rent levels, and zoning analysis this dataset cannot provide. The</span>
-<span id="cb17-602"><a href="#cb17-602" aria-hidden="true" tabindex="-1"></a>relevant question is narrower: which of the gap tracts identified here are</span>
-<span id="cb17-603"><a href="#cb17-603" aria-hidden="true" tabindex="-1"></a>actually near commercial-grade delivery infrastructure that PLUTO doesn't</span>
-<span id="cb17-604"><a href="#cb17-604" aria-hidden="true" tabindex="-1"></a>capture? Answering that requires either commercial data or field validation.</span>
-<span id="cb17-605"><a href="#cb17-605" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-606"><a href="#cb17-606" aria-hidden="true" tabindex="-1"></a>For urban planners and policy researchers, the income finding is the more</span>
-<span id="cb17-607"><a href="#cb17-607" aria-hidden="true" tabindex="-1"></a>interesting result: the tracts farthest from industrial land skew</span>
-<span id="cb17-608"><a href="#cb17-608" aria-hidden="true" tabindex="-1"></a>higher-income, which is consistent with either deliberate exclusion of</span>
-<span id="cb17-609"><a href="#cb17-609" aria-hidden="true" tabindex="-1"></a>industrial uses from affluent neighborhoods or simply with the geography of</span>
-<span id="cb17-610"><a href="#cb17-610" aria-hidden="true" tabindex="-1"></a>where the city's industrial corridors developed historically. Distinguishing</span>
-<span id="cb17-611"><a href="#cb17-611" aria-hidden="true" tabindex="-1"></a>between those explanations would require zoning history and land use change</span>
-<span id="cb17-612"><a href="#cb17-612" aria-hidden="true" tabindex="-1"></a>data over time.</span>
-<span id="cb17-613"><a href="#cb17-613" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-614"><a href="#cb17-614" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb17-592"><a href="#cb17-592" aria-hidden="true" tabindex="-1"></a><span class="fu">### Implications</span></span>
+<span id="cb17-593"><a href="#cb17-593" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-594"><a href="#cb17-594" aria-hidden="true" tabindex="-1"></a>This analysis is a map of where NYC's industrial land sits relative to its</span>
+<span id="cb17-595"><a href="#cb17-595" aria-hidden="true" tabindex="-1"></a>population, not a map of where deliveries can or cannot reach. What it does</span>
+<span id="cb17-596"><a href="#cb17-596" aria-hidden="true" tabindex="-1"></a>show is meaningful: the uneven geographic distribution of industrial land</span>
+<span id="cb17-597"><a href="#cb17-597" aria-hidden="true" tabindex="-1"></a>across the five boroughs, the income pattern of tracts farthest from that</span>
+<span id="cb17-598"><a href="#cb17-598" aria-hidden="true" tabindex="-1"></a>land, and the particular position of Staten Island and outer Queens relative</span>
+<span id="cb17-599"><a href="#cb17-599" aria-hidden="true" tabindex="-1"></a>to the industrial corridors concentrated near the waterfront.</span>
+<span id="cb17-600"><a href="#cb17-600" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-601"><a href="#cb17-601" aria-hidden="true" tabindex="-1"></a>For logistics planners, the relevant next step is not "where should a</span>
+<span id="cb17-602"><a href="#cb17-602" aria-hidden="true" tabindex="-1"></a>fulfillment center go" -- that requires demand data, road network travel</span>
+<span id="cb17-603"><a href="#cb17-603" aria-hidden="true" tabindex="-1"></a>times, rent levels, and zoning analysis this dataset cannot provide. The</span>
+<span id="cb17-604"><a href="#cb17-604" aria-hidden="true" tabindex="-1"></a>relevant question is narrower: which of the gap tracts identified here are</span>
+<span id="cb17-605"><a href="#cb17-605" aria-hidden="true" tabindex="-1"></a>actually near commercial-grade delivery infrastructure that PLUTO doesn't</span>
+<span id="cb17-606"><a href="#cb17-606" aria-hidden="true" tabindex="-1"></a>capture? Answering that requires either commercial data or field validation.</span>
+<span id="cb17-607"><a href="#cb17-607" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-608"><a href="#cb17-608" aria-hidden="true" tabindex="-1"></a>For urban planners and policy researchers, the income finding is the more</span>
+<span id="cb17-609"><a href="#cb17-609" aria-hidden="true" tabindex="-1"></a>interesting result: the tracts farthest from industrial land skew</span>
+<span id="cb17-610"><a href="#cb17-610" aria-hidden="true" tabindex="-1"></a>higher-income, which is consistent with either deliberate exclusion of</span>
+<span id="cb17-611"><a href="#cb17-611" aria-hidden="true" tabindex="-1"></a>industrial uses from affluent neighborhoods or simply with the geography of</span>
+<span id="cb17-612"><a href="#cb17-612" aria-hidden="true" tabindex="-1"></a>where the city's industrial corridors developed historically. Distinguishing</span>
+<span id="cb17-613"><a href="#cb17-613" aria-hidden="true" tabindex="-1"></a>between those explanations would require zoning history and land use change</span>
+<span id="cb17-614"><a href="#cb17-614" aria-hidden="true" tabindex="-1"></a>data over time.</span>
 <span id="cb17-615"><a href="#cb17-615" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-616"><a href="#cb17-616" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reproducibility</span></span>
+<span id="cb17-616"><a href="#cb17-616" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb17-617"><a href="#cb17-617" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-618"><a href="#cb17-618" aria-hidden="true" tabindex="-1"></a>All data is pulled from public APIs at runtime. To reproduce this analysis</span>
-<span id="cb17-619"><a href="#cb17-619" aria-hidden="true" tabindex="-1"></a>from scratch:</span>
-<span id="cb17-620"><a href="#cb17-620" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-621"><a href="#cb17-621" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb17-622"><a href="#cb17-622" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Install packages and create folder structure</span></span>
-<span id="cb17-623"><a href="#cb17-623" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"setup.R"</span>)</span>
-<span id="cb17-624"><a href="#cb17-624" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-625"><a href="#cb17-625" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Pull all data from APIs</span></span>
-<span id="cb17-626"><a href="#cb17-626" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/01_data_pull.R"</span>)</span>
-<span id="cb17-627"><a href="#cb17-627" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-628"><a href="#cb17-628" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Run spatial analysis (computes served/unserved and dist_to_nearest_miles)</span></span>
-<span id="cb17-629"><a href="#cb17-629" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/02_spatial_analysis.R"</span>)</span>
-<span id="cb17-630"><a href="#cb17-630" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-631"><a href="#cb17-631" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Export maps</span></span>
-<span id="cb17-632"><a href="#cb17-632" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/03_maps.R"</span>)</span>
-<span id="cb17-633"><a href="#cb17-633" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-634"><a href="#cb17-634" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Render this report</span></span>
-<span id="cb17-635"><a href="#cb17-635" aria-hidden="true" tabindex="-1"></a>quarto<span class="sc">::</span><span class="fu">quarto_render</span>(<span class="st">"report/index.qmd"</span>)</span>
-<span id="cb17-636"><a href="#cb17-636" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb17-637"><a href="#cb17-637" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-638"><a href="#cb17-638" aria-hidden="true" tabindex="-1"></a>**R version:** <span class="in">`r R.version$version.string`</span></span>
-<span id="cb17-639"><a href="#cb17-639" aria-hidden="true" tabindex="-1"></a>**Key packages:** tidycensus <span class="in">`r packageVersion("tidycensus")`</span>,</span>
-<span id="cb17-640"><a href="#cb17-640" aria-hidden="true" tabindex="-1"></a>sf <span class="in">`r packageVersion("sf")`</span>,</span>
-<span id="cb17-641"><a href="#cb17-641" aria-hidden="true" tabindex="-1"></a>ggplot2 <span class="in">`r packageVersion("ggplot2")`</span></span>
-<span id="cb17-642"><a href="#cb17-642" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-643"><a href="#cb17-643" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb17-618"><a href="#cb17-618" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reproducibility</span></span>
+<span id="cb17-619"><a href="#cb17-619" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-620"><a href="#cb17-620" aria-hidden="true" tabindex="-1"></a>All data is pulled from public APIs at runtime. To reproduce this analysis</span>
+<span id="cb17-621"><a href="#cb17-621" aria-hidden="true" tabindex="-1"></a>from scratch:</span>
+<span id="cb17-622"><a href="#cb17-622" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-623"><a href="#cb17-623" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb17-624"><a href="#cb17-624" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Install packages and create folder structure</span></span>
+<span id="cb17-625"><a href="#cb17-625" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"setup.R"</span>)</span>
+<span id="cb17-626"><a href="#cb17-626" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-627"><a href="#cb17-627" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Pull all data from APIs</span></span>
+<span id="cb17-628"><a href="#cb17-628" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/01_data_pull.R"</span>)</span>
+<span id="cb17-629"><a href="#cb17-629" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-630"><a href="#cb17-630" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Run spatial analysis (computes served/unserved and dist_to_nearest_miles)</span></span>
+<span id="cb17-631"><a href="#cb17-631" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/02_spatial_analysis.R"</span>)</span>
+<span id="cb17-632"><a href="#cb17-632" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-633"><a href="#cb17-633" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Export maps</span></span>
+<span id="cb17-634"><a href="#cb17-634" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"analysis/03_maps.R"</span>)</span>
+<span id="cb17-635"><a href="#cb17-635" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-636"><a href="#cb17-636" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Render this report</span></span>
+<span id="cb17-637"><a href="#cb17-637" aria-hidden="true" tabindex="-1"></a>quarto<span class="sc">::</span><span class="fu">quarto_render</span>(<span class="st">"report/index.qmd"</span>)</span>
+<span id="cb17-638"><a href="#cb17-638" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb17-639"><a href="#cb17-639" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-640"><a href="#cb17-640" aria-hidden="true" tabindex="-1"></a>**R version:** <span class="in">`r R.version$version.string`</span></span>
+<span id="cb17-641"><a href="#cb17-641" aria-hidden="true" tabindex="-1"></a>**Key packages:** tidycensus <span class="in">`r packageVersion("tidycensus")`</span>,</span>
+<span id="cb17-642"><a href="#cb17-642" aria-hidden="true" tabindex="-1"></a>sf <span class="in">`r packageVersion("sf")`</span>,</span>
+<span id="cb17-643"><a href="#cb17-643" aria-hidden="true" tabindex="-1"></a>ggplot2 <span class="in">`r packageVersion("ggplot2")`</span></span>
 <span id="cb17-644"><a href="#cb17-644" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-645"><a href="#cb17-645" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Citations</span></span>
+<span id="cb17-645"><a href="#cb17-645" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb17-646"><a href="#cb17-646" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-647"><a href="#cb17-647" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2020). *2020 Decennial Census Redistricting Data</span>
-<span id="cb17-648"><a href="#cb17-648" aria-hidden="true" tabindex="-1"></a>(Public Law 94-171) Summary File*. Retrieved via the tidycensus R package.</span>
-<span id="cb17-649"><a href="#cb17-649" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-650"><a href="#cb17-650" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2020). *American Community Survey 5-Year Estimates:</span>
-<span id="cb17-651"><a href="#cb17-651" aria-hidden="true" tabindex="-1"></a>Median Household Income (B19013)*. Retrieved via the tidycensus R package.</span>
-<span id="cb17-652"><a href="#cb17-652" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-653"><a href="#cb17-653" aria-hidden="true" tabindex="-1"></a>NYC Department of City Planning. (2024). *PLUTO: Primary Land Use Tax Lot</span>
-<span id="cb17-654"><a href="#cb17-654" aria-hidden="true" tabindex="-1"></a>Output*. NYC Open Data. https://data.cityofnewyork.us/resource/64uk-42ks.json</span>
-<span id="cb17-655"><a href="#cb17-655" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-656"><a href="#cb17-656" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2024). *TIGER/Line Shapefiles: Counties*. Retrieved</span>
-<span id="cb17-657"><a href="#cb17-657" aria-hidden="true" tabindex="-1"></a>via the tigris R package.</span>
-<span id="cb17-658"><a href="#cb17-658" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-659"><a href="#cb17-659" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb17-647"><a href="#cb17-647" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Citations</span></span>
+<span id="cb17-648"><a href="#cb17-648" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-649"><a href="#cb17-649" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2020). *2020 Decennial Census Redistricting Data</span>
+<span id="cb17-650"><a href="#cb17-650" aria-hidden="true" tabindex="-1"></a>(Public Law 94-171) Summary File*. Retrieved via the tidycensus R package.</span>
+<span id="cb17-651"><a href="#cb17-651" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-652"><a href="#cb17-652" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2020). *American Community Survey 5-Year Estimates:</span>
+<span id="cb17-653"><a href="#cb17-653" aria-hidden="true" tabindex="-1"></a>Median Household Income (B19013)*. Retrieved via the tidycensus R package.</span>
+<span id="cb17-654"><a href="#cb17-654" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-655"><a href="#cb17-655" aria-hidden="true" tabindex="-1"></a>NYC Department of City Planning. (2024). *PLUTO: Primary Land Use Tax Lot</span>
+<span id="cb17-656"><a href="#cb17-656" aria-hidden="true" tabindex="-1"></a>Output*. NYC Open Data. https://data.cityofnewyork.us/resource/64uk-42ks.json</span>
+<span id="cb17-657"><a href="#cb17-657" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-658"><a href="#cb17-658" aria-hidden="true" tabindex="-1"></a>U.S. Census Bureau. (2024). *TIGER/Line Shapefiles: Counties*. Retrieved</span>
+<span id="cb17-659"><a href="#cb17-659" aria-hidden="true" tabindex="-1"></a>via the tigris R package.</span>
 <span id="cb17-660"><a href="#cb17-660" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-661"><a href="#cb17-661" aria-hidden="true" tabindex="-1"></a><span class="fu">## AI Usage Disclosure</span></span>
+<span id="cb17-661"><a href="#cb17-661" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb17-662"><a href="#cb17-662" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-663"><a href="#cb17-663" aria-hidden="true" tabindex="-1"></a>This project was developed with assistance from Claude (Anthropic) as a</span>
-<span id="cb17-664"><a href="#cb17-664" aria-hidden="true" tabindex="-1"></a>collaborative coding and methodology tool. Claude helped structure the R</span>
-<span id="cb17-665"><a href="#cb17-665" aria-hidden="true" tabindex="-1"></a>scripts, debug API connectivity issues during data acquisition, and draft</span>
-<span id="cb17-666"><a href="#cb17-666" aria-hidden="true" tabindex="-1"></a>the prose in this report. All analytical decisions — including the choice</span>
-<span id="cb17-667"><a href="#cb17-667" aria-hidden="true" tabindex="-1"></a>of 1-mile service radius, the PLUTO land use classification, and the</span>
-<span id="cb17-668"><a href="#cb17-668" aria-hidden="true" tabindex="-1"></a>interpretation of results — were made and reviewed by the author. All code</span>
-<span id="cb17-669"><a href="#cb17-669" aria-hidden="true" tabindex="-1"></a>was tested and executed locally by the author prior to publication.</span>
+<span id="cb17-663"><a href="#cb17-663" aria-hidden="true" tabindex="-1"></a><span class="fu">## AI Usage Disclosure</span></span>
+<span id="cb17-664"><a href="#cb17-664" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-665"><a href="#cb17-665" aria-hidden="true" tabindex="-1"></a>This project was developed with assistance from Claude (Anthropic) as a</span>
+<span id="cb17-666"><a href="#cb17-666" aria-hidden="true" tabindex="-1"></a>collaborative coding and methodology tool. Claude helped structure the R</span>
+<span id="cb17-667"><a href="#cb17-667" aria-hidden="true" tabindex="-1"></a>scripts, debug API connectivity issues during data acquisition, and draft</span>
+<span id="cb17-668"><a href="#cb17-668" aria-hidden="true" tabindex="-1"></a>the prose in this report. All analytical decisions — including the choice</span>
+<span id="cb17-669"><a href="#cb17-669" aria-hidden="true" tabindex="-1"></a>of 1-mile service radius, the PLUTO land use classification, and the</span>
+<span id="cb17-670"><a href="#cb17-670" aria-hidden="true" tabindex="-1"></a>interpretation of results — were made and reviewed by the author. All code</span>
+<span id="cb17-671"><a href="#cb17-671" aria-hidden="true" tabindex="-1"></a>was tested and executed locally by the author prior to publication.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
