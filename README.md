@@ -38,9 +38,10 @@ from industrial land across NYC's 2,327 census tracts:
 | 0.5--1 mi | $84,558 | 1.4M |
 | >1 mi | $90,379 | 296K |
 
-The $18,000 jump between the within-0.5-mile and beyond-0.5-mile bands is
-statistically significant (Wilcoxon rank-sum, p < 0.001, across 2,206 tracts
-with income data).
+The largest step is between the 0.25--0.5 mile band ($66,704) and the
+0.5--1 mile band ($84,558), a gap of roughly $18,000. A Wilcoxon rank-sum test
+comparing tracts within 0.5 miles to tracts beyond 0.5 miles confirms the
+difference is statistically significant (p < 0.001, across 2,206 tracts).
 
 **Spatial gaps:** 31 census tracts containing 61,426 residents (0.7% of NYC's
 population) fall entirely outside a 1-mile radius of any industrial lot. Queens
@@ -48,11 +49,13 @@ has the largest gap population (32,622 residents across 13 tracts).
 
 **The compensation benchmark:** A 2011 Dutch study (de Vor & de Groot, 70,684
 home sales) found a 15% property value discount within 250 meters of industrial
-sites -- fading to near zero at 1.4 miles. On a $200,000 home, 15% is $30,000.
-A flat $10,000 to everyone regardless of distance covers about 5% of the nearest
-neighbors' loss and nothing meaningful for those farther out. The right number
-depends on distance, local property values, and the facility's operating life
--- not on what a developer can negotiate down to.
+sites -- fading to near zero at 1.4 miles. On a $200,000 home, 15% is $30,000:
+three times the NorthPoint offer. Beyond roughly 1,750 meters, the estimated
+discount falls below 5%, so $10,000 more than covers the loss at that distance.
+A flat payment ignores that geography entirely -- the neighbors who bear the
+largest cost are those closest in. The right number depends on distance, local
+property values, and the facility's operating life, not on what a developer can
+negotiate down to.
 
 ---
 
