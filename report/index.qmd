@@ -38,8 +38,7 @@ billion across the U.S., according to [Data Center Watch via
 parameter.io](https://parameter.io/community-resistance-stalls-68-billion-worth-of-ai-data-center-developments/).
 The [Brookings Institution](https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/)
 framed the backlash as a proxy for a broader question: who decides where AI
-infrastructure goes, and who bears its costs? Vox put it bluntly: *"Americans
-don't know how to fight AI. So they're fighting data centers."*
+infrastructure goes, and who bears its costs?
 
 Residents object for concrete reasons -- noise, water use, power consumption,
 and the suspicion that nearby homes will lose value. That last concern is
@@ -48,7 +47,7 @@ Netherlands](https://papers.tinbergen.nl/09035.pdf) (de Vor & de Groot, using
 data on 70,684 home sales) found that homes within 250 meters of industrial
 sites sold for roughly 15% less than comparable homes beyond 2,250 meters --
 a discount that fades to near zero by about 1.4 miles out. Research
-specifically on data centers is more mixed. Work from George Mason University
+specifically on data centers is more mixed. A [November 2025 George Mason University study](https://schar.gmu.edu/news/2025-11/study-home-prices-are-higher-when-house-near-data-center)
 on Northern Virginia home sales found prices *higher* near data centers -- but
 Northern Virginia is an atypical case: a high-income tech corridor where the
 data center industry is already integrated into the local economy and a major
@@ -824,13 +823,9 @@ Alcorn, C. (2026). *Data center developer offers $10,000 checks to 4,500
 households if 1,300-acre facility is approved.* Tom's Hardware.
 https://www.tomshardware.com/tech-industry/data-centers/data-center-developer-offers-usd10-000-checks-to-4-500-households-if-the-1-300-acre-facility-is-approved-locals-push-back-over-noise-and-bribe-concerns
 
-Charniga, K., et al. (2023). *The Local Economic Impacts of Data Centers.*
-George Mason University, Mercatus Center. (Northern Virginia home price
-analysis cited in coverage; working paper -- verify current availability.)
-
-Vox. (2026). *Americans don't know how to fight AI. So they're fighting
-data centers.* [Cited in Introduction for framing; retrieve current URL
-before publication.]
+George Mason University, Schar School of Policy and Government. (2025).
+*Study: Home Prices Are Higher When the House Is Near a Data Center.*
+https://schar.gmu.edu/news/2025-11/study-home-prices-are-higher-when-house-near-data-center
 
 Coldewey, D. (2026, September 22). *Everyone can find a reason to dislike
 data center construction.* TechCrunch.
