@@ -329,25 +329,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> <span class="fu">c</span>(tracts, population),</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_fill =</span> <span class="dv">0</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_gap =</span> population_Underserved <span class="sc">/</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>              (population_Served <span class="sc">+</span> population_Underserved)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(pct_gap)) <span class="sc">|&gt;</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Borough           =</span> borough,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Gap Tracts</span><span class="st">`</span>      <span class="ot">=</span> tracts_Underserved,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Served Tracts</span><span class="st">`</span>   <span class="ot">=</span> tracts_Served,</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Pop. in Gap</span><span class="st">`</span>     <span class="ot">=</span> population_Underserved,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">% in Gap</span><span class="st">`</span>        <span class="ot">=</span> pct_gap</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  borough_table,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>),</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits      =</span> <span class="dv">3</span>,</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption     =</span> <span class="st">"Last-mile logistics coverage by borough (1-mile service radius)"</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">% in Gap</span><span class="st">`</span> <span class="ot">=</span> scales<span class="sc">::</span><span class="fu">percent</span>(</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    population_Underserved <span class="sc">/</span> (population_Served <span class="sc">+</span> population_Underserved),</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">accuracy =</span> <span class="fl">0.1</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(<span class="fu">desc</span>(population_Underserved <span class="sc">/</span> (population_Served <span class="sc">+</span> population_Underserved))) <span class="sc">|&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">Borough          =</span> borough,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Gap Tracts</span><span class="st">`</span>     <span class="ot">=</span> tracts_Underserved,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Served Tracts</span><span class="st">`</span>  <span class="ot">=</span> tracts_Served,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Pop. in Gap</span><span class="st">`</span>    <span class="ot">=</span> population_Underserved,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">% in Gap</span><span class="st">`</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  borough_table,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>),</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption     =</span> <span class="st">"Last-mile logistics coverage by borough (1-mile service radius)"</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -358,7 +359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <th style="text-align: right;">Gap Tracts</th>
 <th style="text-align: right;">Served Tracts</th>
 <th style="text-align: right;">Pop. in Gap</th>
-<th style="text-align: right;">% in Gap</th>
+<th style="text-align: left;">% in Gap</th>
 </tr>
 </thead>
 <tbody>
@@ -367,35 +368,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">13</td>
 <td style="text-align: right;">712</td>
 <td style="text-align: right;">32,622</td>
-<td style="text-align: right;">0.014</td>
+<td style="text-align: left;">1.4%</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Brooklyn</td>
 <td style="text-align: right;">11</td>
 <td style="text-align: right;">794</td>
 <td style="text-align: right;">19,809</td>
-<td style="text-align: right;">0.007</td>
+<td style="text-align: left;">0.7%</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Staten Island</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">124</td>
 <td style="text-align: right;">2,390</td>
-<td style="text-align: right;">0.005</td>
+<td style="text-align: left;">0.5%</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Bronx</td>
 <td style="text-align: right;">4</td>
 <td style="text-align: right;">357</td>
 <td style="text-align: right;">6,605</td>
-<td style="text-align: right;">0.004</td>
+<td style="text-align: left;">0.4%</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Manhattan</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">309</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">0.000</td>
+<td style="text-align: left;">0.0%</td>
 </tr>
 </tbody>
 </table>
@@ -600,34 +601,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull Manhattan gap tract incomes specifically</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>manhattan_gap_income <span class="ot">&lt;-</span> nyc_tracts_income <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>served, <span class="fu">substr</span>(GEOID, <span class="dv">1</span>, <span class="dv">5</span>) <span class="sc">==</span> <span class="st">"36061"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tracts        =</span> <span class="fu">n</span>(),</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_income =</span> <span class="fu">median</span>(median_income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>all_gap_median <span class="ot">&lt;-</span> <span class="fu">median</span>(</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  nyc_tracts_income<span class="sc">$</span>median_income[<span class="sc">!</span>nyc_tracts_income<span class="sc">$</span>served], <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>served_median <span class="ot">&lt;-</span> <span class="fu">median</span>(</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  nyc_tracts_income<span class="sc">$</span>median_income[nyc_tracts_income<span class="sc">$</span>served], <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Median income, gap tracts (all NYC):    $"</span>, <span class="fu">comma</span>(<span class="fu">round</span>(all_gap_median)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Median income, served tracts:           $"</span>, <span class="fu">comma</span>(<span class="fu">round</span>(served_median)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Median income, Manhattan gap tracts:    $"</span>, <span class="fu">comma</span>(<span class="fu">round</span>(manhattan_gap_income<span class="sc">$</span>median_income)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>all_gap_median <span class="ot">&lt;-</span> <span class="fu">median</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  nyc_tracts_income<span class="sc">$</span>median_income[<span class="sc">!</span>nyc_tracts_income<span class="sc">$</span>served], <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>served_median <span class="ot">&lt;-</span> <span class="fu">median</span>(</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  nyc_tracts_income<span class="sc">$</span>median_income[nyc_tracts_income<span class="sc">$</span>served], <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Median income, gap tracts (all NYC):  $"</span>, <span class="fu">comma</span>(<span class="fu">round</span>(all_gap_median)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Median income, served tracts:         $"</span>, <span class="fu">comma</span>(<span class="fu">round</span>(served_median)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Gap tracts with income data:          "</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="sc">!</span>nyc_tracts_income<span class="sc">$</span>served), <span class="st">"of"</span>, <span class="fu">sum</span>(<span class="sc">!</span>nyc_tracts<span class="sc">$</span>served), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Median income, gap tracts (all NYC):    $ 101,461 
- Median income, served tracts:           $ 69,275 
- Median income, Manhattan gap tracts:    $ NA </code></pre>
+<pre><code>Median income, gap tracts (all NYC):  $ 101,461 
+ Median income, served tracts:         $ 69,275 
+ Gap tracts with income data:           17 of 31 </code></pre>
 </div>
 </div>
-<p>The income analysis complicates the simple “rich neighborhoods push warehouses out” narrative. Manhattan’s gap tracts include Upper Manhattan and Washington Heights, which are mixed-income communities — not exclusively wealthy enclaves. The more accurate explanation is that <strong>Manhattan’s industrial gap is driven primarily by land economics and zoning, not neighborhood income.</strong> Warehouse and industrial uses cannot compete with office, residential, and retail for Manhattan land at any income level. The gap follows zoning boundaries more than wealth boundaries.</p>
+<p>Gap tracts skew higher-income than served tracts ($101,461 vs. $69,275 median household income). That result holds but needs context: only 17 of the 31 gap tracts matched to income data, and Queens — not Manhattan — accounts for most of the gap population (32,622 residents across 13 tracts). Queens gap tracts include outer neighborhoods like Bayside and Douglaston that are solidly middle-to-upper-middle income and genuinely distant from industrial land.</p>
+<p>The wealth signal is real but the mechanism is geographic, not political. These are low-density residential neighborhoods at the city’s edge, far from industrial corridors, not wealthy enclaves that pushed industry out. <strong>The gap follows the outer edges of the city’s industrial footprint</strong>, and those edges happen to overlap with more affluent outer-borough neighborhoods.</p>
 <hr>
 </section>
 </section>
@@ -635,9 +630,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
 <section id="key-findings" class="level3">
 <h3 class="anchored" data-anchor-id="key-findings">Key Findings</h3>
-<p>Manhattan accounts for the largest share of population outside the 1-mile industrial radius (0 residents), which is initially counterintuitive given the borough’s density. The explanation lies in land use and zoning: Manhattan has very few industrial-zoned lots, and the ones that exist are concentrated in specific corridors like the West Side railyards and the Meatpacking District. Broad residential swaths in Upper Manhattan and Washington Heights sit far from any classified industrial facility — not because residents pushed industry out, but because industrial use cannot compete economically for Manhattan land.</p>
-<p>The income analysis confirms this: Manhattan’s gap tracts are not uniformly wealthy. The pattern follows zoning boundaries more closely than income lines.</p>
-<p>Queens and the Bronx show smaller absolute populations in the gap, reflecting their larger industrial footprints along the waterfront and major freight corridors.</p>
+<p>Queens accounts for the largest share of population in the coverage gap (32,622 residents across 13 tracts), followed by Brooklyn (19,809 across 11 tracts). The gap tracts in both boroughs sit at the city’s outer edges — neighborhoods like Bayside, Douglaston, and Marine Park that are far from the industrial corridors concentrated along the waterfront and freight routes closer to the urban core.</p>
+<p>Manhattan has only one gap tract, and it contains zero counted residents — a data artifact of differential privacy in the 2020 Census rather than a true zero population. The borough’s near-complete coverage reflects the density of industrial lots in specific corridors (West Side railyards, Meatpacking District, Hudson Yards area), not that Manhattan is well-served for last-mile delivery. The edge effect limitation applies most strongly here: NJ distribution hubs 1 mile across the Hudson are excluded from this analysis.</p>
+<p>The income data shows gap tracts skew higher-income on average, but this reflects Queens outer neighborhoods, not Manhattan. The Manhattan gap tract itself has no usable population count in this dataset.</p>
 </section>
 <section id="limitations" class="level3">
 <h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
@@ -1294,231 +1289,231 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> <span class="fu">c</span>(tracts, population),</span>
 <span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_fill =</span> <span class="dv">0</span></span>
 <span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_gap =</span> population_Underserved <span class="sc">/</span></span>
-<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a>              (population_Served <span class="sc">+</span> population_Underserved)</span>
-<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(pct_gap)) <span class="sc">|&gt;</span></span>
-<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a>    <span class="at">Borough           =</span> borough,</span>
-<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Gap Tracts</span><span class="st">`</span>      <span class="ot">=</span> tracts_Underserved,</span>
-<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Served Tracts</span><span class="st">`</span>   <span class="ot">=</span> tracts_Served,</span>
-<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Pop. in Gap</span><span class="st">`</span>     <span class="ot">=</span> population_Underserved,</span>
-<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">% in Gap</span><span class="st">`</span>        <span class="ot">=</span> pct_gap</span>
-<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
-<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a>  borough_table,</span>
-<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a>  <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>),</span>
-<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits      =</span> <span class="dv">3</span>,</span>
-<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption     =</span> <span class="st">"Last-mile logistics coverage by borough (1-mile service radius)"</span></span>
-<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a><span class="fu">### Map 1: Population Density</span></span>
-<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a>The population density map establishes the baseline: where are people</span>
-<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a>concentrated across the five boroughs? Manhattan's core shows the highest</span>
-<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a>densities, exceeding 150,000 persons per square mile in some tracts. The</span>
-<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a>outer boroughs show more moderate densities with significant variation</span>
-<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a>between neighborhoods.</span>
-<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: map1</span></span>
-<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "NYC population density by census tract, 2020 Decennial Census"</span></span>
-<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"output/maps/map1_population_density.png"</span>))</span>
-<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a><span class="fu">### Map 2: Last-Mile Logistics Gap Analysis</span></span>
-<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a>The gap map overlays three layers of information: census tract coverage</span>
-<span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a>status (green = within 1 mile of industrial land, red = outside 1 mile),</span>
-<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a>the merged 1-mile service radius (light blue halo), and individual</span>
-<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a>industrial lot locations (blue points).</span>
-<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: map2</span></span>
-<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "NYC last-mile logistics gaps — census tracts outside a 1-mile warehouse service radius"</span></span>
-<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"output/maps/map2_logistics_gaps.png"</span>))</span>
-<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a><span class="fu">### Map 3: QGIS Cartographic Export</span></span>
-<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a>The following map was produced directly in QGIS 3.44 LTR using the same</span>
-<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a>analysis layers exported from R. It demonstrates the full geospatial workflow</span>
-<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a>— data processed in R, layers loaded and styled in QGIS, and exported as a</span>
-<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a>cartographic output.</span>
-<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: map3</span></span>
-<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "QGIS styled map export — borough boundaries, census tract coverage, warehouse buffer, and warehouse locations"</span></span>
-<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"output/maps/qgis_map_export.png"</span>))</span>
-<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a><span class="fu">### Borough-Level Bar Chart</span></span>
-<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: bar-chart</span></span>
-<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Population outside 1-mile industrial radius, by borough"</span></span>
-<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
-<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a>underserved_by_borough <span class="ot">&lt;-</span> borough_summary <span class="sc">|&gt;</span></span>
-<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(coverage <span class="sc">==</span> <span class="st">"Underserved"</span>, <span class="sc">!</span><span class="fu">is.na</span>(borough)) <span class="sc">|&gt;</span></span>
-<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(population))</span>
-<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(underserved_by_borough,</span>
-<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(borough, population), <span class="at">y =</span> population)) <span class="sc">+</span></span>
-<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#d6604d"</span>, <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
-<span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">comma</span>(population)),</span>
-<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust  =</span> <span class="sc">-</span><span class="fl">0.1</span>,</span>
-<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a>    <span class="at">size   =</span> <span class="fl">3.5</span>,</span>
-<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a>    <span class="at">color  =</span> <span class="st">"gray30"</span></span>
-<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
-<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> comma,</span>
-<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.15</span>))</span>
-<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Population Outside 1-Mile Industrial Radius, by Borough"</span>,</span>
-<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Residents living more than 1 mile from any industrial/warehouse facility"</span>,</span>
-<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a>    <span class="at">x        =</span> <span class="cn">NULL</span>,</span>
-<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a>    <span class="at">y        =</span> <span class="st">"Population"</span>,</span>
-<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption  =</span> <span class="st">"Source: U.S. Census Bureau (2020) | NYC PLUTO via Socrata API"</span></span>
-<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a><span class="fu">### Income Analysis: Does Wealth Drive the Pattern?</span></span>
-<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a>Manhattan dominates the gap results, which raises an obvious question: are</span>
-<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a>wealthier neighborhoods driving warehouses out, or is something else going</span>
-<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a>on? To test this, I pull 2020 ACS median household income by tract and</span>
-<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a>compare the income distributions of gap tracts versus served tracts.</span>
-<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: income-pull</span></span>
-<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a><span class="co"># Load pre-pulled income data (pulled in 01_data_pull.R)</span></span>
-<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a><span class="co"># Avoids calling the Census API at render time.</span></span>
-<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a>income_data <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/processed/nyc_income.rds"</span>))</span>
-<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a>nyc_tracts_income <span class="ot">&lt;-</span> nyc_tracts <span class="sc">|&gt;</span></span>
-<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
-<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(income_data, <span class="at">by =</span> <span class="st">"GEOID"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(median_income))</span>
-<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: income-summary</span></span>
-<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize median income for served vs. gap tracts</span></span>
-<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a>income_summary <span class="ot">&lt;-</span> nyc_tracts_income <span class="sc">|&gt;</span></span>
-<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(served) <span class="sc">|&gt;</span></span>
-<span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a>    <span class="at">tracts          =</span> <span class="fu">n</span>(),</span>
-<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_income   =</span> <span class="fu">median</span>(median_income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_income     =</span> <span class="fu">mean</span>(median_income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(served, <span class="st">"Within 1 mile of industrial land"</span>, <span class="st">"Outside 1 mile (gap)"</span>))</span>
-<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
-<span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a>  income_summary <span class="sc">|&gt;</span> <span class="fu">select</span>(group, tracts, median_income, mean_income),</span>
-<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Group"</span>, <span class="st">"Tracts"</span>, <span class="st">"Median Income"</span>, <span class="st">"Mean Income"</span>),</span>
-<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a>  <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>),</span>
-<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Household income: gap tracts vs. served tracts"</span></span>
-<span id="cb15-313"><a href="#cb15-313" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-318"><a href="#cb15-318" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-319"><a href="#cb15-319" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: income-chart</span></span>
-<span id="cb15-320"><a href="#cb15-320" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Median household income distribution: gap tracts vs. served tracts"</span></span>
-<span id="cb15-321"><a href="#cb15-321" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
-<span id="cb15-322"><a href="#cb15-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-323"><a href="#cb15-323" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nyc_tracts_income, <span class="fu">aes</span>(<span class="at">x =</span> median_income, <span class="at">fill =</span> served)) <span class="sc">+</span></span>
-<span id="cb15-324"><a href="#cb15-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb15-325"><a href="#cb15-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb15-326"><a href="#cb15-326" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"#d6604d"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"#7fbf7b"</span>),</span>
-<span id="cb15-327"><a href="#cb15-327" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"Outside 1 mile (gap)"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"Within 1 mile"</span>)</span>
-<span id="cb15-328"><a href="#cb15-328" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb15-329"><a href="#cb15-329" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> <span class="fu">dollar_format</span>(<span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>, <span class="at">suffix =</span> <span class="st">"k"</span>)) <span class="sc">+</span></span>
-<span id="cb15-330"><a href="#cb15-330" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb15-331"><a href="#cb15-331" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Income Distribution: Gap Tracts vs. Served Tracts"</span>,</span>
-<span id="cb15-332"><a href="#cb15-332" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"2020 ACS 5-year median household income"</span>,</span>
-<span id="cb15-333"><a href="#cb15-333" aria-hidden="true" tabindex="-1"></a>    <span class="at">x        =</span> <span class="st">"Median Household Income"</span>,</span>
-<span id="cb15-334"><a href="#cb15-334" aria-hidden="true" tabindex="-1"></a>    <span class="at">y        =</span> <span class="st">"Density"</span>,</span>
-<span id="cb15-335"><a href="#cb15-335" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill     =</span> <span class="st">"Coverage Status"</span>,</span>
-<span id="cb15-336"><a href="#cb15-336" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption  =</span> <span class="st">"Source: U.S. Census Bureau, ACS 2020 5-year estimates"</span></span>
-<span id="cb15-337"><a href="#cb15-337" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb15-338"><a href="#cb15-338" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb15-339"><a href="#cb15-339" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span>
-<span id="cb15-340"><a href="#cb15-340" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-341"><a href="#cb15-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-344"><a href="#cb15-344" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-345"><a href="#cb15-345" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: income-interpretation</span></span>
-<span id="cb15-346"><a href="#cb15-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-347"><a href="#cb15-347" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull Manhattan gap tract incomes specifically</span></span>
-<span id="cb15-348"><a href="#cb15-348" aria-hidden="true" tabindex="-1"></a>manhattan_gap_income <span class="ot">&lt;-</span> nyc_tracts_income <span class="sc">|&gt;</span></span>
-<span id="cb15-349"><a href="#cb15-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>served, <span class="fu">substr</span>(GEOID, <span class="dv">1</span>, <span class="dv">5</span>) <span class="sc">==</span> <span class="st">"36061"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-350"><a href="#cb15-350" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb15-351"><a href="#cb15-351" aria-hidden="true" tabindex="-1"></a>    <span class="at">tracts        =</span> <span class="fu">n</span>(),</span>
-<span id="cb15-352"><a href="#cb15-352" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_income =</span> <span class="fu">median</span>(median_income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-353"><a href="#cb15-353" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
+<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">% in Gap</span><span class="st">`</span> <span class="ot">=</span> scales<span class="sc">::</span><span class="fu">percent</span>(</span>
+<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a>    population_Underserved <span class="sc">/</span> (population_Served <span class="sc">+</span> population_Underserved),</span>
+<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a>    <span class="at">accuracy =</span> <span class="fl">0.1</span></span>
+<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(<span class="fu">desc</span>(population_Underserved <span class="sc">/</span> (population_Served <span class="sc">+</span> population_Underserved))) <span class="sc">|&gt;</span></span>
+<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(</span>
+<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a>  <span class="at">Borough          =</span> borough,</span>
+<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Gap Tracts</span><span class="st">`</span>     <span class="ot">=</span> tracts_Underserved,</span>
+<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Served Tracts</span><span class="st">`</span>  <span class="ot">=</span> tracts_Served,</span>
+<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Pop. in Gap</span><span class="st">`</span>    <span class="ot">=</span> population_Underserved,</span>
+<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">% in Gap</span><span class="st">`</span></span>
+<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a>  borough_table,</span>
+<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a>  <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>),</span>
+<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption     =</span> <span class="st">"Last-mile logistics coverage by borough (1-mile service radius)"</span></span>
+<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a><span class="fu">### Map 1: Population Density</span></span>
+<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a>The population density map establishes the baseline: where are people</span>
+<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a>concentrated across the five boroughs? Manhattan's core shows the highest</span>
+<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a>densities, exceeding 150,000 persons per square mile in some tracts. The</span>
+<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a>outer boroughs show more moderate densities with significant variation</span>
+<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a>between neighborhoods.</span>
+<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: map1</span></span>
+<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "NYC population density by census tract, 2020 Decennial Census"</span></span>
+<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"output/maps/map1_population_density.png"</span>))</span>
+<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a><span class="fu">### Map 2: Last-Mile Logistics Gap Analysis</span></span>
+<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a>The gap map overlays three layers of information: census tract coverage</span>
+<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a>status (green = within 1 mile of industrial land, red = outside 1 mile),</span>
+<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a>the merged 1-mile service radius (light blue halo), and individual</span>
+<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a>industrial lot locations (blue points).</span>
+<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: map2</span></span>
+<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "NYC last-mile logistics gaps — census tracts outside a 1-mile warehouse service radius"</span></span>
+<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"output/maps/map2_logistics_gaps.png"</span>))</span>
+<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a><span class="fu">### Map 3: QGIS Cartographic Export</span></span>
+<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a>The following map was produced directly in QGIS 3.44 LTR using the same</span>
+<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a>analysis layers exported from R. It demonstrates the full geospatial workflow</span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a>— data processed in R, layers loaded and styled in QGIS, and exported as a</span>
+<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a>cartographic output.</span>
+<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: map3</span></span>
+<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "QGIS styled map export — borough boundaries, census tract coverage, warehouse buffer, and warehouse locations"</span></span>
+<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="fu">here</span>(<span class="st">"output/maps/qgis_map_export.png"</span>))</span>
+<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a><span class="fu">### Borough-Level Bar Chart</span></span>
+<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: bar-chart</span></span>
+<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Population outside 1-mile industrial radius, by borough"</span></span>
+<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
+<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a>underserved_by_borough <span class="ot">&lt;-</span> borough_summary <span class="sc">|&gt;</span></span>
+<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(coverage <span class="sc">==</span> <span class="st">"Underserved"</span>, <span class="sc">!</span><span class="fu">is.na</span>(borough)) <span class="sc">|&gt;</span></span>
+<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(population))</span>
+<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(underserved_by_borough,</span>
+<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(borough, population), <span class="at">y =</span> population)) <span class="sc">+</span></span>
+<span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#d6604d"</span>, <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">comma</span>(population)),</span>
+<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust  =</span> <span class="sc">-</span><span class="fl">0.1</span>,</span>
+<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a>    <span class="at">size   =</span> <span class="fl">3.5</span>,</span>
+<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a>    <span class="at">color  =</span> <span class="st">"gray30"</span></span>
+<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> comma,</span>
+<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.15</span>))</span>
+<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Population Outside 1-Mile Industrial Radius, by Borough"</span>,</span>
+<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Residents living more than 1 mile from any industrial/warehouse facility"</span>,</span>
+<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a>    <span class="at">x        =</span> <span class="cn">NULL</span>,</span>
+<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a>    <span class="at">y        =</span> <span class="st">"Population"</span>,</span>
+<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption  =</span> <span class="st">"Source: U.S. Census Bureau (2020) | NYC PLUTO via Socrata API"</span></span>
+<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title         =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a><span class="fu">### Income Analysis: Does Wealth Drive the Pattern?</span></span>
+<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a>Manhattan dominates the gap results, which raises an obvious question: are</span>
+<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a>wealthier neighborhoods driving warehouses out, or is something else going</span>
+<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a>on? To test this, I pull 2020 ACS median household income by tract and</span>
+<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a>compare the income distributions of gap tracts versus served tracts.</span>
+<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: income-pull</span></span>
+<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a><span class="co"># Load pre-pulled income data (pulled in 01_data_pull.R)</span></span>
+<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a><span class="co"># Avoids calling the Census API at render time.</span></span>
+<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a>income_data <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"data/processed/nyc_income.rds"</span>))</span>
+<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a>nyc_tracts_income <span class="ot">&lt;-</span> nyc_tracts <span class="sc">|&gt;</span></span>
+<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(income_data, <span class="at">by =</span> <span class="st">"GEOID"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(median_income))</span>
+<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-292"><a href="#cb15-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: income-summary</span></span>
+<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize median income for served vs. gap tracts</span></span>
+<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a>income_summary <span class="ot">&lt;-</span> nyc_tracts_income <span class="sc">|&gt;</span></span>
+<span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(served) <span class="sc">|&gt;</span></span>
+<span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a>    <span class="at">tracts          =</span> <span class="fu">n</span>(),</span>
+<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_income   =</span> <span class="fu">median</span>(median_income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_income     =</span> <span class="fu">mean</span>(median_income, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">ifelse</span>(served, <span class="st">"Within 1 mile of industrial land"</span>, <span class="st">"Outside 1 mile (gap)"</span>))</span>
+<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a>  income_summary <span class="sc">|&gt;</span> <span class="fu">select</span>(group, tracts, median_income, mean_income),</span>
+<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Group"</span>, <span class="st">"Tracts"</span>, <span class="st">"Median Income"</span>, <span class="st">"Mean Income"</span>),</span>
+<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a>  <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>),</span>
+<span id="cb15-313"><a href="#cb15-313" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Household income: gap tracts vs. served tracts"</span></span>
+<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-316"><a href="#cb15-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-319"><a href="#cb15-319" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-320"><a href="#cb15-320" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: income-chart</span></span>
+<span id="cb15-321"><a href="#cb15-321" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Median household income distribution: gap tracts vs. served tracts"</span></span>
+<span id="cb15-322"><a href="#cb15-322" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 5</span></span>
+<span id="cb15-323"><a href="#cb15-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-324"><a href="#cb15-324" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(nyc_tracts_income, <span class="fu">aes</span>(<span class="at">x =</span> median_income, <span class="at">fill =</span> served)) <span class="sc">+</span></span>
+<span id="cb15-325"><a href="#cb15-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb15-326"><a href="#cb15-326" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb15-327"><a href="#cb15-327" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"#d6604d"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"#7fbf7b"</span>),</span>
+<span id="cb15-328"><a href="#cb15-328" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"Outside 1 mile (gap)"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"Within 1 mile"</span>)</span>
+<span id="cb15-329"><a href="#cb15-329" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-330"><a href="#cb15-330" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> <span class="fu">dollar_format</span>(<span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">1000</span>, <span class="at">suffix =</span> <span class="st">"k"</span>)) <span class="sc">+</span></span>
+<span id="cb15-331"><a href="#cb15-331" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb15-332"><a href="#cb15-332" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Income Distribution: Gap Tracts vs. Served Tracts"</span>,</span>
+<span id="cb15-333"><a href="#cb15-333" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"2020 ACS 5-year median household income"</span>,</span>
+<span id="cb15-334"><a href="#cb15-334" aria-hidden="true" tabindex="-1"></a>    <span class="at">x        =</span> <span class="st">"Median Household Income"</span>,</span>
+<span id="cb15-335"><a href="#cb15-335" aria-hidden="true" tabindex="-1"></a>    <span class="at">y        =</span> <span class="st">"Density"</span>,</span>
+<span id="cb15-336"><a href="#cb15-336" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill     =</span> <span class="st">"Coverage Status"</span>,</span>
+<span id="cb15-337"><a href="#cb15-337" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption  =</span> <span class="st">"Source: U.S. Census Bureau, ACS 2020 5-year estimates"</span></span>
+<span id="cb15-338"><a href="#cb15-338" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-339"><a href="#cb15-339" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb15-340"><a href="#cb15-340" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span>
+<span id="cb15-341"><a href="#cb15-341" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-342"><a href="#cb15-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-345"><a href="#cb15-345" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-346"><a href="#cb15-346" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: income-interpretation</span></span>
+<span id="cb15-347"><a href="#cb15-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-348"><a href="#cb15-348" aria-hidden="true" tabindex="-1"></a>all_gap_median <span class="ot">&lt;-</span> <span class="fu">median</span>(</span>
+<span id="cb15-349"><a href="#cb15-349" aria-hidden="true" tabindex="-1"></a>  nyc_tracts_income<span class="sc">$</span>median_income[<span class="sc">!</span>nyc_tracts_income<span class="sc">$</span>served], <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb15-350"><a href="#cb15-350" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-351"><a href="#cb15-351" aria-hidden="true" tabindex="-1"></a>served_median <span class="ot">&lt;-</span> <span class="fu">median</span>(</span>
+<span id="cb15-352"><a href="#cb15-352" aria-hidden="true" tabindex="-1"></a>  nyc_tracts_income<span class="sc">$</span>median_income[nyc_tracts_income<span class="sc">$</span>served], <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb15-353"><a href="#cb15-353" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb15-354"><a href="#cb15-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-355"><a href="#cb15-355" aria-hidden="true" tabindex="-1"></a>all_gap_median <span class="ot">&lt;-</span> <span class="fu">median</span>(</span>
-<span id="cb15-356"><a href="#cb15-356" aria-hidden="true" tabindex="-1"></a>  nyc_tracts_income<span class="sc">$</span>median_income[<span class="sc">!</span>nyc_tracts_income<span class="sc">$</span>served], <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
-<span id="cb15-357"><a href="#cb15-357" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-358"><a href="#cb15-358" aria-hidden="true" tabindex="-1"></a>served_median <span class="ot">&lt;-</span> <span class="fu">median</span>(</span>
-<span id="cb15-359"><a href="#cb15-359" aria-hidden="true" tabindex="-1"></a>  nyc_tracts_income<span class="sc">$</span>median_income[nyc_tracts_income<span class="sc">$</span>served], <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
+<span id="cb15-355"><a href="#cb15-355" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(</span>
+<span id="cb15-356"><a href="#cb15-356" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Median income, gap tracts (all NYC):  $"</span>, <span class="fu">comma</span>(<span class="fu">round</span>(all_gap_median)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb15-357"><a href="#cb15-357" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Median income, served tracts:         $"</span>, <span class="fu">comma</span>(<span class="fu">round</span>(served_median)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb15-358"><a href="#cb15-358" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Gap tracts with income data:          "</span>,</span>
+<span id="cb15-359"><a href="#cb15-359" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="sc">!</span>nyc_tracts_income<span class="sc">$</span>served), <span class="st">"of"</span>, <span class="fu">sum</span>(<span class="sc">!</span>nyc_tracts<span class="sc">$</span>served), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
 <span id="cb15-360"><a href="#cb15-360" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-361"><a href="#cb15-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-362"><a href="#cb15-362" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(</span>
-<span id="cb15-363"><a href="#cb15-363" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Median income, gap tracts (all NYC):    $"</span>, <span class="fu">comma</span>(<span class="fu">round</span>(all_gap_median)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb15-364"><a href="#cb15-364" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Median income, served tracts:           $"</span>, <span class="fu">comma</span>(<span class="fu">round</span>(served_median)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb15-365"><a href="#cb15-365" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Median income, Manhattan gap tracts:    $"</span>, <span class="fu">comma</span>(<span class="fu">round</span>(manhattan_gap_income<span class="sc">$</span>median_income)), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
-<span id="cb15-366"><a href="#cb15-366" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-367"><a href="#cb15-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-368"><a href="#cb15-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-369"><a href="#cb15-369" aria-hidden="true" tabindex="-1"></a>The income analysis complicates the simple "rich neighborhoods push warehouses</span>
-<span id="cb15-370"><a href="#cb15-370" aria-hidden="true" tabindex="-1"></a>out" narrative. Manhattan's gap tracts include Upper Manhattan and Washington</span>
-<span id="cb15-371"><a href="#cb15-371" aria-hidden="true" tabindex="-1"></a>Heights, which are mixed-income communities — not exclusively wealthy enclaves.</span>
-<span id="cb15-372"><a href="#cb15-372" aria-hidden="true" tabindex="-1"></a>The more accurate explanation is that **Manhattan's industrial gap is driven</span>
-<span id="cb15-373"><a href="#cb15-373" aria-hidden="true" tabindex="-1"></a>primarily by land economics and zoning, not neighborhood income.** Warehouse</span>
-<span id="cb15-374"><a href="#cb15-374" aria-hidden="true" tabindex="-1"></a>and industrial uses cannot compete with office, residential, and retail for</span>
-<span id="cb15-375"><a href="#cb15-375" aria-hidden="true" tabindex="-1"></a>Manhattan land at any income level. The gap follows zoning boundaries more</span>
-<span id="cb15-376"><a href="#cb15-376" aria-hidden="true" tabindex="-1"></a>than wealth boundaries.</span>
-<span id="cb15-377"><a href="#cb15-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-378"><a href="#cb15-378" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb15-379"><a href="#cb15-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-380"><a href="#cb15-380" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion</span></span>
-<span id="cb15-381"><a href="#cb15-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-382"><a href="#cb15-382" aria-hidden="true" tabindex="-1"></a><span class="fu">### Key Findings</span></span>
-<span id="cb15-383"><a href="#cb15-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-384"><a href="#cb15-384" aria-hidden="true" tabindex="-1"></a>Manhattan accounts for the largest share of population outside the 1-mile</span>
-<span id="cb15-385"><a href="#cb15-385" aria-hidden="true" tabindex="-1"></a>industrial radius (<span class="in">`r comma(borough_summary$population[borough_summary$borough == "Manhattan" &amp; borough_summary$coverage == "Underserved" &amp; !is.na(borough_summary$borough)])`</span></span>
-<span id="cb15-386"><a href="#cb15-386" aria-hidden="true" tabindex="-1"></a>residents), which is initially counterintuitive given the borough's density.</span>
-<span id="cb15-387"><a href="#cb15-387" aria-hidden="true" tabindex="-1"></a>The explanation lies in land use and zoning: Manhattan has very few</span>
-<span id="cb15-388"><a href="#cb15-388" aria-hidden="true" tabindex="-1"></a>industrial-zoned lots, and the ones that exist are concentrated in specific</span>
-<span id="cb15-389"><a href="#cb15-389" aria-hidden="true" tabindex="-1"></a>corridors like the West Side railyards and the Meatpacking District. Broad</span>
-<span id="cb15-390"><a href="#cb15-390" aria-hidden="true" tabindex="-1"></a>residential swaths in Upper Manhattan and Washington Heights sit far from any</span>
-<span id="cb15-391"><a href="#cb15-391" aria-hidden="true" tabindex="-1"></a>classified industrial facility — not because residents pushed industry out,</span>
-<span id="cb15-392"><a href="#cb15-392" aria-hidden="true" tabindex="-1"></a>but because industrial use cannot compete economically for Manhattan land.</span>
-<span id="cb15-393"><a href="#cb15-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-394"><a href="#cb15-394" aria-hidden="true" tabindex="-1"></a>The income analysis confirms this: Manhattan's gap tracts are not uniformly</span>
-<span id="cb15-395"><a href="#cb15-395" aria-hidden="true" tabindex="-1"></a>wealthy. The pattern follows zoning boundaries more closely than income lines.</span>
+<span id="cb15-361"><a href="#cb15-361" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-362"><a href="#cb15-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-363"><a href="#cb15-363" aria-hidden="true" tabindex="-1"></a>Gap tracts skew higher-income than served tracts ($<span class="in">`r comma(round(all_gap_median))`</span> vs.</span>
+<span id="cb15-364"><a href="#cb15-364" aria-hidden="true" tabindex="-1"></a>$<span class="in">`r comma(round(served_median))`</span> median household income). That result holds but needs</span>
+<span id="cb15-365"><a href="#cb15-365" aria-hidden="true" tabindex="-1"></a>context: only <span class="in">`r sum(!nyc_tracts_income$served)`</span> of the <span class="in">`r sum(!nyc_tracts$served)`</span> gap</span>
+<span id="cb15-366"><a href="#cb15-366" aria-hidden="true" tabindex="-1"></a>tracts matched to income data, and Queens — not Manhattan — accounts for most of the</span>
+<span id="cb15-367"><a href="#cb15-367" aria-hidden="true" tabindex="-1"></a>gap population (32,622 residents across 13 tracts). Queens gap tracts include outer</span>
+<span id="cb15-368"><a href="#cb15-368" aria-hidden="true" tabindex="-1"></a>neighborhoods like Bayside and Douglaston that are solidly middle-to-upper-middle</span>
+<span id="cb15-369"><a href="#cb15-369" aria-hidden="true" tabindex="-1"></a>income and genuinely distant from industrial land.</span>
+<span id="cb15-370"><a href="#cb15-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-371"><a href="#cb15-371" aria-hidden="true" tabindex="-1"></a>The wealth signal is real but the mechanism is geographic, not political. These are</span>
+<span id="cb15-372"><a href="#cb15-372" aria-hidden="true" tabindex="-1"></a>low-density residential neighborhoods at the city's edge, far from industrial corridors,</span>
+<span id="cb15-373"><a href="#cb15-373" aria-hidden="true" tabindex="-1"></a>not wealthy enclaves that pushed industry out. **The gap follows the outer edges of the</span>
+<span id="cb15-374"><a href="#cb15-374" aria-hidden="true" tabindex="-1"></a>city's industrial footprint**, and those edges happen to overlap with more affluent</span>
+<span id="cb15-375"><a href="#cb15-375" aria-hidden="true" tabindex="-1"></a>outer-borough neighborhoods.</span>
+<span id="cb15-376"><a href="#cb15-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-377"><a href="#cb15-377" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb15-378"><a href="#cb15-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-379"><a href="#cb15-379" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion</span></span>
+<span id="cb15-380"><a href="#cb15-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-381"><a href="#cb15-381" aria-hidden="true" tabindex="-1"></a><span class="fu">### Key Findings</span></span>
+<span id="cb15-382"><a href="#cb15-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-383"><a href="#cb15-383" aria-hidden="true" tabindex="-1"></a>Queens accounts for the largest share of population in the coverage gap (32,622</span>
+<span id="cb15-384"><a href="#cb15-384" aria-hidden="true" tabindex="-1"></a>residents across 13 tracts), followed by Brooklyn (19,809 across 11 tracts). The gap</span>
+<span id="cb15-385"><a href="#cb15-385" aria-hidden="true" tabindex="-1"></a>tracts in both boroughs sit at the city's outer edges — neighborhoods like Bayside,</span>
+<span id="cb15-386"><a href="#cb15-386" aria-hidden="true" tabindex="-1"></a>Douglaston, and Marine Park that are far from the industrial corridors concentrated</span>
+<span id="cb15-387"><a href="#cb15-387" aria-hidden="true" tabindex="-1"></a>along the waterfront and freight routes closer to the urban core.</span>
+<span id="cb15-388"><a href="#cb15-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-389"><a href="#cb15-389" aria-hidden="true" tabindex="-1"></a>Manhattan has only one gap tract, and it contains zero counted residents — a data</span>
+<span id="cb15-390"><a href="#cb15-390" aria-hidden="true" tabindex="-1"></a>artifact of differential privacy in the 2020 Census rather than a true zero population.</span>
+<span id="cb15-391"><a href="#cb15-391" aria-hidden="true" tabindex="-1"></a>The borough's near-complete coverage reflects the density of industrial lots in specific</span>
+<span id="cb15-392"><a href="#cb15-392" aria-hidden="true" tabindex="-1"></a>corridors (West Side railyards, Meatpacking District, Hudson Yards area), not that</span>
+<span id="cb15-393"><a href="#cb15-393" aria-hidden="true" tabindex="-1"></a>Manhattan is well-served for last-mile delivery. The edge effect limitation applies</span>
+<span id="cb15-394"><a href="#cb15-394" aria-hidden="true" tabindex="-1"></a>most strongly here: NJ distribution hubs 1 mile across the Hudson are excluded from</span>
+<span id="cb15-395"><a href="#cb15-395" aria-hidden="true" tabindex="-1"></a>this analysis.</span>
 <span id="cb15-396"><a href="#cb15-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-397"><a href="#cb15-397" aria-hidden="true" tabindex="-1"></a>Queens and the Bronx show smaller absolute populations in the gap, reflecting</span>
-<span id="cb15-398"><a href="#cb15-398" aria-hidden="true" tabindex="-1"></a>their larger industrial footprints along the waterfront and major freight</span>
-<span id="cb15-399"><a href="#cb15-399" aria-hidden="true" tabindex="-1"></a>corridors.</span>
+<span id="cb15-397"><a href="#cb15-397" aria-hidden="true" tabindex="-1"></a>The income data shows gap tracts skew higher-income on average, but this reflects </span>
+<span id="cb15-398"><a href="#cb15-398" aria-hidden="true" tabindex="-1"></a>Queens outer neighborhoods, not Manhattan. The Manhattan gap tract itself has no </span>
+<span id="cb15-399"><a href="#cb15-399" aria-hidden="true" tabindex="-1"></a>usable population count in this dataset.</span>
 <span id="cb15-400"><a href="#cb15-400" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-401"><a href="#cb15-401" aria-hidden="true" tabindex="-1"></a><span class="fu">### Limitations</span></span>
 <span id="cb15-402"><a href="#cb15-402" aria-hidden="true" tabindex="-1"></a></span>

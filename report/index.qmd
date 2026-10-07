@@ -150,23 +150,24 @@ borough_table <- borough_summary |>
     values_from = c(tracts, population),
     values_fill = 0
   ) |>
-  mutate(
-    pct_gap = population_Underserved /
-              (population_Served + population_Underserved)
-  ) |>
-  arrange(desc(pct_gap)) |>
-  select(
-    Borough           = borough,
-    `Gap Tracts`      = tracts_Underserved,
-    `Served Tracts`   = tracts_Served,
-    `Pop. in Gap`     = population_Underserved,
-    `% in Gap`        = pct_gap
+mutate(
+  `% in Gap` = scales::percent(
+    population_Underserved / (population_Served + population_Underserved),
+    accuracy = 0.1
   )
+) |>
+arrange(desc(population_Underserved / (population_Served + population_Underserved))) |>
+select(
+  Borough          = borough,
+  `Gap Tracts`     = tracts_Underserved,
+  `Served Tracts`  = tracts_Served,
+  `Pop. in Gap`    = population_Underserved,
+  `% in Gap`
+)
 
 kable(
   borough_table,
   format.args = list(big.mark = ","),
-  digits      = 3,
   caption     = "Last-mile logistics coverage by borough (1-mile service radius)"
 )
 ```
@@ -322,14 +323,6 @@ ggplot(nyc_tracts_income, aes(x = median_income, fill = served)) +
 ```{r}
 #| label: income-interpretation
 
-# Pull Manhattan gap tract incomes specifically
-manhattan_gap_income <- nyc_tracts_income |>
-  filter(!served, substr(GEOID, 1, 5) == "36061") |>
-  summarise(
-    tracts        = n(),
-    median_income = median(median_income, na.rm = TRUE)
-  )
-
 all_gap_median <- median(
   nyc_tracts_income$median_income[!nyc_tracts_income$served], na.rm = TRUE
 )
@@ -338,20 +331,26 @@ served_median <- median(
 )
 
 cat(
-  "Median income, gap tracts (all NYC):    $", comma(round(all_gap_median)), "\n",
-  "Median income, served tracts:           $", comma(round(served_median)), "\n",
-  "Median income, Manhattan gap tracts:    $", comma(round(manhattan_gap_income$median_income)), "\n"
+  "Median income, gap tracts (all NYC):  $", comma(round(all_gap_median)), "\n",
+  "Median income, served tracts:         $", comma(round(served_median)), "\n",
+  "Gap tracts with income data:          ",
+  sum(!nyc_tracts_income$served), "of", sum(!nyc_tracts$served), "\n"
 )
 ```
 
-The income analysis complicates the simple "rich neighborhoods push warehouses
-out" narrative. Manhattan's gap tracts include Upper Manhattan and Washington
-Heights, which are mixed-income communities — not exclusively wealthy enclaves.
-The more accurate explanation is that **Manhattan's industrial gap is driven
-primarily by land economics and zoning, not neighborhood income.** Warehouse
-and industrial uses cannot compete with office, residential, and retail for
-Manhattan land at any income level. The gap follows zoning boundaries more
-than wealth boundaries.
+Gap tracts skew higher-income than served tracts ($`r comma(round(all_gap_median))` vs.
+$`r comma(round(served_median))` median household income). That result holds but needs
+context: only `r sum(!nyc_tracts_income$served)` of the `r sum(!nyc_tracts$served)` gap
+tracts matched to income data, and Queens — not Manhattan — accounts for most of the
+gap population (32,622 residents across 13 tracts). Queens gap tracts include outer
+neighborhoods like Bayside and Douglaston that are solidly middle-to-upper-middle
+income and genuinely distant from industrial land.
+
+The wealth signal is real but the mechanism is geographic, not political. These are
+low-density residential neighborhoods at the city's edge, far from industrial corridors,
+not wealthy enclaves that pushed industry out. **The gap follows the outer edges of the
+city's industrial footprint**, and those edges happen to overlap with more affluent
+outer-borough neighborhoods.
 
 ---
 
@@ -359,22 +358,23 @@ than wealth boundaries.
 
 ### Key Findings
 
-Manhattan accounts for the largest share of population outside the 1-mile
-industrial radius (`r comma(borough_summary$population[borough_summary$borough == "Manhattan" & borough_summary$coverage == "Underserved" & !is.na(borough_summary$borough)])`
-residents), which is initially counterintuitive given the borough's density.
-The explanation lies in land use and zoning: Manhattan has very few
-industrial-zoned lots, and the ones that exist are concentrated in specific
-corridors like the West Side railyards and the Meatpacking District. Broad
-residential swaths in Upper Manhattan and Washington Heights sit far from any
-classified industrial facility — not because residents pushed industry out,
-but because industrial use cannot compete economically for Manhattan land.
+Queens accounts for the largest share of population in the coverage gap (32,622
+residents across 13 tracts), followed by Brooklyn (19,809 across 11 tracts). The gap
+tracts in both boroughs sit at the city's outer edges — neighborhoods like Bayside,
+Douglaston, and Marine Park that are far from the industrial corridors concentrated
+along the waterfront and freight routes closer to the urban core.
 
-The income analysis confirms this: Manhattan's gap tracts are not uniformly
-wealthy. The pattern follows zoning boundaries more closely than income lines.
+Manhattan has only one gap tract, and it contains zero counted residents — a data
+artifact of differential privacy in the 2020 Census rather than a true zero population.
+The borough's near-complete coverage reflects the density of industrial lots in specific
+corridors (West Side railyards, Meatpacking District, Hudson Yards area), not that
+Manhattan is well-served for last-mile delivery. The edge effect limitation applies
+most strongly here: NJ distribution hubs 1 mile across the Hudson are excluded from
+this analysis.
 
-Queens and the Bronx show smaller absolute populations in the gap, reflecting
-their larger industrial footprints along the waterfront and major freight
-corridors.
+The income data shows gap tracts skew higher-income on average, but this reflects 
+Queens outer neighborhoods, not Manhattan. The Manhattan gap tract itself has no 
+usable population count in this dataset.
 
 ### Limitations
 
