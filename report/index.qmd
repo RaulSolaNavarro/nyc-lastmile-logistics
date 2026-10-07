@@ -76,12 +76,15 @@ are required to reproduce this analysis.
 | Industrial/warehouse tax lots | NYC Dept. of City Planning — PLUTO | Current | NYC Open Data Socrata API |
 | Median household income by tract | U.S. Census Bureau (ACS 5-year) | 2020 | `tidycensus` R package |
 
-**A note on the warehouse data:** PLUTO classifies every NYC tax lot by land
-use code. This analysis filters for code `06` (Industrial & Manufacturing),
-which includes warehouses, distribution centers, and freight terminals. This
-is a broader category than warehouses alone — some lots may be light
-manufacturing or workshops. It represents the best publicly available proxy
-for logistics infrastructure without purchasing commercial real estate data.
+**A note on the industrial lot data:** PLUTO classifies every NYC tax lot by
+land use code. This analysis filters for code `06` (Industrial &
+Manufacturing), which maps to building classes E* (warehouses), F*
+(factories), and L* (loft buildings). The category is broader than
+distribution-oriented warehouses alone: it includes factories and loft
+buildings, and gives no indication of whether a lot hosts an active logistics
+operation. These lots are used here as a publicly available proxy for
+industrial land; they are not a direct measure of delivery or logistics
+infrastructure.
 
 ---
 
@@ -104,7 +107,7 @@ and is the standard used by NYC government GIS data.
 **3. Buffer analysis.** Each industrial lot centroid is buffered by 5,280
 feet (1 mile). The resulting circles are dissolved into a single merged
 coverage polygon using `st_union()`. This merged polygon represents the
-total area of NYC within 1 mile of at least one industrial facility.
+total area of NYC within 1 mile of at least one industrial lot.
 
 **4. Gap identification.** Each census tract is tested for intersection with
 the coverage polygon using `st_intersects()`. Tracts with no intersection
@@ -165,13 +168,13 @@ residents. The distance-band table below shows the full breakdown by borough.
 
 ### Distance-Band Analysis
 
-The binary gap classification (served vs. not) masks variation in how far
+The binary gap classification (covered vs. not) masks variation in how far
 residents actually are from industrial land. This section reports the share
 of population within each distance band, by borough, and the median straight-line
 distance from tract centroid to the nearest industrial lot.
 
 Two distance measures are in use here and they give different numbers
-intentionally. The borough table (below) classifies a tract as "served" if
+intentionally. The borough table (below) classifies a tract as "covered" if
 any part of it intersects a 1-mile buffer -- the most generous possible
 reading. The distance table here uses the tract centroid, which is stricter:
 a large tract whose center sits 1.1 miles away counts as a gap by centroid
@@ -307,7 +310,7 @@ borough_table <- borough_summary |>
 kable(
   borough_table,
   format.args = list(big.mark = ","),
-  caption     = "Industrial land proximity by borough (1-mile radius from tract centroid to nearest industrial lot)"
+  caption     = "Industrial land proximity by borough (tract covered if any part lies within 1 mile of an industrial lot)"
 )
 ```
 
@@ -431,13 +434,13 @@ kable(
   income_summary |> select(group, tracts, median_income),
   col.names   = c("Group", "Tracts", "Median Household Income"),
   format.args = list(big.mark = ","),
-  caption     = "Median household income: gap tracts vs. served tracts (2020 ACS 5-year)"
+  caption     = "Median household income: gap tracts vs. covered tracts (2020 ACS 5-year)"
 )
 ```
 
 ```{r}
 #| label: income-chart
-#| fig-cap: "Median household income distribution: gap tracts vs. served tracts"
+#| fig-cap: "Median household income distribution: gap tracts vs. covered tracts"
 #| fig-height: 5
 
 ggplot(nyc_tracts_income, aes(x = median_income, fill = served)) +
@@ -448,7 +451,7 @@ ggplot(nyc_tracts_income, aes(x = median_income, fill = served)) +
   ) +
   scale_x_continuous(labels = dollar_format(scale = 1/1000, suffix = "k")) +
   labs(
-    title    = "Income Distribution: Gap Tracts vs. Served Tracts",
+    title    = "Income Distribution: Gap Tracts vs. Covered Tracts",
     subtitle = "2020 ACS 5-year median household income",
     x        = "Median Household Income",
     y        = "Density",
@@ -471,14 +474,14 @@ served_median <- median(
 
 cat(
   "Median income, gap tracts (all NYC):  $", comma(round(all_gap_median)), "\n",
-  "Median income, served tracts:         $", comma(round(served_median)), "\n",
+  "Median income, covered tracts:        $", comma(round(served_median)), "\n",
   "Gap tracts with income data:          ",
   sum(!nyc_tracts_income$served), "of", sum(!nyc_tracts$served), "\n"
 )
 ```
 
-Gap tracts skew higher-income than covered tracts ($`r comma(round(all_gap_median))` vs.
-$`r comma(round(served_median))` median household income). That result holds but needs
+Gap tracts skew higher-income than covered tracts ($`r comma(round(all_gap_median))` gap vs.
+$`r comma(round(served_median))` covered, median household income). That result holds but needs
 context: only `r sum(!nyc_tracts_income$served)` of the `r sum(!nyc_tracts$served)` gap
 tracts matched to income data, and Queens accounts for most of the gap population
 (32,622 residents across 13 tracts). Queens gap tracts sit at the outer edges of
@@ -513,10 +516,10 @@ artifact. Manhattan's near-complete industrial land coverage otherwise reflects
 the density of lots in specific corridors (West Side railyards, Meatpacking
 District, Hudson Yards area).
 
-Income data shows gap tracts skew higher-income than the rest of the city, but
-this reflects the geographic position of outer-borough tracts, not a political
-or zoning exclusion story. The Manhattan gap tract has no income data, since it
-has no counted population.
+Income data shows gap tracts skew higher-income than the rest of the city. This
+is consistent with the outer-borough position of those tracts, but the data
+cannot rule out zoning exclusion. The Manhattan gap tract has no income data,
+since it has no counted population.
 
 The distance-band analysis adds resolution beyond the binary gap classification.
 About 16% of New Yorkers (96.6% within a mile minus 80.4% within half a mile)
@@ -579,13 +582,12 @@ relevant question is narrower: which of the gap tracts identified here are
 actually near commercial-grade delivery infrastructure that PLUTO doesn't
 capture? Answering that requires either commercial data or field validation.
 
-For urban planners and policy researchers, the income finding is the more
-interesting result: the tracts farthest from industrial land skew
-higher-income, which is consistent with either deliberate exclusion of
-industrial uses from affluent neighborhoods or simply with the geography of
-where the city's industrial corridors developed historically. Distinguishing
-between those explanations would require zoning history and land use change
-data over time.
+For urban planners and policy researchers, the income pattern is worth
+following up: the tracts farthest from industrial land skew higher-income,
+which is consistent with either deliberate exclusion of industrial uses from
+affluent neighborhoods or simply with the geography of where the city's
+industrial corridors developed historically. Distinguishing between those
+explanations would require zoning history and land use change data over time.
 
 ---
 
