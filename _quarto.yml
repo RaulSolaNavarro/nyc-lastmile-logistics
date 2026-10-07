@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "NYC Last-Mile Logistics Gap Analysis"
+  title: "NYC Industrial Land Proximity Analysis"
   navbar:
     left:
       - href: report/index.qmd

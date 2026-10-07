@@ -603,7 +603,7 @@ source("setup.R")
 # 2. Pull all data from APIs
 source("analysis/01_data_pull.R")
 
-# 3. Run spatial analysis (computes served/unserved and dist_to_nearest_miles)
+# 3. Run spatial analysis (computes covered/gap status and dist_to_nearest_miles)
 source("analysis/02_spatial_analysis.R")
 
 # 4. Export maps
