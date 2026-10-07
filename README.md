@@ -10,14 +10,14 @@ area, how much should affected residents actually be compensated?
 
 ## The Policy Question
 
-In late 2025, NorthPoint Development offered 4,500 households in Hazle Township,
+In June 2026, NorthPoint Development offered 4,500 households in Hazle Township,
 Pennsylvania $10,000 each -- in cash -- to support approval of a 1,300-acre data
 center in their community. Locals pushed back. The township median household
 income is around $60,000. Residents called it a bribe.
 
-That offer sits at the center of a live national debate. By Q2 2026, community
-resistance had blocked or delayed $68 billion in U.S. data center projects. The
-Brookings Institution framed it as a question of who bears the costs of AI
+That offer sits at the center of a live national debate. In Q2 2026 alone,
+community resistance blocked or delayed $68 billion in U.S. data center projects.
+The Brookings Institution framed it as a question of who bears the costs of AI
 infrastructure. The core empirical question -- what does living near industrial
 land actually cost residents? -- has not been answered with enough specificity
 to evaluate whether $10,000 is reasonable, low, or absurd.
@@ -46,11 +46,12 @@ with income data).
 population) fall entirely outside a 1-mile radius of any industrial lot. Queens
 has the largest gap population (32,622 residents across 13 tracts).
 
-**The compensation benchmark:** If proximity to industrial land is associated
-with roughly $18,000--$27,000 in annual income difference, and Netherlands
-research suggests a 15% property value discount within 250 meters of industrial
-sites, a one-time $10,000 payment is a fraction of the implied cost. The right
-number depends on distance, property values, and the facility's operating life
+**The compensation benchmark:** A 2011 Dutch study (de Vor & de Groot, 70,684
+home sales) found a 15% property value discount within 250 meters of industrial
+sites -- fading to near zero at 1.4 miles. On a $200,000 home, 15% is $30,000.
+A flat $10,000 to everyone regardless of distance covers about 5% of the nearest
+neighbors' loss and nothing meaningful for those farther out. The right number
+depends on distance, local property values, and the facility's operating life
 -- not on what a developer can negotiate down to.
 
 ---
@@ -172,7 +173,7 @@ quarto::quarto_render("report/index.qmd")
 
 ## References
 
-- Brinkman & Rosenthal (2011). *The Impact of Industrial Sites on Residential Property Values.* Regional Studies. https://papers.tinbergen.nl/09035.pdf
+- de Vor & de Groot (2011). *The Impact of Industrial Sites on Residential Property Values.* Regional Studies. 15% discount within 250 m, fades to ~0 at 2,250 m. https://papers.tinbergen.nl/09035.pdf
 - Data Center Watch / Parameter.io (2026). *Community Resistance Stalls $68 Billion Worth of AI Data Center Developments.* https://parameter.io/community-resistance-stalls-68-billion-worth-of-ai-data-center-developments/
 - Wheeler, T. (2026). *Data Center Backlash Signals a Fight Over AI Power.* Brookings Institution. https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/
 - Tom's Hardware (2026). *Data center developer offers $10,000 checks to 4,500 households.* https://www.tomshardware.com/tech-industry/data-centers/data-center-developer-offers-usd10-000-checks-to-4-500-households-if-the-1-300-acre-facility-is-approved-locals-push-back-over-noise-and-bribe-concerns

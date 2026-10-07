@@ -20,7 +20,7 @@ execute:
 
 ## Introduction
 
-In late 2025, NorthPoint Development offered 4,500 households in Hazle
+In June 2026, NorthPoint Development offered 4,500 households in Hazle
 Township, Pennsylvania $10,000 each -- in cash -- if they would support
 approval of a 1,300-acre data center in their community. Locals pushed back,
 calling it a bribe. The township had already rejected the project on zoning
@@ -32,8 +32,8 @@ United States: **when a large industrial facility is proposed near a residential
 area, how much should affected residents actually be compensated -- and how
 would you even calculate the right number?**
 
-The AI data center buildout has made this question urgent. By Q2 2026,
-community resistance had blocked or delayed 45 data center projects worth $68
+The AI data center buildout has made this question urgent. In Q2 2026 alone,
+community resistance blocked or delayed 45 data center projects worth $68
 billion across the U.S., according to [Data Center Watch via
 parameter.io](https://parameter.io/community-resistance-stalls-68-billion-worth-of-ai-data-center-developments/).
 The [Brookings Institution](https://www.brookings.edu/articles/data-center-backlash-signals-a-fight-over-ai-power/)
@@ -44,9 +44,11 @@ don't know how to fight AI. So they're fighting data centers."*
 Residents object for concrete reasons -- noise, water use, power consumption,
 and the suspicion that nearby homes will lose value. That last concern is
 empirically grounded. A [2011 hedonic pricing study from the
-Netherlands](https://papers.tinbergen.nl/09035.pdf) found that homes within
-250 meters of industrial sites sold for roughly 15% less than comparable homes
-beyond 2,250 meters. Research specifically on data centers is more mixed: a
+Netherlands](https://papers.tinbergen.nl/09035.pdf) (de Vor & de Groot, using
+data on 70,684 home sales) found that homes within 250 meters of industrial
+sites sold for roughly 15% less than comparable homes beyond 2,250 meters --
+a discount that fades to near zero by about 1.4 miles out. Research
+specifically on data centers is more mixed: a
 [George Mason University analysis](https://stopohiodatacenters.org/data-center-property-value-ohio)
 of 2023 Northern Virginia home sales found prices *higher* nearer data centers,
 but Northern Virginia is an atypical case (high-income tech corridor, data
@@ -75,17 +77,19 @@ that -- 31 tracts, 61,426 residents, concentrated in outer Queens and Brooklyn.
 
 When I added income data, the logistics framing became secondary. **Median
 household income rises monotonically with distance from industrial land across
-every distance band, and a Wilcoxon rank-sum test confirms the gradient is
-statistically significant (p < 0.001) across 2,206 tracts.** The income gap
-between tracts within 0.5 miles of industrial land and those beyond 0.5 miles
-is roughly $18,000 at the median.
+every distance band.** The income gap between tracts within 0.5 miles of
+industrial land and those beyond 0.5 miles is roughly $18,000 at the median
+-- a pattern that is statistically robust but reflects sorting, not a
+directly measurable cost.
 
-That finding connects directly to the NorthPoint / Hazle Township situation
-and to the broader data center compensation debate. If proximity to industrial
-land is associated with an $18,000 income penalty at the median, and the
-Netherlands research suggests a 15% property value discount within 250 meters,
-then $10,000 per household looks like a significant underestimate -- though the
-right number depends on what you are compensating for, and how long.
+That finding connects to the NorthPoint / Hazle Township situation via the
+Netherlands property value research. If a home near the proposed facility
+is worth $200,000 and industrial proximity discounts it by 15%, that is a
+$30,000 loss in asset value -- three times the NorthPoint offer. The NYC
+income gradient shows the same directional signal: people with more resources
+tend to live farther from industrial land. The $10,000 offer looks hard to
+justify against either benchmark, though the right number depends on what
+you are compensating for, at what distance, and for how long.
 
 This report presents both the original spatial analysis and the income gradient
 finding, and frames both in the context of the current debate over industrial
@@ -646,12 +650,16 @@ measure, the second-highest share after Staten Island.
 land use code 06 maps to building classes E* (warehouses), F* (factories), and
 L* (loft buildings). Factories and lofts are included alongside
 distribution-oriented warehouses, and the category gives no indication of
-whether a lot hosts an active logistics operation. This analysis measures
-proximity to industrial land as a class -- it does not distinguish a 500,000 sq
-ft fulfillment center from a converted loft building or an inactive factory
-floor. A more operationally precise analysis would require commercial real
-estate data (CoStar, CBRE) or cross-referencing with business license records
-to isolate active logistics facilities.
+whether a lot hosts an active logistics operation. L* specifically includes
+converted loft buildings and self-storage facilities that generate little
+noise or truck traffic -- meaningfully different from a large active warehouse.
+This analysis measures proximity to industrial land as a class -- it does not
+distinguish a 500,000 sq ft fulfillment center from a converted loft building
+or an inactive factory floor. Including L* lots weakens the "industrial
+facility" proxy and likely understates the income gradient around genuinely
+heavy industrial uses. A more operationally precise analysis would require
+commercial real estate data (CoStar, CBRE) or cross-referencing with business
+license records to isolate active logistics facilities.
 
 **Industrial land is not the only freight infrastructure.** Real last-mile
 delivery in dense neighborhoods often runs from microhubs, retail backrooms,
@@ -698,21 +706,21 @@ pay to avoid, or are compensated for through lower housing costs.
 
 **Back to the $10,000 question.** NorthPoint offered Hazle Township residents
 $10,000 -- a one-time payment -- to accept a 1,300-acre data center. The
-median household income in that area is around $60,000. If we apply the NYC
-income gradient as a rough benchmark: the difference in median income between
-tracts within 0.25 miles of industrial land ($63,708) and tracts beyond 1 mile
-($90,379) is $26,671 per year. Even if you attribute only a fraction of that
-difference to industrial proximity itself (rather than to underlying geography
-or historical patterns), a one-time $10,000 payment covers less than half a
-year of that annual differential.
+Netherlands study gives the clearest benchmark: homes within 250 meters of
+industrial sites sold for roughly 15% less. If a home near the facility is
+worth $200,000, that is a $30,000 loss in asset value -- a one-time hit,
+three times the NorthPoint offer. The discount fades with distance, so homes
+within 250 meters bear the full 15% while homes closer to 1.4 miles out see
+almost nothing. A flat $10,000 to everyone ignores that geography entirely.
 
-The Netherlands 15% property value discount offers a different angle. If a
-home near the facility is worth $200,000 and proximity discounts it by 15%,
-that is a $30,000 loss in asset value -- three times the NorthPoint offer,
-and a one-time hit rather than an annual one. At Hazle Township's median income,
-$10,000 is roughly two months of household income. It is hard to construct a
-property-value or income-based model that gets you to $10,000 as the right
-number.
+The NYC income gradient is a different signal -- correlation rather than cost.
+Tracts within 0.25 miles of industrial land have a median income of $63,708;
+tracts beyond 1 mile average $90,379. That $26,671 gap reflects sorting (more
+affluent households can afford to live farther from industrial land) rather
+than a direct price tag. Still, the direction is consistent: industrial
+proximity is something people pay to avoid, or accept in exchange for lower
+housing costs. A one-time $10,000 payment is a thin rationale for waiving
+that for a generation-long facility.
 
 None of this means developers should not build. It means the compensation
 question deserves an empirical basis rather than an arbitrary one. Relevant
@@ -726,8 +734,8 @@ to the facility's operating life.
 
 The current conflict over data center siting is partly a zoning fight, partly
 an AI anxiety fight, and partly a legitimate dispute over who pays for
-infrastructure that benefits a much larger population. By Q2 2026, community
-resistance had stalled $68 billion in data center projects across the U.S.
+infrastructure that benefits a much larger population. In Q2 2026 alone,
+community resistance stalled $68 billion in data center projects across the U.S.
 [TechCrunch](https://techcrunch.com/2026/09/22/everyone-can-find-a-reason-to-dislike-data-center-construction/)
 reported in September 2026 that "everyone can find a reason to dislike data
 center construction" -- from noise and water use to AI ethics to simple
@@ -804,9 +812,11 @@ via the tigris R package.
 
 ## References and Further Reading
 
-Brinkman, J., & Rosenthal, S. (2011). *The Impact of Industrial Sites on
+de Vor, F., & de Groot, H. L. F. (2011). *The Impact of Industrial Sites on
 Residential Property Values: A Hedonic Pricing Analysis from the Netherlands.*
-Regional Studies, 45(5), 609--623.
+Regional Studies, 45(5), 609--623. Key finding: 15% price discount within 250
+meters of industrial sites, fading to near zero at 2,250 meters (roughly 1.4
+miles). Based on 70,684 home sales.
 https://papers.tinbergen.nl/09035.pdf
 
 Data Center Watch / Parameter.io. (2026). *Community Resistance Stalls $68
